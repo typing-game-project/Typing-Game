@@ -1,0 +1,64 @@
+## Java
+
+libGDX Project/*.class
+libGDX Project/*.war
+libGDX Project/*.ear
+libGDX Project/hs_err_pid*
+
+## GWT
+libGDX Project/war/
+libGDX Project/html/war/gwt_bree/
+libGDX Project/html/gwt-unitCache/
+libGDX Project/.apt_generated/
+libGDX Project/html/war/WEB-INF/deploy/
+libGDX Project/html/war/WEB-INF/classes/
+libGDX Project/.gwt/
+libGDX Project/gwt-unitCache/
+libGDX Project/www-test/
+libGDX Project/.gwt-tmp/
+
+## Android Studio and Intellij and Android in general
+libGDX Project/android/libs/armeabi/
+libGDX Project/android/libs/armeabi-v7a/
+libGDX Project/android/libs/x86/
+libGDX Project/android/gen/
+libGDX Project/.idea/
+libGDX Project/*.ipr
+libGDX Project/*.iws
+libGDX Project/*.iml
+libGDX Project/out/
+libGDX Project/com_crashlytics_export_strings.xml
+
+## Eclipse
+libGDX Project/.classpath
+libGDX Project/.project
+libGDX Project/.metadata
+libGDX Project/**/bin/
+libGDX Project/tmp/
+libGDX Project/*.tmp
+libGDX Project/*.bak
+libGDX Project/*.swp
+libGDX Project/*~.nib
+libGDX Project/local.properties
+libGDX Project/.settings/
+libGDX Project/.loadpath
+libGDX Project/.externalToolBuilders/
+libGDX Project/*.launch
+
+## NetBeans
+libGDX Project/**/nbproject/private/
+libGDX Project/build/
+libGDX Project/nbbuild/
+libGDX Project/dist/
+libGDX Project/nbdist/
+libGDX Project/nbactions.xml
+libGDX Project/nb-configuration.xml
+
+## Gradle
+
+libGDX Project/.gradle
+libGDX Project/gradle-app.setting
+libGDX Project/build/
+
+## OS Specific
+libGDX Project/.DS_Store
