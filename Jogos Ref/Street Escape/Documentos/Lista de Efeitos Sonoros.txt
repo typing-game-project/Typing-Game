@@ -1,0 +1,13 @@
+--------------------LISTA DE EFEITOS SONOROS
+
+- Transeunte atirar - DONE ---
+- Inimigo atirar - DONE ---
+- Transeunte sofre dano - DONE ---
+- Inimigo sofre dano - DONE ---
+- Boss atirar
+- Boss sofre dano
+- Transeunte morre - DONE ---
+- Inimigo morre - DONE ---
+- Boss morre - DONE
+- pick up item - DONE
+- recover life - DONE

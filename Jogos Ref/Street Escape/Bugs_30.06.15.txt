@@ -1,0 +1,12 @@
+LISTA DE BUGS
+
+- Caixas de colisão dos prédios colidem nas pontas de modo estranho (não dá pra explicar, só jogando para entender)
+
+- Sprite do personagem principal "bugando" ao colidir com as caixas dos prédios
+
+- Sprites de inimigos às vezes não aparecem quando os inimigos aparecem
+
+- Controles do personagem principal param de funcionar sem razão aparente
+
+- Sprite do personagem principal "bugando" de vez em quando
+
