@@ -8,9 +8,11 @@ import com.badlogic.gdx.utils.Timer.Task;
 
 public class GameOver implements Screen {
 	final Drop game;
+	boolean goToMainMenu;
 	
 	public GameOver(final Drop gam) {
 		this.game = gam;
+		goToMainMenu = false;
 	}
 
 	@Override
@@ -35,11 +37,15 @@ public class GameOver implements Screen {
         Timer.schedule(new Task(){
             @Override
             public void run() {
-            	game.setScreen(new MainMenuScreen(game));
-            	dispose();
+            	goToMainMenu = true;
             }
         }, 2);
         
+        if (goToMainMenu) { 
+	        game.setScreen(new MainMenuScreen(game));
+	    	dispose();
+        }
+    	
         game.batch.end();
 	}
 

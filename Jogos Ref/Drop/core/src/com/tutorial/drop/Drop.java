@@ -4,17 +4,24 @@ import java.sql.ResultSet;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Drop extends Game {
 
     public SpriteBatch batch;
-    public BitmapFont font;
     public OrthographicCamera camera;
+    public BitmapFont font;
     public static Database db;
     public static Integer bestScore;
+	public static Music rain;
+	public static Sound drop;
+	public static Texture dropletImg;
+	public static Texture bucketImg;
     
     private static void schema() throws Exception {
     	db.connect("score");
@@ -29,6 +36,11 @@ public class Drop extends Game {
         batch = new SpriteBatch();
         font = new BitmapFont();
         camera = new OrthographicCamera();
+		rain = Gdx.audio.newMusic(Gdx.files.internal("rain.mp3"));
+		drop = Gdx.audio.newSound(Gdx.files.internal("waterdrop.wav"));
+		dropletImg = new Texture("droplet.png");
+		bucketImg = new Texture("bucket.png");
+		font = new BitmapFont(Gdx.files.internal("segoeprint.fnt"));
         
         camera.setToOrtho(false, 800, 480);
         bestScore = 0;
@@ -69,5 +81,7 @@ public class Drop extends Game {
     public void dispose() {
         batch.dispose();
         font.dispose();
+		drop.dispose();
+		rain.dispose();
     }
 }

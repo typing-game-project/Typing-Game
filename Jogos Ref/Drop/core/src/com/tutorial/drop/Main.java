@@ -6,45 +6,30 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 
 public class Main implements Screen {
 	final Drop game;
-	
-	private Texture dropletImg;
-	private Texture bucketImg;
-	private Music rain;
-	private Sound drop;
 	private Rectangle bucket;
 	private Array<Rectangle> raindrops;
 	private long lastDropTime;
 	public static int points;
 	private long dropFrequency;
-	private BitmapFont font;
 	private int raindropSpeed;	
 	
 	public Main(final Drop gam) {
         this.game = gam;
-		dropletImg = new Texture("droplet.png");
-		bucketImg = new Texture("bucket.png");
-		rain = Gdx.audio.newMusic(Gdx.files.internal("rain.mp3"));
-		drop = Gdx.audio.newSound(Gdx.files.internal("waterdrop.wav"));
 		bucket = new Rectangle();
 		raindrops = new Array<Rectangle>();
-		font = new BitmapFont(Gdx.files.internal("segoeprint.fnt"));
         
 		spawnRaindrop();
 		
-		rain.setLooping(true);
-	    rain.play();
+		Drop.rain.setLooping(true);
+	    Drop.rain.play();
 	    
 	    game.camera.setToOrtho(false, 800, 480);
 		
@@ -116,7 +101,7 @@ public class Main implements Screen {
 			// Collision check
 			
 			if(raindrop.overlaps(bucket)) {
-				drop.play();
+				Drop.drop.play();
 				iter.remove();
 				points += 1;
 				raindropSpeed += 1;
@@ -145,6 +130,7 @@ public class Main implements Screen {
         			Drop.bestScore = points;
         		}
 		        
+		        Drop.rain.stop();
 				iter.remove();
 				
 				game.setScreen(new GameOver(game));
@@ -158,15 +144,15 @@ public class Main implements Screen {
 		game.batch.setProjectionMatrix(game.camera.combined);
 		game.batch.begin();
 		
-		game.batch.draw(bucketImg, bucket.x, bucket.y);
+		game.batch.draw(Drop.bucketImg, bucket.x, bucket.y);
 		
 		for(Rectangle raindrop: raindrops) {
-			game.batch.draw(dropletImg, raindrop.x, raindrop.y);
+			game.batch.draw(Drop.dropletImg, raindrop.x, raindrop.y);
 		}
 		
-		if (points > 99) font.draw(game.batch, "Score: " + Integer.toString(points), 570, 430);
-		else if (points > 9) font.draw(game.batch, "Score: " + Integer.toString(points), 600, 430);
-		else font.draw(game.batch, "Score: " + Integer.toString(points), 630, 430);
+		if (points > 99) game.font.draw(game.batch, "Score: " + Integer.toString(points), 570, 430);
+		else if (points > 9) game.font.draw(game.batch, "Score: " + Integer.toString(points), 600, 430);
+		else game.font.draw(game.batch, "Score: " + Integer.toString(points), 630, 430);
 		
 		game.batch.end();
 	}
@@ -175,10 +161,6 @@ public class Main implements Screen {
 	
 	@Override
 	public void dispose() {
-		dropletImg.dispose();
-		bucketImg.dispose();
-		drop.dispose();
-		rain.dispose();
 	}
 
 	@Override
