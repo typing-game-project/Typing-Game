@@ -1,0 +1,26 @@
+
+
+LOOP DO JOGO (?):
+ENQUANTO a variável "timer" não estiver NULA, a variável "VIDA" tiver valor acima de 0 e o vetor "frase" tiver posições com valor, o jogo aguardará a digitação do jogador.
+SE as variáveis "timer" e "VIDA" tiverem valores positivos e diferentes de 0, e o vetor "frase" não tiver mais valor disponível para leitura, o jogo apresenta uma tela de parabenização ao jogador, adicionando 1 na variável "fase" para o loop do jogo avançar na fase seguinte, carregando novos valores para o vetor "frase" e novos valores para as variáveis "VIDA" e "timer".
+
+SE NÃO atender aos requisitos das variáveis "VIDA" e "timer", o jogo apresentará uma tela de derrota, acionando uma animação e dando opção ao jogador de tentar novamente, voltando os valores das variáveis "VIDA" e "timer", assim como todas os valores do vetor "frase" da fase atual.
+
+_______________________________________________
+
+º Reconhecer caracter:
+
+SE a tecla "X" for pressionada, será comparada com a posição "Z" do vetor "frase".
+
+SE a comparação for IGUAL, a posição "Z" do vetor "frase" é apagada, o método AumentarPontuacao() é chamado, e será avançado 1 no valor que será lido do vetor, para o jogo assim comparar o próximo digito do jogador com a próxima posição "Z" do vetor "frase". O jogo apresentará uma animação de acerto no retângulo que mostra o atual caracter.
+
+SE a comparação for DIFERENTE, o jogo apresentará uma animação de ERRO, removerá 1 da variável VIDA e a posição "Z" do vetor "frase" é mantida, para nova tentativa.
+
+_______________________________________________
+
+º Pontuação:
+
+O contador de pontuação funcionará da mesma forma em todas as fases. Todos os caracteres terão o mesmo valor de pontuação.
+
+SE a comparação de caracter feita no loop de jogo estiver correta, o jogador somará uma multiplicação ("Y" * "multiplicador") à sua variável "PONTUAÇÃO FINAL" que será sempre mostrada na tela.
+A variável "multiplicador" terá valor 1, e aumentará após o jogador acertar "N" caracteres seguidos. Caso essa condição não seja atingida, ou caso o jogador erre um caracter enquanto o valor da variável "multiplicador" for acima de 1, o valor será setado para 1 novamente.
