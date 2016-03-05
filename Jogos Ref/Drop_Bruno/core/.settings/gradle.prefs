@@ -1,8 +1,8 @@
 {
   "1.0": {
-    "project_path": ":desktop",
-    "project_dir": "D:\\8.Repos\\GitHub\\typing-game-project\\libGDX Project\\desktop",
-    "connection_project_dir": "D:\\8.Repos\\GitHub\\typing-game-project\\libGDX Project",
+    "project_path": ":core",
+    "project_dir": "D:\\8.Repos\\GitHub\\typing-game-project\\Jogos Ref\\Drop_Bruno\\core",
+    "connection_project_dir": "D:\\8.Repos\\GitHub\\typing-game-project\\Jogos Ref\\Drop_Bruno",
     "connection_gradle_user_home": null,
     "connection_gradle_distribution": "GRADLE_DISTRIBUTION(WRAPPER)",
     "connection_java_home": null,

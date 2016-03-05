@@ -1,33 +1,9 @@
 ## Java
 
-libGDX Project/*.class
-libGDX Project/*.war
-libGDX Project/*.ear
-libGDX Project/hs_err_pid*
-
-## GWT
-libGDX Project/war/
-libGDX Project/html/war/gwt_bree/
-libGDX Project/html/gwt-unitCache/
-libGDX Project/.apt_generated/
-libGDX Project/html/war/WEB-INF/deploy/
-libGDX Project/html/war/WEB-INF/classes/
-libGDX Project/.gwt/
-libGDX Project/gwt-unitCache/
-libGDX Project/www-test/
-libGDX Project/.gwt-tmp/
-
-## Android Studio and Intellij and Android in general
-libGDX Project/android/libs/armeabi/
-libGDX Project/android/libs/armeabi-v7a/
-libGDX Project/android/libs/x86/
-libGDX Project/android/gen/
-libGDX Project/.idea/
-libGDX Project/*.ipr
-libGDX Project/*.iws
-libGDX Project/*.iml
-libGDX Project/out/
-libGDX Project/com_crashlytics_export_strings.xml
+*.class
+*.war
+*.ear
+hs_err_pid*
 
 ## Eclipse
 libGDX Project/.classpath
@@ -44,21 +20,30 @@ libGDX Project/.settings/
 libGDX Project/.loadpath
 libGDX Project/.externalToolBuilders/
 libGDX Project/*.launch
-
-## NetBeans
-libGDX Project/**/nbproject/private/
-libGDX Project/build/
-libGDX Project/nbbuild/
-libGDX Project/dist/
-libGDX Project/nbdist/
-libGDX Project/nbactions.xml
-libGDX Project/nb-configuration.xml
+Jogos Ref/Drop_Bruno/.classpath
+Jogos Ref/Drop_Bruno/.project
+Jogos Ref/Drop_Bruno/.metadata
+Jogos Ref/Drop_Bruno/**/bin/
+Jogos Ref/Drop_Bruno/tmp/
+Jogos Ref/Drop_Bruno/*.tmp
+Jogos Ref/Drop_Bruno/*.bak
+Jogos Ref/Drop_Bruno/*.swp
+Jogos Ref/Drop_Bruno/*~.nib
+Jogos Ref/Drop_Bruno/local.properties
+Jogos Ref/Drop_Bruno/.settings/
+Jogos Ref/Drop_Bruno/.loadpath
+Jogos Ref/Drop_Bruno/.externalToolBuilders/
+Jogos Ref/Drop_Bruno/*.launch
 
 ## Gradle
-
 libGDX Project/.gradle
 libGDX Project/gradle-app.setting
-libGDX Project/build/
+Jogos Ref/Drop_Bruno/.gradle
+Jogos Ref/Drop_Bruno/gradle-app.setting
 
 ## OS Specific
 libGDX Project/.DS_Store
+Jogos Ref/Drop_Bruno/.DS_Store
+
+# Drop
+*.db
