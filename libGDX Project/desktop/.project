@@ -26,5 +26,30 @@
 			<type>2</type>
 			<locationURI>PARENT-1-PROJECT_LOC/core/assets</locationURI>
 		</link>
+		<link>
+			<name>assets_</name>
+			<type>2</type>
+			<locationURI>PARENT-1-PROJECT_LOC/core/assets</locationURI>
+		</link>
 	</linkedResources>
+	<filteredResources>
+		<filter>
+			<id>1457297086973</id>
+			<name></name>
+			<type>26</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-projectRelativePath-matches-false-false-build</arguments>
+			</matcher>
+		</filter>
+		<filter>
+			<id>1457297086989</id>
+			<name></name>
+			<type>26</type>
+			<matcher>
+				<id>org.eclipse.ui.ide.multiFilter</id>
+				<arguments>1.0-projectRelativePath-matches-false-false-.gradle</arguments>
+			</matcher>
+		</filter>
+	</filteredResources>
 </projectDescription>

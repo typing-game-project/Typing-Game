@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry exported="true" kind="src" path="/Drop-core"/>
+	<classpathentry kind="src" path="/Drop-core"/>
 	<classpathentry kind="lib" path="C:/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-backend-lwjgl/1.9.2/d710a8704ed584ec2ba9ca52e3a6a5885dd759cc/gdx-backend-lwjgl-1.9.2.jar" sourcepath="C:/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-backend-lwjgl/1.9.2/888ddbf116b94ab6dbe07178e035091031425b67/gdx-backend-lwjgl-1.9.2-sources.jar"/>
 	<classpathentry kind="lib" path="C:/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-platform/1.9.2/dde4cf7e9ce61c24042f512203aed87657496639/gdx-platform-1.9.2-natives-desktop.jar"/>
 	<classpathentry kind="lib" path="C:/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.2/e641cb91bec06bc64d9ddf7a7d7062caceec73cd/gdx-1.9.2.jar" sourcepath="C:/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.2/b6c7422c6740f86a9a84fdcbc4c62a1f46db317d/gdx-1.9.2-sources.jar"/>
@@ -19,6 +19,6 @@
 	<classpathentry kind="lib" path="C:/.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput-platform/2.0.5/385ee093e01f587f30ee1c8a2ee7d408fd732e16/jinput-platform-2.0.5-natives-windows.jar"/>
 	<classpathentry kind="lib" path="C:/.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput-platform/2.0.5/53f9c919f34d2ca9de8c51fc4e1e8282029a9232/jinput-platform-2.0.5-natives-osx.jar"/>
 	<classpathentry kind="src" path="assets"/>
-	<classpathentry kind="lib" path="../sqlite-jdbc-3.8.10.1.jar"/>
+	<classpathentry kind="lib" path="D:/Repos/GitHub/typing-game/Jogos Ref/Drop_Bruno/sqlite-jdbc-3.8.10.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
