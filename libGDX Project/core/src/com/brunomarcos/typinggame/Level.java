@@ -14,8 +14,8 @@ public class Level implements Screen {
 	public Level(final GameManager game, String frase, String password, int timer) {
 		this.game = game;
 		this.frase = new StringBuffer();
-		this.fraseCompleta = frase;
-		this.frase.append(frase);
+		this.fraseCompleta = frase.toLowerCase();
+		this.frase.append(this.fraseCompleta);
 		this.password = password;
 		this.timer = timer;
 	}
