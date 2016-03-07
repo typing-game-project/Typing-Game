@@ -34,7 +34,6 @@ public class Drop extends Game {
     @Override
     public void create() {
         batch = new SpriteBatch();
-        font = new BitmapFont();
         camera = new OrthographicCamera();
 		rain = Gdx.audio.newMusic(Gdx.files.internal("rain.mp3"));
 		drop = Gdx.audio.newSound(Gdx.files.internal("waterdrop.wav"));
