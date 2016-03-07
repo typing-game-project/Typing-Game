@@ -6,14 +6,18 @@ import com.badlogic.gdx.graphics.GL20;
 
 public class Level implements Screen {
 	final GameManager game; // referência necessária para a classe GameManager
+	public String fraseCompleta;
 	public StringBuffer frase;
+	public String password;
+	public int timer;
 	
-	// TODO Inserir atríbutos do level aqui
-	
-	public Level(final GameManager gam) {
-		this.game = gam;
-		frase = new StringBuffer();
-		// TODO Instanciar os atríbutos aqui
+	public Level(final GameManager game, String frase, String password, int timer) {
+		this.game = game;
+		this.frase = new StringBuffer();
+		this.fraseCompleta = frase;
+		this.frase.append(frase);
+		this.password = password;
+		this.timer = timer;
 	}
 	
 	@Override
@@ -34,7 +38,21 @@ public class Level implements Screen {
 		game.font.draw(game.batch, "Vida: " + Integer.toString(game.player.vida), 700, 284);
 		game.font.draw(game.batch, "Acertos Consecutivos: " + Integer.toString(game.player.acertosConsecutivos), 500, 234);
 		
-		game.player.confereAcerto(frase);
+		if (game.player.vida == 0) {
+			//TODO Chamar a tela de DERROTA
+			this.frase.append(fraseCompleta);
+		}
+		
+		else {
+			try {
+				game.player.confereAcerto(this.frase);
+			}
+			
+			catch(Exception e) {
+				//TODO Chamar a tela de SUCESSO
+				this.frase.append(fraseCompleta);
+			}
+		}
 		
 		game.batch.end();
 		dispose();

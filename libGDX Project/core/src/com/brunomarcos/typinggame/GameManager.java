@@ -23,13 +23,12 @@ public class GameManager extends Game {
 		player = new Player();
 		levels = new ArrayList<Level>();
 		
-		// Instanciando os levels
-		levels.add(0,new Level(this));
-		Level primeiro = levels.get(0);
-		primeiro.frase.append("FRASE DE TESTE USANDO Ç E Á.");
+		// Instânciando os levels:
+		levels.add(0, new Level(this,"teste de ç e á","DEBUG1",0)); // refêrencia ao game, número do level, frase, password, timer
+		levels.add(1, new Level(this,"FRASE GRANDE DE EXEMPLO PARA A SEGUNDA TELA, FRASE GRANDE DE EXEMPLO PARA A SEGUNDA TELA","DEBUG2",60));
 		
 		// Indo para a primeira tela:
-		this.setScreen(primeiro);
+		this.setScreen(levels.get(0));
 	}
 	
     public void render() {
