@@ -10,9 +10,11 @@ public class Player implements InputProcessor {
 	public int acertosConsecutivos;
 	public int multiplicador;
 	public boolean digitou;
-	final char[] aceitaveis = {'1','2','3','4','5','6','7','8','9','0',' ',',','.','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o',
-	'p','q','r', 's','t','u','v','w', 'x','y','z','ç','á','é','í','ó','ú','à','è','ì','ò','ù','â','ê','î','ô','û','ã','õ','ä','ë','ï','ö','ü',
-	']','[','{','}','!','?','/'};
+	final char[] aceitaveis = { 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'ç', 'z', 'x', 'c', 'v', 'b', 'n', 'm',
+			'á', 'é', 'í', 'ó', 'ú', 'à', 'è', 'ì', 'ò', 'ù', 'â', 'ê', 'î', 'ô', 'û', 'ä', 'ë', 'ï', 'ö', 'ü', 'ã', 'õ', 'ñ', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O',
+			'P', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Ç', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'Á', 'É', 'Í', 'Ó', 'Ú', 'À', 'È', 'Ì', 'Ò', 'Ù', 'Â', 'Ê', 'Î', 'Ô',
+			'Û', 'Ä', 'Ë', 'Ï', 'Ö', 'Ü', 'Ã', 'Õ', 'Ñ', '"', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '@', '#', '$', '%', '¨', '&', '*', '(', ')', '_', '+',
+			'-', '=', '/', '£', '³', '²', '¹', '¢', '¬', '§', '´', '`', '[', ']', '{', 'ª', '}', 'º', '~', '^', '<', '.', '>', ';', ':', '/', '?', '°', '|', ' '};
 	
 	public Player() {
 		pontos = 0;
@@ -60,13 +62,15 @@ public class Player implements InputProcessor {
 
 	@Override
 	public boolean keyTyped(char character) {
-		for (int i = 0;i < aceitaveis.length; i++) {
+		
+		for (int i = 0; i < aceitaveis.length; i++) {
 			if (character == aceitaveis[i]) {
 				letraDigitada = character;
 				digitou = true;
 				break;
 			}
 		}
+		
 		return false;
 	}
 	

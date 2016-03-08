@@ -40,7 +40,7 @@ public class Level implements Screen {
 		
 		if (game.player.vida == 0) {
 			//TODO Chamar a tela de DERROTA
-			this.frase.append(fraseCompleta);
+			this.frase.replace(0, frase.length(), fraseCompleta);
 		}
 		
 		else {
@@ -50,7 +50,7 @@ public class Level implements Screen {
 			
 			catch(Exception e) {
 				//TODO Chamar a tela de SUCESSO
-				this.frase.append(fraseCompleta);
+				this.frase.replace(0, frase.length(), fraseCompleta);
 			}
 		}
 		
