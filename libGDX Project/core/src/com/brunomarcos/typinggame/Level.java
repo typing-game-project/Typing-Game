@@ -29,7 +29,7 @@ public class Level implements Screen {
 		
 		// Loop para imprimir as letras presentes na frase
 		for (int i = 0; i < frase.length(); i++) {
-			game.font.draw(game.batch, Character.toString(frase.charAt(i)), 100 + 10*i, 384);
+			game.font.draw(game.batch, Character.toString(frase.charAt(i)), 100 + 10 * i, 384);
 		}
 		
 		// Números para Debug

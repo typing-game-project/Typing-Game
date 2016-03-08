@@ -26,6 +26,7 @@ public class Player implements InputProcessor {
 	}
 	
 	public void confereAcerto(StringBuffer frase) {
+		//TODO Conferir se o Caps Lock está ligado
 	
 		// Se acertou:
 		if (letraDigitada == frase.charAt(0) && digitou) {
@@ -50,10 +51,10 @@ public class Player implements InputProcessor {
 		int[] acertos = {5, 10, 20};
 		int[] multiplicar = {2, 4, 6};
 		
-		if (acertosConsecutivos >= acertos[0])
+		if (acertosConsecutivos >= acertos[0] && acertosConsecutivos < acertos[1])
 			multiplicador = multiplicar[0];
 		
-		else if (acertosConsecutivos >= acertos[1])
+		else if (acertosConsecutivos >= acertos[1] && acertosConsecutivos < acertos[2])
 			multiplicador = multiplicar[1];
 		
 		else if (acertosConsecutivos >= acertos[2])
