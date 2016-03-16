@@ -14,14 +14,14 @@ public class Level implements Screen {
 	public Level(final GameManager game, String frase, String password, int timer) {
 		this.game = game;
 		this.frase = new StringBuffer();
-		this.fraseCompleta = frase.toLowerCase();
+		this.fraseCompleta = frase;
 		this.frase.append(this.fraseCompleta);
 		this.password = password;
-		this.timer = timer;
+		this.timer = timer;	
 	}
 	
 	@Override
-	public void render(float delta) {
+	public void render(float delta) {		
 		// Aqui vai o game loop
 		game.batch.begin();
 		Gdx.gl.glClearColor(0, 0, 0, 1);

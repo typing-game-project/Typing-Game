@@ -5,16 +5,18 @@ import com.badlogic.gdx.InputProcessor;
 
 public class Player implements InputProcessor {
 	public char letraDigitada;
+	public char maiscula;
+	public char minuscula;
 	public int pontos;
 	public int vida;
 	public int acertosConsecutivos;
 	public int multiplicador;
 	public boolean digitou;
-	final char[] aceitaveis = { 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'ç', 'z', 'x', 'c', 'v', 'b', 'n', 'm',
-			'á', 'é', 'í', 'ó', 'ú', 'à', 'è', 'ì', 'ò', 'ù', 'â', 'ê', 'î', 'ô', 'û', 'ä', 'ë', 'ï', 'ö', 'ü', 'ã', 'õ', 'ñ', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O',
-			'P', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Ç', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'Á', 'É', 'Í', 'Ó', 'Ú', 'À', 'È', 'Ì', 'Ò', 'Ù', 'Â', 'Ê', 'Î', 'Ô',
-			'Û', 'Ä', 'Ë', 'Ï', 'Ö', 'Ü', 'Ã', 'Õ', 'Ñ', '"', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '@', '#', '$', '%', '¨', '&', '*', '(', ')', '_', '+',
-			'-', '=', '/', '£', '³', '²', '¹', '¢', '¬', '§', '´', '`', '[', ']', '{', 'ª', '}', 'º', '~', '^', '<', '.', '>', ';', ':', '/', '?', '°', '|', ' '};
+	final char[] aceitaveis = { 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'ç', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 'á',
+			'é', 'í', 'ó', 'ú', 'à', 'è', 'ì', 'ò', 'ù', 'â', 'ê', 'î', 'ô', 'û', 'ä', 'ë', 'ï', 'ö', 'ü', 'ã', 'õ', 'ñ', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
+			'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Ç', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'Á', 'É', 'Í', 'Ó', 'Ú', 'À', 'È', 'Ì', 'Ò', 'Ù', 'Â', 'Ê', 'Î', 'Ô', 'Û',
+			'Ä', 'Ë', 'Ï', 'Ö', 'Ü', 'Ã', 'Õ', 'Ñ', '"', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '@', '#', '$', '%', '¨', '&', '*', '(', ')', '_', '+', '-',
+			'=', '/', '£', '³', '²', '¹', '¢', '¬', '§', '´', '`', '[', ']', '{', 'ª', '}', 'º', '~', '^', '<', '.', '>', ';', ':', '/', '?', '°', '|', ' ', ','};
 	
 	public Player() {
 		pontos = 0;
@@ -26,28 +28,30 @@ public class Player implements InputProcessor {
 	}
 	
 	public void confereAcerto(StringBuffer frase) {
-		//TODO Conferir se o Caps Lock está ligado
-	
-		// Se acertou:
-		if (letraDigitada == frase.charAt(0) && digitou) {
-			multiplicaPontos();
-			pontos += multiplicador * 1;
-			acertosConsecutivos += 1;
-			frase.deleteCharAt(0);
-		}
 		
-		// Se errou:
-		else if (letraDigitada != frase.charAt(0) && digitou) {
-			vida -= 1;
-			acertosConsecutivos = 0;
-			multiplicador = 1;
+		if (digitou) {	
+			char letra = frase.charAt(0); // Primeira letra da frase
+			
+			// Se acertou:
+			if (letraDigitada == letra || maiscula == letra || minuscula == letra) {
+				multiplicaPontos();
+				pontos += multiplicador * 1;
+				acertosConsecutivos += 1;
+				frase.deleteCharAt(0);
+			}
+			
+			// Se errou:
+			else {			
+				vida -= 1;
+				acertosConsecutivos = 0;
+				multiplicador = 1;
+			}	
 		}
 	
 		digitou = false;
 	}
 	
 	public void multiplicaPontos() {
-		
 		int[] acertos = {5, 10, 20};
 		int[] multiplicar = {2, 4, 6};
 		
@@ -65,7 +69,13 @@ public class Player implements InputProcessor {
 	public boolean keyTyped(char character) {
 		
 		for (int i = 0; i < aceitaveis.length; i++) {
-			if (character == aceitaveis[i]) {
+			if (character == aceitaveis[i]) {	
+				if (i < 50)
+					maiscula = aceitaveis[i + 50];
+				
+				else if (i < 100)
+					minuscula = aceitaveis[i - 50];
+				
 				letraDigitada = character;
 				digitou = true;
 				break;
