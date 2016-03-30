@@ -25,10 +25,10 @@ public class GameManager extends Game {
 		
 		// Instânciando os levels:
 		levels.add(0, new Level(this,"teste de ç e á","DEBUG1",0)); // refêrencia ao game, número do level, frase, password, timer
-		levels.add(1, new Level(this,"FRASE GRANDE DE EXEMPLO PARA A SEGUNDA TELA, FRASE GRANDE DE EXEMPLO PARA A SEGUNDA TELA","DEBUG2",60));
+		levels.add(1, new Level(this,"FRASE FRASE FRASE FRASE FRASE FRASE GRANDE DE EXEMPLO PARA A SEGUNDA TELA, FRASE GRANDE DE EXEMPLO PARA A SEGUNDA TELA","DEBUG2",60));
 		
 		// Indo para a primeira tela:
-		this.setScreen(levels.get(0));
+		this.setScreen(levels.get(1));
 	}
 	
     public void render() {

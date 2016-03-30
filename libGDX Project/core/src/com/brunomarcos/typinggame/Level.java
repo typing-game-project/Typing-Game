@@ -6,18 +6,15 @@ import com.badlogic.gdx.graphics.GL20;
 
 public class Level implements Screen {
 	final GameManager game; // referência necessária para a classe GameManager
-	public String fraseCompleta;
-	public StringBuffer frase;
 	public String password;
 	public int timer;
+	public Frase frase;
 	
 	public Level(final GameManager game, String frase, String password, int timer) {
 		this.game = game;
-		this.frase = new StringBuffer();
-		this.fraseCompleta = frase;
-		this.frase.append(this.fraseCompleta);
+		this.frase = new Frase(frase);
 		this.password = password;
-		this.timer = timer;	
+		this.timer = timer;
 	}
 	
 	@Override
@@ -28,29 +25,28 @@ public class Level implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		// Loop para imprimir as letras presentes na frase
-		for (int i = 0; i < frase.length(); i++) {
-			game.font.draw(game.batch, Character.toString(frase.charAt(i)), 100 + 10 * i, 384);
-		}
+		frase.imprimeFrase(game);
 		
 		// Números para Debug
 		game.font.draw(game.batch, "Pontos: " + Integer.toString(game.player.pontos), 500, 284);
 		game.font.draw(game.batch, "x" + Integer.toString(game.player.multiplicador), 600, 284);
 		game.font.draw(game.batch, "Vida: " + Integer.toString(game.player.vida), 700, 284);
-		game.font.draw(game.batch, "Acertos Consecutivos: " + Integer.toString(game.player.acertosConsecutivos), 500, 234);
+		game.font.draw(game.batch, "Acertos Consecutivos: " + 
+				Integer.toString(game.player.acertosConsecutivos), 500, 234);
 		
 		if (game.player.vida == 0) {
 			//TODO Chamar a tela de DERROTA
-			this.frase.replace(0, frase.length(), fraseCompleta);
+			this.frase.frase.replace(0, frase.frase.length(), frase.fraseCompleta);
 		}
 		
 		else {
 			try {
-				game.player.confereAcerto(this.frase);
+				game.player.confereAcerto(this.frase.frase);
 			}
 			
 			catch(Exception e) {
 				//TODO Chamar a tela de SUCESSO
-				this.frase.replace(0, frase.length(), fraseCompleta);
+				this.frase.frase.replace(0, frase.frase.length(), frase.fraseCompleta);
 			}
 		}
 		
