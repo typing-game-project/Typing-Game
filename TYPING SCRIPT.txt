@@ -1,0 +1,33 @@
+ANIMAÇÃO: [TELA PRETA BOOTANDO UM S.O.]
+
+Usuário digita: HELLO WORLD
+
+ANIMAÇÃO: [S.O. BOOTA E SOLICITA SENHA]
+
+Usuário digita, e senha sempre será errada.
+
+ANIMAÇÃO: [UMA ASSISTENTE APARECE NA TELA]
+
+ASS - Olá! Prazer em te conhecer. 
+- Bem vindo ao nosso mundo digital!
+- Meu nome é [A DECIDIR], mas gosto que me chamem de [A DECIDIR].
+- Este mundo... É acessado também por outros usuários com o propósito de entretenimento.
+- Já eu... Minha função é estudar o comportamento destes usuários.
+- Agora, conte-me um pouco sobre você. Você é um garoto? Ou uma garota? BRINCADEIRA!
+- Enfim, chega de blá blá blá blá. Você vai ganhar acesso ao nosso mundo neste momento, e deverá se aventurar nele para que eu te ajude e mantenha meu emprego.
+- Você receberá uma aventura e deverá seguir seu próprio caminho. Obrigada, de nada.
+
+ANIMAÇÃO: [EMAIL RECEBIDO E ABERTO, BOOT NO PROGRAMA DROGADEAVENTURA.EXE]
+
+INICIO DO LOOP DO JOGO.
+
+ANIMAÇÃO EM CASO DE FALHA: [ASSISTENTE]
+- Olha, pra continuar a aventura você terá que tentar esta passagem novamente. 
+- Mas dessa vez tente não errar, pois não tenho paciência com quem está começando.
+
+ANIMAÇÃO EM CASO DE SUCESSO: [TEMOS QUE DECIDIR SE COLOCAREMOS ANIMAÇÃO A CADA FASE, OU A CADA X FASES, POIS É TRAMPO A MAIS QUE PODE FICAR BACANA, MAS PODE CUSTAR MUITO TEMPO]
+
+
+FASES:
+
+1- 
