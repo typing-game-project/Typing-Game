@@ -10,8 +10,8 @@ public class Frase {
 	public String fraseCompleta;
 	public StringBuffer frase;
 	public Vector2 frasePos;
-	final int tamanhoChar = 10;
-	final int limiteLinha = 60;
+	final int tamanhoChar = 70;
+	final int limiteLinha = 16;
 	
 	public Frase(String frase) {
 		this.fraseCompleta = frase;
@@ -22,18 +22,27 @@ public class Frase {
 	
 	public void imprimeFrase(final GameManager game) {
 		int indiceChar = 0;
-		frasePos.x = 100;
-		frasePos.y = 484;
+		frasePos.x = 30;
+		frasePos.y = game.height - 165;
 		
 		for (int i = 0; i < frase.length(); i++) {
-			game.font.draw(game.batch, Character.toString(frase.charAt(i)),
-					frasePos.x + tamanhoChar * indiceChar, frasePos.y);
+			float x = frasePos.x + tamanhoChar * indiceChar;
+			float y = frasePos.y;
+			
+			game.batch.setColor(0,0,0,0.5f);
+			game.batch.draw(game.rect, x - 7, y + 7, tamanhoChar - 10, -50);
+			
+			game.batch.setColor(1,1,1,1);
+			game.batch.draw(game.rect, x - 10, y + 10, tamanhoChar - 10, -50);
+			
+			game.fontP2black.draw(game.batch, Character.toString(frase.charAt(i)), x, y);
+			
 			if (indiceChar < limiteLinha) {
 				indiceChar++;
 				System.out.println(indiceChar);
 			}
 			else {
-				frasePos.y -= 30;
+				frasePos.y -= 60;
 				indiceChar = 0;
 			}
 		}

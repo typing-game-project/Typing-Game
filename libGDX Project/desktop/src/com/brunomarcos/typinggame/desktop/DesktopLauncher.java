@@ -8,8 +8,9 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "Typing Game";
-		config.width = 1024;
-		config.height = 768;
+		config.width = 1920;
+		config.height = 1080;
+		config.fullscreen = true;
 		new LwjglApplication(new GameManager(), config);
 	}
 }
