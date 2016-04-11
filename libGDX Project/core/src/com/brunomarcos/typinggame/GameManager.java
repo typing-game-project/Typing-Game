@@ -49,7 +49,7 @@ public class GameManager extends Game {
 		levels.add(1, new Level(this,"FRASE FRASE FRASE FRASE FRASE FRASE GRANDE DE EXEMPLO PARA A SEGUNDA TELA, FRASE GRANDE DE EXEMPLO PARA A SEGUNDA TELA","DEBUG2",60));
 		
 		// Indo para a primeira tela:
-		this.setScreen(levels.get(0));
+		this.setScreen(levels.get(1));
 	}
 	
     public void render() {

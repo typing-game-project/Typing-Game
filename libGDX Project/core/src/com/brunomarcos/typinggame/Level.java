@@ -78,7 +78,7 @@ public class Level implements Screen {
 		// Loop para imprimir as letras presentes na frase
 		frase.imprimeFrase(game);
 		
-		int topoTexto = game.height - 35;
+		int topoTexto = game.height - 40;
 		
 		// Números para Debug
 		game.fontP2white.draw(game.batch, "Pts:" + Integer.toString(game.player.pontos), game.width - 465, topoTexto);
