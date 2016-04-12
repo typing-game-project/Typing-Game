@@ -19,8 +19,8 @@ public class GameManager extends Game {
 	public Texture[] bg;
 	public Texture hud;
 	public Texture rect;
-	public int width;
-	public int height;
+	public static int width;
+	public static int height;
 	
 	@Override
 	public void create () {
@@ -46,10 +46,18 @@ public class GameManager extends Game {
 		
 		// Instânciando os levels:
 		levels.add(0, new Level(this,"teste de ç e á.","DEBUG1",0)); // refêrencia ao game, número do level, frase, password, timer
-		levels.add(1, new Level(this,"FRASE FRASE FRASE FRASE FRASE FRASE GRANDE DE EXEMPLO PARA A SEGUNDA TELA, FRASE GRANDE DE EXEMPLO PARA A SEGUNDA TELA","DEBUG2",60));
+		levels.add(1, new Level(this,"Vou escrever uma frase bem longa para ver se está cortando certinho o código de quebrar linhas","DEBUG2",60));
 		
 		// Indo para a primeira tela:
-		this.setScreen(levels.get(0));
+		this.setScreen(levels.get(1));
+	}
+	
+	public int porCentoW(int w) {
+		return (GameManager.width/100)*w;
+	}
+	
+	public int porCentoH(int h) {
+		return (GameManager.height/100)*h;
 	}
 	
     public void render() {
