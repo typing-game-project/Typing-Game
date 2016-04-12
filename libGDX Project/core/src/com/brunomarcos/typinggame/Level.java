@@ -26,7 +26,7 @@ public class Level implements Screen {
 		
 		// BG
 		this.bg = game.bg[0];
-		hudHeight = (game.height/100) * 14; // Altura da hud em porcentagem
+		hudHeight = game.porCentoH(14);
 		bgOffset = new int[2];
 		bgOffset[0] = 0;
 		bgOffset[1] = 0;
@@ -37,8 +37,8 @@ public class Level implements Screen {
 	private void animarBG() {
 		int x = bgOffset[0];
 		int y = bgOffset[1];
-		int w = game.width;
-		int h = game.height;
+		int w = GameManager.width;
+		int h = GameManager.height;
 		int v = velocidadeAnimacaoBG;
 		
 		if (x >= 200 && vaiVoltaBG)
@@ -73,31 +73,33 @@ public class Level implements Screen {
 		
 		animarBG();
 		
-		game.batch.draw(game.hud, 0, game.height - hudHeight, game.width, hudHeight);
+		game.batch.draw(game.hud, 0, GameManager.height - hudHeight, GameManager.width, hudHeight);
 		
 		// Loop para imprimir as letras presentes na frase
 		frase.imprimeFrase(game);
 		
-		int topoTexto = game.height - 40;
+		int topoTexto = GameManager.height - 40;
 		
 		// Números para Debug
-		game.fontP2white.draw(game.batch, "Pts:" + Integer.toString(game.player.pontos), game.width - 465, topoTexto);
-		game.fontP2white.draw(game.batch, "x" + Integer.toString(game.player.multiplicador), game.width - 600, topoTexto);
+		game.fontP2white.draw(game.batch, "Pts:" + Integer.toString(game.player.pontos), GameManager.width - 465, topoTexto);
+		game.fontP2white.draw(game.batch, "x" + Integer.toString(game.player.multiplicador), GameManager.width - 600, topoTexto);
 		game.fontP2white.draw(game.batch, "Vida: " + Integer.toString(game.player.vida),  40, topoTexto);
 
 		if (game.player.vida == 0) {
 			//TODO Chamar a tela de DERROTA
-			this.frase.frase.replace(0, frase.frase.length(), frase.fraseCompleta);
+			this.frase.criandoLinhas();
 		}
 		
 		else {
 			try {
-				game.player.confereAcerto(this.frase.frase);
+				game.player.confereAcerto(this.frase.linha.get(0));
+				if(this.frase.linha.get(0).length() == 0)
+					this.frase.linha.remove(0);
 			}
 			
 			catch(Exception e) {
 				//TODO Chamar a tela de SUCESSO
-				this.frase.frase.replace(0, frase.frase.length(), frase.fraseCompleta);
+				this.frase.criandoLinhas();
 			}
 		}
 		

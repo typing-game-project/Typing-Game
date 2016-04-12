@@ -7,7 +7,7 @@ import com.brunomarcos.typinggame.GameManager;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.title = "Typing Game";
+		config.title = "Type Sim";
 		config.width = 1920;
 		config.height = 1080;
 		config.fullscreen = true;
