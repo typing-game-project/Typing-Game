@@ -66,8 +66,8 @@ public class Frase {
 	
 	public void imprimeFrase(final GameManager game) {
 		int indiceChar = 0;
-		frasePos.x = 30;
-		frasePos.y = GameManager.height - 165;
+		frasePos.x = game.porCentoW(60);
+		frasePos.y = GameManager.height - game.porCentoH(260);
 		
 		for (int i = 0; i < linha.size(); i++) {
 			for (int j = 0; j < linha.get(i).length();j++) {

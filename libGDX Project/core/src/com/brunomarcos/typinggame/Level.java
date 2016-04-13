@@ -13,10 +13,12 @@ public class Level implements Screen {
 	
 	// BG
 	private Texture bg;
-	private int hudHeight;
+	private float hudHeight;
 	private int[] bgOffset;
+	private int cantoOffsetYL;
+	private int cantoOffsetYR;
 	private int velocidadeAnimacaoBG;
-	private boolean vaiVoltaBG;
+	private StringBuilder placar;
 	
 	public Level(final GameManager game, String frase, String password, int timer) {
 		this.game = game;
@@ -26,12 +28,14 @@ public class Level implements Screen {
 		
 		// BG
 		this.bg = game.bg[0];
-		hudHeight = game.porCentoH(14);
+		hudHeight = game.porCentoH(200);
 		bgOffset = new int[2];
 		bgOffset[0] = 0;
 		bgOffset[1] = 0;
+		cantoOffsetYL = 0;
+		cantoOffsetYR = 0;
 		velocidadeAnimacaoBG = 1;
-		vaiVoltaBG = true;
+		placar = new StringBuilder();
 	}
 	
 	private void animarBG() {
@@ -41,31 +45,41 @@ public class Level implements Screen {
 		int h = GameManager.height;
 		int v = velocidadeAnimacaoBG;
 		
-		if (x >= 200 && vaiVoltaBG)
-			vaiVoltaBG = false;
+		if (bgOffset[0] <= -w)
+			bgOffset[0] = 0;
+
+		if (bgOffset[1] <= -h)
+			bgOffset[1] = 0;
 		
-		else if (x <= 0 && !vaiVoltaBG)
-			vaiVoltaBG = true;
+		if (cantoOffsetYL <= -h)
+			cantoOffsetYL = 0;
+
+		if (cantoOffsetYR >= h)
+			cantoOffsetYR = 0;
+		
+		bgOffset[0] -= v * 2;
+		bgOffset[1] -= v * 2;
+		cantoOffsetYL -= v;
+		cantoOffsetYR += v;
 			
-		if (!vaiVoltaBG)
-			v *= -1;
-			
-		bgOffset[0] += v;
-		bgOffset[1] += v;
-			
-		game.batch.draw(this.bg, x - w, y - h, w, h);
-		game.batch.draw(this.bg, x, y - h, w, h);
-		game.batch.draw(this.bg, x + w, y - h, w, h);		
-		game.batch.draw(this.bg, x - w, y, w, h);
+		game.batch.draw(this.bg, x, y + h, w, h);
+		game.batch.draw(this.bg, x + w, y + h, w, h);
 		game.batch.draw(this.bg, x, y, w, h);
 		game.batch.draw(this.bg, x + w, y, w, h);
-		game.batch.draw(this.bg, x - w, y + h, w, h);
-		game.batch.draw(this.bg, x, y + h, w, h);	
-		game.batch.draw(this.bg, x + w, y + h, w, h);
+		
+		game.batch.setColor(0,0,0,0.5f);
+		game.batch.draw(game.canto, 0, cantoOffsetYL, game.porCentoW(144), h);
+		game.batch.draw(game.canto, 0, cantoOffsetYL + h, game.porCentoW(144), h);
+		game.batch.draw(game.canto, w, cantoOffsetYR, -game.porCentoW(144), h);
+		game.batch.draw(game.canto, w, cantoOffsetYR - h, -game.porCentoW(144), h);
+		game.batch.setColor(1,1,1,1);
 	}
 	
 	@Override
-	public void render(float delta) {		
+	public void render(float delta) {
+		int w = GameManager.width;
+		int h = GameManager.height;
+		
 		// Aqui vai o game loop
 		game.batch.begin();
 		Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -73,18 +87,40 @@ public class Level implements Screen {
 		
 		animarBG();
 		
-		game.batch.draw(game.hud, 0, GameManager.height - hudHeight, GameManager.width, hudHeight);
+		game.batch.draw(game.hud, 0, h - hudHeight, w, hudHeight);
 		
 		// Loop para imprimir as letras presentes na frase
 		frase.imprimeFrase(game);
 		
-		int topoTexto = GameManager.height - 40;
+		float topoTexto = h - game.porCentoH(80);
 		
 		// Números para Debug
-		game.fontP2white.draw(game.batch, "Pts:" + Integer.toString(game.player.pontos), GameManager.width - 465, topoTexto);
-		game.fontP2white.draw(game.batch, "x" + Integer.toString(game.player.multiplicador), GameManager.width - 600, topoTexto);
-		game.fontP2white.draw(game.batch, "Vida: " + Integer.toString(game.player.vida),  40, topoTexto);
-
+		
+		// game.fontP2white.draw(game.batch, "x" + Integer.toString(game.player.multiplicador), GameManager.width - 600, topoTexto);
+		// game.fontP2white.draw(game.batch, "Vida: " + Integer.toString(game.player.vida),  40, topoTexto);
+		game.batch.draw(game.btnOpcoes, w - game.porCentoW(155), h - game.porCentoH(150), game.porCentoW(120), game.porCentoH(100));
+		game.batch.draw(game.div, w - game.porCentoW(200), h - game.porCentoH(176), game.porCentoW(35), game.porCentoH(152));
+		
+		// Colocando os zeros do placar
+		int digitos = Integer.toString(game.player.pontos).length();
+		for (int i = 12; i > digitos; i--)
+			placar.append("0");
+		
+		System.out.println(game.fontP2black.getScaleX());
+		
+		// Imprimindo o placar
+		game.fontP2white.draw(game.batch, placar + Integer.toString(game.player.pontos), game.porCentoW(1300), topoTexto);
+		
+		// Limpando o placar
+		for (int i = 0; i < 12; i++) {
+			try {
+				placar.deleteCharAt(0);
+			}
+			catch (Exception e) {
+				break;
+			}
+		}
+		
 		if (game.player.vida == 0) {
 			//TODO Chamar a tela de DERROTA
 			this.frase.criandoLinhas();

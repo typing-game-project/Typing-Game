@@ -19,6 +19,9 @@ public class GameManager extends Game {
 	public Texture[] bg;
 	public Texture hud;
 	public Texture rect;
+	public Texture canto;
+	public Texture btnOpcoes;
+	public Texture div;
 	public static int width;
 	public static int height;
 	
@@ -36,13 +39,20 @@ public class GameManager extends Game {
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
 		
+		// Redimensionando as fontes
+		fontSize(fontP2white);
+		fontSize(fontP2black);
+		
 		// Instânciando as imagens
 		bg = new Texture[3];
-		bg[0] = new Texture(Gdx.files.internal("Red_Background.jpg"));
-		bg[1] = new Texture(Gdx.files.internal("Green_Background.jpg"));
-		bg[2] = new Texture(Gdx.files.internal("Blue_Background.jpg"));
-		hud = new Texture(Gdx.files.internal("HUD.png"));
+		bg[0] = new Texture(Gdx.files.internal("bg_red.jpg"));
+		bg[1] = new Texture(Gdx.files.internal("bg_green.jpg"));
+		bg[2] = new Texture(Gdx.files.internal("bg_blue.jpg"));
+		hud = new Texture(Gdx.files.internal("hud_border.png"));
 		rect = new Texture(Gdx.files.internal("rect.jpg"));
+		canto = new Texture(Gdx.files.internal("ornamento.png"));
+		btnOpcoes = new Texture(Gdx.files.internal("gear.png"));
+		div = new Texture(Gdx.files.internal("div.png"));
 		
 		// Instânciando os levels:
 		levels.add(0, new Level(this,"teste de ç e á.","DEBUG1",0)); // refêrencia ao game, número do level, frase, password, timer
@@ -52,12 +62,17 @@ public class GameManager extends Game {
 		this.setScreen(levels.get(1));
 	}
 	
-	public int porCentoW(int w) {
-		return (GameManager.width/100)*w;
+	public float porCentoW(float w) {
+		return (GameManager.width/100)*((100.0f/1920)*w);
 	}
 	
-	public int porCentoH(int h) {
-		return (GameManager.height/100)*h;
+	public float porCentoH(float h) {
+		return (GameManager.height/100)*((100.0f/1080)*h);
+	}
+	
+	public void fontSize(BitmapFont f) {
+		float porCento = (porCentoH(28) * 1.0f) / 25.9f;
+		f.getData().setScale(porCento, porCento);
 	}
 	
     public void render() {
@@ -72,5 +87,8 @@ public class GameManager extends Game {
         	i.dispose();
 		hud.dispose();
 		rect.dispose();
+		canto.dispose();
+		btnOpcoes.dispose();
+		div.dispose();
     }
 }
