@@ -12,6 +12,8 @@ public class Frase {
 	public int indiceLinha;
 	public ArrayList<StringBuffer> linha;
 	final int tamanhoChar = 70;
+	private int incremento;
+	private boolean letraSobe;
 	
 	public Frase(String frase) {
 		this.fraseCompleta = frase;
@@ -67,7 +69,18 @@ public class Frase {
 	public void imprimeFrase(final GameManager game) {
 		int indiceChar = 0;
 		frasePos.x = game.porCentoW(60);
-		frasePos.y = GameManager.height - game.porCentoH(260);
+		
+		if (this.letraSobe) {
+			frasePos.y = GameManager.height - game.porCentoH(260) + incremento;
+			incremento++;
+			this.letraSobe = false;
+		}
+		
+		else {
+			frasePos.y = GameManager.height - game.porCentoH(260) - incremento;
+			incremento++;
+			this.letraSobe = true;
+		}
 		
 		for (int i = 0; i < linha.size(); i++) {
 			for (int j = 0; j < linha.get(i).length();j++) {

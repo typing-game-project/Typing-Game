@@ -106,8 +106,6 @@ public class Level implements Screen {
 		for (int i = 12; i > digitos; i--)
 			placar.append("0");
 		
-		System.out.println(game.fontP2black.getScaleX());
-		
 		// Imprimindo o placar
 		game.fontP2white.draw(game.batch, placar + Integer.toString(game.player.pontos), game.porCentoW(1300), topoTexto);
 		
