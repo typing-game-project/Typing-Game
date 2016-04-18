@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,6 +13,7 @@ public class GameManager extends Game {
 	public SpriteBatch batch;
 	public BitmapFont fontP2white;
 	public BitmapFont fontP2black;
+	public BitmapFont fontP2grey;
 	public boolean sfxOn;
 	public boolean bgmOn;
 	public Player player;
@@ -22,18 +24,23 @@ public class GameManager extends Game {
 	public Texture canto;
 	public Texture btnOpcoes;
 	public Texture div;
+	private Texture texAnimAcerto;
+	public Animado animAcerto;
 	public static int width;
 	public static int height;
+	public Sound[] erro;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		fontP2white = new BitmapFont(Gdx.files.internal("fonts/PressStart2P_white.fnt"));
 		fontP2black = new BitmapFont(Gdx.files.internal("fonts/PressStart2P_black.fnt"));
+		fontP2grey = new BitmapFont(Gdx.files.internal("fonts/PressStart2P_grey.fnt"));
 		sfxOn = true; // Para usar nas opções
 		bgmOn = true; // Para usar nas opções
 		player = new Player();
 		levels = new ArrayList<Level>();
+		erro = new Sound[3];
 		
 		// Salvando tamanho da tela
 		width = Gdx.graphics.getWidth();
@@ -42,6 +49,7 @@ public class GameManager extends Game {
 		// Redimensionando as fontes
 		fontSize(fontP2white);
 		fontSize(fontP2black);
+		fontSize(fontP2grey);
 		
 		// Instânciando as imagens
 		bg = new Texture[3];
@@ -53,6 +61,15 @@ public class GameManager extends Game {
 		canto = new Texture(Gdx.files.internal("ornamento.png"));
 		btnOpcoes = new Texture(Gdx.files.internal("gear.png"));
 		div = new Texture(Gdx.files.internal("div.png"));
+		texAnimAcerto = new Texture(Gdx.files.internal("anim_acerto.png"));
+		
+		// Animações
+		animAcerto = new Animado(texAnimAcerto, 6, 336, 352, 2, 3);
+		animAcerto.velocidade = 0.05f;
+		
+		// Sons
+		for (int i = 0; i < 3;i++)
+			erro[i] = Gdx.audio.newSound(Gdx.files.internal("sfx/error" + (i + 1) + ".mp3"));
 		
 		// Instânciando os levels:
 		levels.add(0, new Level(this,"teste de ç e á.","DEBUG1",0)); // refêrencia ao game, número do level, frase, password, timer
@@ -83,6 +100,7 @@ public class GameManager extends Game {
         batch.dispose();
         fontP2white.dispose();
         fontP2black.dispose();
+        fontP2grey.dispose();
         for (Texture i:bg)
         	i.dispose();
 		hud.dispose();
@@ -90,5 +108,6 @@ public class GameManager extends Game {
 		canto.dispose();
 		btnOpcoes.dispose();
 		div.dispose();
+		texAnimAcerto.dispose();
     }
 }

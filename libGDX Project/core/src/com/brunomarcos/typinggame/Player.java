@@ -1,5 +1,7 @@
 package com.brunomarcos.typinggame;
 
+import java.util.Random;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 
@@ -12,6 +14,7 @@ public class Player implements InputProcessor {
 	public int acertosConsecutivos;
 	public int multiplicador;
 	public boolean digitou;
+	private Random random;
 	final char[] aceitaveis = { 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'ç', 'z', 'x', 'c', 'v', 'b', 'n', 'm', 'á',
 			'é', 'í', 'ó', 'ú', 'à', 'è', 'ì', 'ò', 'ù', 'â', 'ê', 'î', 'ô', 'û', 'ä', 'ë', 'ï', 'ö', 'ü', 'ã', 'õ', 'ñ', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
 			'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Ç', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'Á', 'É', 'Í', 'Ó', 'Ú', 'À', 'È', 'Ì', 'Ò', 'Ù', 'Â', 'Ê', 'Î', 'Ô', 'Û',
@@ -25,9 +28,11 @@ public class Player implements InputProcessor {
 		multiplicador = 1;
 		digitou = false;
 		Gdx.input.setInputProcessor(this);
+		random = new Random();
 	}
 	
-	public void confereAcerto(StringBuffer frase) {
+	public void confereAcerto(GameManager game, Frase Frase) {
+		StringBuffer frase = Frase.linha.get(0);
 		
 		if (digitou) {	
 			char letra = frase.charAt(0); // Primeira letra da frase
@@ -38,6 +43,11 @@ public class Player implements InputProcessor {
 				pontos += multiplicador * 1;
 				acertosConsecutivos += 1;
 				frase.deleteCharAt(0);
+				
+				game.batch.setColor(1,1,1,0.3f);
+				game.batch.draw(game.rect, 0,0,GameManager.width,GameManager.height);
+				game.animAcerto.reset();
+				Frase.acertou = true;
 			}
 			
 			// Se errou:
@@ -45,6 +55,10 @@ public class Player implements InputProcessor {
 				vida -= 1;
 				acertosConsecutivos = 0;
 				multiplicador = 1;
+				
+				game.erro[random.nextInt(2)].play();
+				game.batch.setColor(1,0,0,0.3f);
+				game.batch.draw(game.rect, 0,0,GameManager.width,GameManager.height);
 			}	
 		}
 	

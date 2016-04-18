@@ -1,6 +1,7 @@
 package com.brunomarcos.typinggame;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -11,9 +12,10 @@ public class Frase {
 	public int limiteLinha;
 	public int indiceLinha;
 	public ArrayList<StringBuffer> linha;
-	final int tamanhoChar = 70;
-	private int incremento;
-	private boolean letraSobe;
+	private int[][] letrasY;
+	private final int tamanhoChar = 70;
+	private Random random;
+	public boolean acertou = false;
 	
 	public Frase(String frase) {
 		this.fraseCompleta = frase;
@@ -23,12 +25,17 @@ public class Frase {
 		this.linha = new ArrayList<StringBuffer>();
 		limiteLinha = (GameManager.width - (3*63)) / 63;
 		criandoLinhas();
+		random = new Random();
 	}
 	
 	public void criandoLinhas() {
 		int indiceChar = 0;
 		indiceLinha = 0;
 		criarLinha(indiceChar);
+		
+		letrasY = new int[linha.size()][];
+		for (int i = 0; i < letrasY.length; i++)
+			letrasY[i] = new int[linha.get(i).length()];
 	}
 	
 	public void criarLinha(int indice) {
@@ -66,26 +73,29 @@ public class Frase {
 		}
 	}
 	
+	public void animaLinha() {
+		// TODO
+	}
+	
 	public void imprimeFrase(final GameManager game) {
 		int indiceChar = 0;
+		
 		frasePos.x = game.porCentoW(60);
-		
-		if (this.letraSobe) {
-			frasePos.y = GameManager.height - game.porCentoH(260) + incremento;
-			incremento++;
-			this.letraSobe = false;
-		}
-		
-		else {
-			frasePos.y = GameManager.height - game.porCentoH(260) - incremento;
-			incremento++;
-			this.letraSobe = true;
-		}
+		frasePos.y = GameManager.height - game.porCentoH(260);
 		
 		for (int i = 0; i < linha.size(); i++) {
-			for (int j = 0; j < linha.get(i).length();j++) {
+			for (int j = 0; j < linha.get(i).length();j++) {		
 				float x = frasePos.x + tamanhoChar * indiceChar;
-				float y = frasePos.y;
+				float y;
+				
+				// Fazer as letras tremerem :
+				try {	
+					letrasY[i][j] = random.nextInt(2);
+					y = frasePos.y + letrasY[i][j];
+					// TODO: algumas letras não tremem depois de completar a primeira linha
+				} catch (Exception e) {
+					y = frasePos.y;
+				}
 				
 				game.batch.setColor(0,0,0,0.5f);
 				game.batch.draw(game.rect, x - 7, y + 7, tamanhoChar - 10, -50);
@@ -100,5 +110,10 @@ public class Frase {
 			frasePos.y -= 60;
 			indiceChar = 0;
 		}
+		if (acertou)
+			game.animAcerto.play(game.batch,
+					game.porCentoW(60) - (game.animAcerto.width/2) + 5,
+					(GameManager.height - game.porCentoH(260)) - (game.animAcerto.height/2),
+					false, acertou);
 	}
 }

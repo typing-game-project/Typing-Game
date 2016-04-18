@@ -18,7 +18,7 @@ public class Level implements Screen {
 	private int cantoOffsetYL;
 	private int cantoOffsetYR;
 	private int velocidadeAnimacaoBG;
-	private StringBuilder placar;
+	//private StringBuilder placar;
 	
 	public Level(final GameManager game, String frase, String password, int timer) {
 		this.game = game;
@@ -35,7 +35,7 @@ public class Level implements Screen {
 		cantoOffsetYL = 0;
 		cantoOffsetYR = 0;
 		velocidadeAnimacaoBG = 1;
-		placar = new StringBuilder();
+		//placar = new StringBuilder();
 	}
 	
 	private void animarBG() {
@@ -92,7 +92,7 @@ public class Level implements Screen {
 		// Loop para imprimir as letras presentes na frase
 		frase.imprimeFrase(game);
 		
-		float topoTexto = h - game.porCentoH(80);
+		//float topoTexto = h - game.porCentoH(80);
 		
 		// Números para Debug
 		
@@ -101,6 +101,7 @@ public class Level implements Screen {
 		game.batch.draw(game.btnOpcoes, w - game.porCentoW(155), h - game.porCentoH(150), game.porCentoW(120), game.porCentoH(100));
 		game.batch.draw(game.div, w - game.porCentoW(200), h - game.porCentoH(176), game.porCentoW(35), game.porCentoH(152));
 		
+		/*
 		// Colocando os zeros do placar
 		int digitos = Integer.toString(game.player.pontos).length();
 		for (int i = 12; i > digitos; i--)
@@ -118,6 +119,7 @@ public class Level implements Screen {
 				break;
 			}
 		}
+		*/
 		
 		if (game.player.vida == 0) {
 			//TODO Chamar a tela de DERROTA
@@ -126,7 +128,7 @@ public class Level implements Screen {
 		
 		else {
 			try {
-				game.player.confereAcerto(this.frase.linha.get(0));
+				game.player.confereAcerto(game, this.frase);
 				if(this.frase.linha.get(0).length() == 0)
 					this.frase.linha.remove(0);
 			}
