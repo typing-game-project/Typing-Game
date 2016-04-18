@@ -9,6 +9,9 @@ public class Frase {
 	public String fraseCompleta;
 	public StringBuffer frase;
 	public Vector2 frasePos;
+	private Vector2 treme;
+	public boolean tremendo;
+	Sequencia seqErro;
 	public int limiteLinha;
 	public int indiceLinha;
 	public ArrayList<StringBuffer> linha;
@@ -22,6 +25,9 @@ public class Frase {
 		this.frase = new StringBuffer();
 		this.frase.append(this.fraseCompleta);
 		this.frasePos = new Vector2();
+		this.treme = new Vector2();
+		this.tremendo = false;
+		this.seqErro = new Sequencia(4);
 		this.linha = new ArrayList<StringBuffer>();
 		limiteLinha = (GameManager.width - (3*63)) / 63;
 		criandoLinhas();
@@ -73,6 +79,35 @@ public class Frase {
 		}
 	}
 	
+	public void treme(float velocidade) {
+		if (tremendo) {
+			if (seqErro.ir(0)) {
+				treme.x += velocidade;
+				if (treme.x >= 60)
+					seqErro.next();
+			}
+			if (seqErro.ir(1)) {
+				treme.x -= velocidade/2;
+				if (treme.x <= -30)
+					seqErro.next();
+			}
+			if (seqErro.ir(2)) {
+				treme.x += velocidade/3;
+				if (treme.x >= 15)
+					seqErro.next();
+			}
+			if (seqErro.ir(3)) {
+				treme.x -= velocidade/4;
+				if (treme.x <= 0) {
+					treme.x = 0;
+					treme.y = 0;
+					tremendo = false;
+					seqErro.reset();
+				}
+			}
+		}
+	}
+	
 	public void animaLinha() {
 		// TODO
 	}
@@ -85,16 +120,16 @@ public class Frase {
 		
 		for (int i = 0; i < linha.size(); i++) {
 			for (int j = 0; j < linha.get(i).length();j++) {		
-				float x = frasePos.x + tamanhoChar * indiceChar;
+				float x = frasePos.x + tamanhoChar * indiceChar + treme.x;
 				float y;
 				
 				// Fazer as letras tremerem :
 				try {	
 					letrasY[i][j] = random.nextInt(2);
-					y = frasePos.y + letrasY[i][j];
+					y = frasePos.y + letrasY[i][j] + treme.y;
 					// TODO: algumas letras não tremem depois de completar a primeira linha
 				} catch (Exception e) {
-					y = frasePos.y;
+					y = frasePos.y + treme.y;
 				}
 				
 				game.batch.setColor(0,0,0,0.5f);
@@ -110,10 +145,12 @@ public class Frase {
 			frasePos.y -= 60;
 			indiceChar = 0;
 		}
-		if (acertou)
+		if (acertou) {
 			game.animAcerto.play(game.batch,
 					game.porCentoW(60) - (game.animAcerto.width/2) + 5,
 					(GameManager.height - game.porCentoH(260)) - (game.animAcerto.height/2),
 					false, acertou);
+			treme(30);
+		}
 	}
 }

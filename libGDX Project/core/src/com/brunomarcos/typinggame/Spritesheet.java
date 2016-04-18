@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class Animado {
+public class Spritesheet {
 	private TextureRegion[] texArray;
 	public float width;
 	public float height;
@@ -15,7 +15,7 @@ public class Animado {
 	public float velocidade;
 	private float stateTime;
 
-	public Animado(Texture textura, int frames, int width, int height, int linhas, int colunas){
+	public Spritesheet(Texture textura, int frames, int width, int height, int linhas, int colunas){
 		this.frames = frames;
 		this.width = width;
 		this.height = height;
@@ -25,7 +25,11 @@ public class Animado {
 		
 		for (int i = 0; i < linhas; i++) {
 			for (int j = 0; j < colunas; j++) {
-				texArray[(i * colunas) + j] = new TextureRegion(textura,j*width,i*height,width,height);
+				int k = (i * colunas) + j;
+				if (k < frames)
+					texArray[k] = new TextureRegion(textura,j*width,i*height,width,height);
+				else
+					break;
 			}
 		}
 		

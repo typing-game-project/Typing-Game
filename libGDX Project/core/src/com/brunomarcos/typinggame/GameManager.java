@@ -25,7 +25,7 @@ public class GameManager extends Game {
 	public Texture btnOpcoes;
 	public Texture div;
 	private Texture texAnimAcerto;
-	public Animado animAcerto;
+	public Spritesheet animAcerto;
 	public static int width;
 	public static int height;
 	public Sound[] erro;
@@ -64,7 +64,7 @@ public class GameManager extends Game {
 		texAnimAcerto = new Texture(Gdx.files.internal("anim_acerto.png"));
 		
 		// Animações
-		animAcerto = new Animado(texAnimAcerto, 6, 336, 352, 2, 3);
+		animAcerto = new Spritesheet(texAnimAcerto, 6, 336, 352, 2, 3);
 		animAcerto.velocidade = 0.05f;
 		
 		// Sons

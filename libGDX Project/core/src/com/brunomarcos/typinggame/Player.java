@@ -59,6 +59,7 @@ public class Player implements InputProcessor {
 				game.erro[random.nextInt(2)].play();
 				game.batch.setColor(1,0,0,0.3f);
 				game.batch.draw(game.rect, 0,0,GameManager.width,GameManager.height);
+				Frase.tremendo = true;
 			}	
 		}
 	
