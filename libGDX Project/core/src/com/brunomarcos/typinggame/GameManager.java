@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -24,11 +25,14 @@ public class GameManager extends Game {
 	public Texture canto;
 	public Texture btnOpcoes;
 	public Texture div;
+	public Texture heart;
 	private Texture texAnimAcerto;
 	public Spritesheet animAcerto;
+	public Music bgm;
 	public static int width;
 	public static int height;
-	public Sound[] erro;
+	public Sound[] erroSnd;
+	public Sound[] acertoSnd;
 	
 	@Override
 	public void create () {
@@ -40,7 +44,8 @@ public class GameManager extends Game {
 		bgmOn = true; // Para usar nas opções
 		player = new Player();
 		levels = new ArrayList<Level>();
-		erro = new Sound[3];
+		erroSnd = new Sound[3];
+		acertoSnd = new Sound[4];
 		
 		// Salvando tamanho da tela
 		width = Gdx.graphics.getWidth();
@@ -62,18 +67,22 @@ public class GameManager extends Game {
 		btnOpcoes = new Texture(Gdx.files.internal("gear.png"));
 		div = new Texture(Gdx.files.internal("div.png"));
 		texAnimAcerto = new Texture(Gdx.files.internal("anim_acerto.png"));
+		heart = new Texture(Gdx.files.internal("Heart.png"));
 		
 		// Animações
 		animAcerto = new Spritesheet(texAnimAcerto, 6, 336, 352, 2, 3);
-		animAcerto.velocidade = 0.05f;
+		animAcerto.velocidade = 0.025f;
 		
 		// Sons
 		for (int i = 0; i < 3;i++)
-			erro[i] = Gdx.audio.newSound(Gdx.files.internal("sfx/error" + (i + 1) + ".mp3"));
+			erroSnd[i] = Gdx.audio.newSound(Gdx.files.internal("sfx/error" + (i + 1) + ".mp3"));
+		for (int i = 0; i < 4;i++)
+			acertoSnd[i] = Gdx.audio.newSound(Gdx.files.internal("sfx/acerto" + (i + 1) + ".mp3"));
+		bgm = Gdx.audio.newMusic(Gdx.files.internal("bgm/LOOP4.wav"));
 		
 		// Instânciando os levels:
-		levels.add(0, new Level(this,"teste de ç e á.","DEBUG1",0)); // refêrencia ao game, número do level, frase, password, timer
-		levels.add(1, new Level(this,"Vou escrever uma frase bem longa para ver se está cortando certinho o código de quebrar linhas","DEBUG2",60));
+		levels.add(0, new Level(this,"teste de ç e á.","DEBUG1",0, 40)); // refêrencia ao game, número do level, frase, password, timer, vida
+		levels.add(1, new Level(this,"Vou escrever uma frase bem longa para ver se está cortando certinho o código de quebrar linhas","DEBUG2",60,40));
 		
 		// Indo para a primeira tela:
 		this.setScreen(levels.get(1));

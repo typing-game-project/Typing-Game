@@ -2,6 +2,7 @@ package com.brunomarcos.typinggame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 
@@ -10,6 +11,9 @@ public class Level implements Screen {
 	public String password;
 	public int timer;
 	public Frase frase;
+	public Music bgm;
+	public int maxVida;
+	private boolean piscaVida;
 	
 	// BG
 	private Texture bg;
@@ -18,13 +22,19 @@ public class Level implements Screen {
 	private int cantoOffsetYL;
 	private int cantoOffsetYR;
 	private int velocidadeAnimacaoBG;
-	//private StringBuilder placar;
+	private StringBuilder placar;
 	
-	public Level(final GameManager game, String frase, String password, int timer) {
+	public Level(final GameManager game, String frase, String password, int timer, int maxVida) {
 		this.game = game;
 		this.frase = new Frase(frase);
 		this.password = password;
 		this.timer = timer;
+		this.bgm = game.bgm;
+		if (maxVida > 34)
+			maxVida = 34;
+		this.maxVida = maxVida;
+		game.player.vida = this.maxVida;
+		this.piscaVida = false;
 		
 		// BG
 		this.bg = game.bg[0];
@@ -35,7 +45,10 @@ public class Level implements Screen {
 		cantoOffsetYL = 0;
 		cantoOffsetYR = 0;
 		velocidadeAnimacaoBG = 1;
-		//placar = new StringBuilder();
+		placar = new StringBuilder();
+		
+		bgm.setLooping(true);
+		bgm.play();
 	}
 	
 	private void animarBG() {
@@ -92,23 +105,20 @@ public class Level implements Screen {
 		// Loop para imprimir as letras presentes na frase
 		frase.imprimeFrase(game);
 		
-		//float topoTexto = h - game.porCentoH(80);
+		float topoTexto = h - game.porCentoH(80);
 		
 		// Números para Debug
 		
-		// game.fontP2white.draw(game.batch, "x" + Integer.toString(game.player.multiplicador), GameManager.width - 600, topoTexto);
-		// game.fontP2white.draw(game.batch, "Vida: " + Integer.toString(game.player.vida),  40, topoTexto);
 		game.batch.draw(game.btnOpcoes, w - game.porCentoW(155), h - game.porCentoH(150), game.porCentoW(120), game.porCentoH(100));
 		game.batch.draw(game.div, w - game.porCentoW(200), h - game.porCentoH(176), game.porCentoW(35), game.porCentoH(152));
 		
-		/*
 		// Colocando os zeros do placar
 		int digitos = Integer.toString(game.player.pontos).length();
 		for (int i = 12; i > digitos; i--)
 			placar.append("0");
 		
 		// Imprimindo o placar
-		game.fontP2white.draw(game.batch, placar + Integer.toString(game.player.pontos), game.porCentoW(1300), topoTexto);
+		game.fontP2white.draw(game.batch, placar + Integer.toString(game.player.pontos), w/2 + game.porCentoW(100), topoTexto);
 		
 		// Limpando o placar
 		for (int i = 0; i < 12; i++) {
@@ -119,8 +129,35 @@ public class Level implements Screen {
 				break;
 			}
 		}
-		*/
 		
+		// Imprime o Multiplicador
+		game.batch.draw(game.div, w/2 + game.porCentoW(35), h - game.porCentoH(176), game.porCentoW(35), game.porCentoH(152));
+		game.fontP2white.draw(game.batch, "x" + Integer.toString(game.player.multiplicador), w/2 - game.porCentoW(90), topoTexto);
+		
+		// Vida piscando
+		// TODO: Deixar animação suave
+		if (game.player.vida < 7){
+			if (piscaVida) {
+				game.batch.setColor(1,0,0,1);
+				piscaVida = false;
+			}
+			else {
+				game.batch.setColor(1,1,1,1);
+				piscaVida = true;
+			}
+		}
+		
+		// Imprime a vida
+		for (int i = 0; i < game.player.vida; i++) {
+			if (i < 17)
+				game.batch.draw(game.heart, game.porCentoW(34 + (47 * i)), h - game.porCentoH(96),game.porCentoW(40), game.porCentoH(56));
+			else
+				game.batch.draw(game.heart, game.porCentoW(34 + (47 * (i - 17))), h - game.porCentoH(160),game.porCentoW(40), game.porCentoH(56));	
+		}
+		
+		game.batch.setColor(1,1,1,1);
+		game.batch.draw(game.div, game.porCentoW(848), h - game.porCentoH(176), game.porCentoW(35), game.porCentoH(152));
+			
 		if (game.player.vida == 0) {
 			//TODO Chamar a tela de DERROTA
 			this.frase.criandoLinhas();

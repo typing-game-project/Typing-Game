@@ -23,7 +23,6 @@ public class Player implements InputProcessor {
 	
 	public Player() {
 		pontos = 0;
-		vida = 50;
 		acertosConsecutivos = 0;
 		multiplicador = 1;
 		digitou = false;
@@ -44,6 +43,7 @@ public class Player implements InputProcessor {
 				acertosConsecutivos += 1;
 				frase.deleteCharAt(0);
 				
+				game.acertoSnd[random.nextInt(3)].play();
 				game.batch.setColor(1,1,1,0.3f);
 				game.batch.draw(game.rect, 0,0,GameManager.width,GameManager.height);
 				game.animAcerto.reset();
@@ -56,10 +56,10 @@ public class Player implements InputProcessor {
 				acertosConsecutivos = 0;
 				multiplicador = 1;
 				
-				game.erro[random.nextInt(2)].play();
+				game.erroSnd[random.nextInt(2)].play();
 				game.batch.setColor(1,0,0,0.3f);
 				game.batch.draw(game.rect, 0,0,GameManager.width,GameManager.height);
-				Frase.tremendo = true;
+				Frase.errou = true;
 			}	
 		}
 	

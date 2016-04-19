@@ -10,7 +10,7 @@ public class Frase {
 	public StringBuffer frase;
 	public Vector2 frasePos;
 	private Vector2 treme;
-	public boolean tremendo;
+	public boolean errou;
 	Sequencia seqErro;
 	public int limiteLinha;
 	public int indiceLinha;
@@ -26,7 +26,7 @@ public class Frase {
 		this.frase.append(this.fraseCompleta);
 		this.frasePos = new Vector2();
 		this.treme = new Vector2();
-		this.tremendo = false;
+		this.errou = false;
 		this.seqErro = new Sequencia(4);
 		this.linha = new ArrayList<StringBuffer>();
 		limiteLinha = (GameManager.width - (3*63)) / 63;
@@ -65,8 +65,8 @@ public class Frase {
 			if (terminou) {
 				if (this.linha.get(indiceLinha).charAt(0) == ' ')
 					this.linha.get(indiceLinha).deleteCharAt(0);
-				if (this.linha.get(indiceLinha).charAt(linha.get(indiceLinha).length()-1) == ' ')
-					this.linha.get(indiceLinha).deleteCharAt(linha.get(indiceLinha).length()-1);
+				//if (this.linha.get(indiceLinha).charAt(linha.get(indiceLinha).length()-1) == ' ')
+					//this.linha.get(indiceLinha).deleteCharAt(linha.get(indiceLinha).length()-1);
 				break;
 			}
 			i++;
@@ -80,7 +80,7 @@ public class Frase {
 	}
 	
 	public void treme(float velocidade) {
-		if (tremendo) {
+		if (errou) {
 			if (seqErro.ir(0)) {
 				treme.x += velocidade;
 				if (treme.x >= 60)
@@ -101,7 +101,7 @@ public class Frase {
 				if (treme.x <= 0) {
 					treme.x = 0;
 					treme.y = 0;
-					tremendo = false;
+					errou = false;
 					seqErro.reset();
 				}
 			}
@@ -125,7 +125,7 @@ public class Frase {
 				
 				// Fazer as letras tremerem :
 				try {	
-					letrasY[i][j] = random.nextInt(2);
+					letrasY[i][j] = random.nextInt(4);
 					y = frasePos.y + letrasY[i][j] + treme.y;
 					// TODO: algumas letras não tremem depois de completar a primeira linha
 				} catch (Exception e) {
@@ -150,7 +150,7 @@ public class Frase {
 					game.porCentoW(60) - (game.animAcerto.width/2) + 5,
 					(GameManager.height - game.porCentoH(260)) - (game.animAcerto.height/2),
 					false, acertou);
-			treme(30);
 		}
+		treme(30);
 	}
 }
