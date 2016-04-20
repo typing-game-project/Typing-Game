@@ -9,6 +9,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Json;
 
 public class GameManager extends Game {
 	public SpriteBatch batch;
@@ -18,7 +19,6 @@ public class GameManager extends Game {
 	public boolean sfxOn;
 	public boolean bgmOn;
 	public Player player;
-	public ArrayList<Level> levels;
 	public Texture[] bg;
 	public Texture hud;
 	public Texture rect;
@@ -33,17 +33,29 @@ public class GameManager extends Game {
 	public static int height;
 	public Sound[] erroSnd;
 	public Sound[] acertoSnd;
+	private Json json;
+	private ArrayList<Level> levels;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+		
+		// Lendo o JSON
+		json = new Json();
+		Resources res = json.fromJson(Resources.class, Gdx.files.internal("data/levels.json").readString("ISO-8859-1"));
+		
+		// Deserializando os levels
+		levels = new ArrayList<Level>();
+		//for (int i = 0; i < res.frase.size(); i++)
+			//levels.add(i, new Level(this,res.frase.get(i),res.password.get(i),res.timer.get(i),res.maxVida.get(i)));
+		
+		// Populando variáveis
 		fontP2white = new BitmapFont(Gdx.files.internal("fonts/PressStart2P_white.fnt"));
 		fontP2black = new BitmapFont(Gdx.files.internal("fonts/PressStart2P_black.fnt"));
 		fontP2grey = new BitmapFont(Gdx.files.internal("fonts/PressStart2P_grey.fnt"));
 		sfxOn = true; // Para usar nas opções
 		bgmOn = true; // Para usar nas opções
 		player = new Player();
-		levels = new ArrayList<Level>();
 		erroSnd = new Sound[3];
 		acertoSnd = new Sound[4];
 		
@@ -58,16 +70,16 @@ public class GameManager extends Game {
 		
 		// Instânciando as imagens
 		bg = new Texture[3];
-		bg[0] = new Texture(Gdx.files.internal("bg_red.jpg"));
-		bg[1] = new Texture(Gdx.files.internal("bg_green.jpg"));
-		bg[2] = new Texture(Gdx.files.internal("bg_blue.jpg"));
-		hud = new Texture(Gdx.files.internal("hud_border.png"));
-		rect = new Texture(Gdx.files.internal("rect.jpg"));
-		canto = new Texture(Gdx.files.internal("ornamento.png"));
-		btnOpcoes = new Texture(Gdx.files.internal("gear.png"));
-		div = new Texture(Gdx.files.internal("div.png"));
-		texAnimAcerto = new Texture(Gdx.files.internal("anim_acerto.png"));
-		heart = new Texture(Gdx.files.internal("Heart.png"));
+		bg[0] = new Texture(Gdx.files.internal("img/bg_red.jpg"));
+		bg[1] = new Texture(Gdx.files.internal("img/bg_green.jpg"));
+		bg[2] = new Texture(Gdx.files.internal("img/bg_blue.jpg"));
+		hud = new Texture(Gdx.files.internal("img/hud_border.png"));
+		rect = new Texture(Gdx.files.internal("img/rect.jpg"));
+		canto = new Texture(Gdx.files.internal("img/ornamento.png"));
+		btnOpcoes = new Texture(Gdx.files.internal("img/gear.png"));
+		div = new Texture(Gdx.files.internal("img/div.png"));
+		texAnimAcerto = new Texture(Gdx.files.internal("img/anim_acerto.png"));
+		heart = new Texture(Gdx.files.internal("img/Heart.png"));
 		
 		// Animações
 		animAcerto = new Spritesheet(texAnimAcerto, 6, 336, 352, 2, 3);
@@ -81,8 +93,9 @@ public class GameManager extends Game {
 		bgm = Gdx.audio.newMusic(Gdx.files.internal("bgm/LOOP4.wav"));
 		
 		// Instânciando os levels:
-		levels.add(0, new Level(this,"teste de ç e á.","DEBUG1",0, 40)); // refêrencia ao game, número do level, frase, password, timer, vida
+		levels.add(0, new Level(this,"teste de çáéíóúà èìòùãõ ñâêîôû äëïöü","DEBUG1",0,40));
 		levels.add(1, new Level(this,"Vou escrever uma frase bem longa para ver se está cortando certinho o código de quebrar linhas","DEBUG2",60,40));
+		levels.add(2, new Level(this,"Vou escrever","DEBUG3",10,40));
 		
 		// Indo para a primeira tela:
 		this.setScreen(levels.get(1));

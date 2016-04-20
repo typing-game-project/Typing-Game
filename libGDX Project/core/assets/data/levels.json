@@ -1,0 +1,22 @@
+{
+	"DEBUG1": {
+		"fraseTemp":"teste de חביםףתאטלעשדץ סגךמפûהכןצü",
+		"password":"DEBUG1",
+		"timer":0,
+		"maxVida":40,
+	},
+	
+	"DEBUG2": {
+		"fraseTemp":"Vou escrever uma frase bem longa para ver se estב cortando certinho o cףdigo de quebrar linhas",
+		"password":"DEBUG2",
+		"timer":60,
+		"maxVida":40,
+	},
+	
+	"DEBUG3": {
+		"fraseTemp":"Vou escrever",
+		"password":"DEBUG3",
+		"timer":10,
+		"maxVida":40,
+	}
+}

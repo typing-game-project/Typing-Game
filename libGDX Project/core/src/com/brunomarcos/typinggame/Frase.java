@@ -67,6 +67,7 @@ public class Frase {
 					this.linha.get(indiceLinha).deleteCharAt(0);
 				//if (this.linha.get(indiceLinha).charAt(linha.get(indiceLinha).length()-1) == ' ')
 					//this.linha.get(indiceLinha).deleteCharAt(linha.get(indiceLinha).length()-1);
+				//TODO: Colocar excessão caso tenha uma palavra maior que os caracters de uma linha
 				break;
 			}
 			i++;

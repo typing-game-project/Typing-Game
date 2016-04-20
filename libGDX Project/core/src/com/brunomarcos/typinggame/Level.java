@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 
 public class Level implements Screen {
-	final GameManager game; // referência necessária para a classe GameManager
+	public final GameManager game; // referência necessária para a classe GameManager
 	public String password;
 	public int timer;
 	public Frase frase;
@@ -180,11 +180,8 @@ public class Level implements Screen {
 		dispose();
 	}
 	
-	@Override
-	public void dispose() {
-	}
-	
 	// Esses métodos são obrigatórios, gerados pelo 'implements Screen'
+	@Override public void dispose() {}
 	@Override public void show() {}
 	@Override public void resize(int width, int height) {}
 	@Override public void pause() {}
