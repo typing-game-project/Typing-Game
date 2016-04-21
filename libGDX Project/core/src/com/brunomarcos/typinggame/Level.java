@@ -14,22 +14,24 @@ public class Level implements Screen {
 	public Music bgm;
 	public int maxVida;
 	private boolean piscaVida;
+	private StringBuilder placar;
 	
 	// BG
 	private Texture bg;
+	private Texture arteCantos;
 	private float hudHeight;
 	private int[] bgOffset;
 	private int cantoOffsetYL;
 	private int cantoOffsetYR;
 	private int velocidadeAnimacaoBG;
-	private StringBuilder placar;
 	
-	public Level(final GameManager game, String frase, String password, int timer, int maxVida) {
+	public Level(final GameManager game, LevelJSONData LJD, int i) {
 		this.game = game;
-		this.frase = new Frase(frase);
-		this.password = password;
-		this.timer = timer;
-		this.bgm = game.bgm;
+		this.frase = new Frase(LJD.frase.get(i));
+		this.password = LJD.password.get(i);
+		this.timer = LJD.timer.get(i);
+		this.bgm = LJD.bgmFile.get(LJD.bgm.get(i));
+		int maxVida = LJD.maxVida.get(i);
 		if (maxVida > 34)
 			maxVida = 34;
 		this.maxVida = maxVida;
@@ -37,7 +39,8 @@ public class Level implements Screen {
 		this.piscaVida = false;
 		
 		// BG
-		this.bg = game.bg[0];
+		this.bg = LJD.bgTex.get(LJD.bg.get(i));
+		this.arteCantos = LJD.arteCantosTex.get(LJD.arteCantos.get(i));
 		hudHeight = game.porCentoH(200);
 		bgOffset = new int[2];
 		bgOffset[0] = 0;
@@ -80,12 +83,10 @@ public class Level implements Screen {
 		game.batch.draw(this.bg, x, y, w, h);
 		game.batch.draw(this.bg, x + w, y, w, h);
 		
-		game.batch.setColor(0,0,0,0.5f);
-		game.batch.draw(game.canto, 0, cantoOffsetYL, game.porCentoW(144), h);
-		game.batch.draw(game.canto, 0, cantoOffsetYL + h, game.porCentoW(144), h);
-		game.batch.draw(game.canto, w, cantoOffsetYR, -game.porCentoW(144), h);
-		game.batch.draw(game.canto, w, cantoOffsetYR - h, -game.porCentoW(144), h);
-		game.batch.setColor(1,1,1,1);
+		game.batch.draw(arteCantos, 0, cantoOffsetYL, game.porCentoW(144), h);
+		game.batch.draw(arteCantos, 0, cantoOffsetYL + h, game.porCentoW(144), h);
+		game.batch.draw(arteCantos, w, cantoOffsetYR, -game.porCentoW(144), h);
+		game.batch.draw(arteCantos, w, cantoOffsetYR - h, -game.porCentoW(144), h);
 	}
 	
 	@Override

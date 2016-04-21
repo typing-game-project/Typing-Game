@@ -1,22 +1,31 @@
 {
 	"DEBUG1": {
-		"fraseTemp":"teste de çáéíóúà èìòùãõ ñâêîôû äëïöü",
+		"frase":"teste de çáéíóúà èìòùãõ ñâêîôû äëïöü",
 		"password":"DEBUG1",
 		"timer":0,
 		"maxVida":40,
+		"bgm":"bgm/LOOP4.wav",
+		"background":"img/bg_green.jpg",
+		"arteCantos":"img/ornamento.png",
 	},
 	
 	"DEBUG2": {
-		"fraseTemp":"Vou escrever uma frase bem longa para ver se está cortando certinho o código de quebrar linhas",
+		"frase":"Vou escrever uma frase bem longa para ver se está cortando certinho o código de quebrar linhas",
 		"password":"DEBUG2",
 		"timer":60,
 		"maxVida":40,
+		"bgm":"bgm/LOOP4.wav",
+		"background":"img/bg_red.jpg",
+		"arteCantos":"img/ornamento.png",
 	},
 	
 	"DEBUG3": {
-		"fraseTemp":"Vou escrever",
+		"frase":"Vou escrever",
 		"password":"DEBUG3",
 		"timer":10,
 		"maxVida":40,
+		"bgm":"bgm/LOOP4.wav",
+		"background":"img/bg_blue.jpg",
+		"arteCantos":"img/ornamento.png",
 	}
 }

@@ -50,9 +50,6 @@ public class Frase {
 		boolean terminou = false;
 		int i = indice;
 		while (i < frase.length()) {
-			System.out.println("limite linha: " + limiteLinha);
-			System.out.println("i: " + i);
-			System.out.println("frase length: " + frase.length());
 			if (i <= limiteLinha + indice) {
 				this.linha.get(indiceLinha).append(frase.charAt(i)); // Problema de serialização
 			}

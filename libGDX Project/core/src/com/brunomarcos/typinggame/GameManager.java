@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -19,23 +18,20 @@ public class GameManager extends Game {
 	public boolean sfxOn;
 	public boolean bgmOn;
 	public Player player;
-	public Texture[] bg;
 	public Texture hud;
 	public Texture rect;
-	public Texture canto;
 	public Texture btnOpcoes;
 	public Texture div;
 	public Texture heart;
 	private Texture texAnimAcerto;
 	public Spritesheet animAcerto;
-	public Music bgm;
 	public static int width;
 	public static int height;
 	public Sound[] erroSnd;
 	public Sound[] acertoSnd;
 	private Json json;
+	private LevelJSONData levelJD;
 	private ArrayList<Level> levels;
-	public Resources res;
 	
 	@Override
 	public void create () {
@@ -44,11 +40,6 @@ public class GameManager extends Game {
 		// Salvando tamanho da tela
 		width = Gdx.graphics.getWidth();
 		height = Gdx.graphics.getHeight();
-		
-		// Lendo o JSON
-		json = new Json();
-		res = new Resources();
-		Resources res = json.fromJson(Resources.class, Gdx.files.internal("data/levels.json").readString("ISO-8859-1"));
 		
 		// Populando variáveis
 		fontP2white = new BitmapFont(Gdx.files.internal("fonts/PressStart2P_white.fnt"));
@@ -66,13 +57,8 @@ public class GameManager extends Game {
 		fontSize(fontP2grey);
 		
 		// Instânciando as imagens
-		bg = new Texture[3];
-		bg[0] = new Texture(Gdx.files.internal("img/bg_red.jpg"));
-		bg[1] = new Texture(Gdx.files.internal("img/bg_green.jpg"));
-		bg[2] = new Texture(Gdx.files.internal("img/bg_blue.jpg"));
 		hud = new Texture(Gdx.files.internal("img/hud_border.png"));
 		rect = new Texture(Gdx.files.internal("img/rect.jpg"));
-		canto = new Texture(Gdx.files.internal("img/ornamento.png"));
 		btnOpcoes = new Texture(Gdx.files.internal("img/gear.png"));
 		div = new Texture(Gdx.files.internal("img/div.png"));
 		texAnimAcerto = new Texture(Gdx.files.internal("img/anim_acerto.png"));
@@ -87,12 +73,16 @@ public class GameManager extends Game {
 			erroSnd[i] = Gdx.audio.newSound(Gdx.files.internal("sfx/error" + (i + 1) + ".mp3"));
 		for (int i = 0; i < 4;i++)
 			acertoSnd[i] = Gdx.audio.newSound(Gdx.files.internal("sfx/acerto" + (i + 1) + ".mp3"));
-		bgm = Gdx.audio.newMusic(Gdx.files.internal("bgm/LOOP4.wav"));
+		
+		// Lendo o JSON
+		json = new Json();
+		levelJD = new LevelJSONData();
+		levelJD = json.fromJson(LevelJSONData.class, Gdx.files.internal("data/levels.json").readString("ISO-8859-1"));
 		
 		// Deserializando os levels:
 		levels = new ArrayList<Level>();
-		for (int i = 0; i < res.frase.size(); i++)
-			levels.add(i, new Level(this,res.frase.get(i),res.password.get(i),res.timer.get(i),res.maxVida.get(i)));
+		for (int i = 0; i < levelJD.frase.size(); i++)
+			levels.add(i, new Level(this,levelJD,i));
 		
 		// Indo para a primeira tela:
 		this.setScreen(levels.get(0));
@@ -120,11 +110,9 @@ public class GameManager extends Game {
         fontP2white.dispose();
         fontP2black.dispose();
         fontP2grey.dispose();
-        for (Texture i:bg)
-        	i.dispose();
+        levelJD.dispose();
 		hud.dispose();
 		rect.dispose();
-		canto.dispose();
 		btnOpcoes.dispose();
 		div.dispose();
 		texAnimAcerto.dispose();
