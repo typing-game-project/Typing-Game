@@ -35,19 +35,20 @@ public class GameManager extends Game {
 	public Sound[] acertoSnd;
 	private Json json;
 	private ArrayList<Level> levels;
+	public Resources res;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		
+		// Salvando tamanho da tela
+		width = Gdx.graphics.getWidth();
+		height = Gdx.graphics.getHeight();
+		
 		// Lendo o JSON
 		json = new Json();
+		res = new Resources();
 		Resources res = json.fromJson(Resources.class, Gdx.files.internal("data/levels.json").readString("ISO-8859-1"));
-		
-		// Deserializando os levels
-		levels = new ArrayList<Level>();
-		//for (int i = 0; i < res.frase.size(); i++)
-			//levels.add(i, new Level(this,res.frase.get(i),res.password.get(i),res.timer.get(i),res.maxVida.get(i)));
 		
 		// Populando variáveis
 		fontP2white = new BitmapFont(Gdx.files.internal("fonts/PressStart2P_white.fnt"));
@@ -58,10 +59,6 @@ public class GameManager extends Game {
 		player = new Player();
 		erroSnd = new Sound[3];
 		acertoSnd = new Sound[4];
-		
-		// Salvando tamanho da tela
-		width = Gdx.graphics.getWidth();
-		height = Gdx.graphics.getHeight();
 		
 		// Redimensionando as fontes
 		fontSize(fontP2white);
@@ -92,13 +89,13 @@ public class GameManager extends Game {
 			acertoSnd[i] = Gdx.audio.newSound(Gdx.files.internal("sfx/acerto" + (i + 1) + ".mp3"));
 		bgm = Gdx.audio.newMusic(Gdx.files.internal("bgm/LOOP4.wav"));
 		
-		// Instânciando os levels:
-		levels.add(0, new Level(this,"teste de çáéíóúà èìòùãõ ñâêîôû äëïöü","DEBUG1",0,40));
-		levels.add(1, new Level(this,"Vou escrever uma frase bem longa para ver se está cortando certinho o código de quebrar linhas","DEBUG2",60,40));
-		levels.add(2, new Level(this,"Vou escrever","DEBUG3",10,40));
+		// Deserializando os levels:
+		levels = new ArrayList<Level>();
+		for (int i = 0; i < res.frase.size(); i++)
+			levels.add(i, new Level(this,res.frase.get(i),res.password.get(i),res.timer.get(i),res.maxVida.get(i)));
 		
 		// Indo para a primeira tela:
-		this.setScreen(levels.get(1));
+		this.setScreen(levels.get(0));
 	}
 	
 	public float porCentoW(float w) {

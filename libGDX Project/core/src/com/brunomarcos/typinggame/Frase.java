@@ -46,11 +46,16 @@ public class Frase {
 	
 	public void criarLinha(int indice) {
 		this.linha.add(new StringBuffer());
+		
 		boolean terminou = false;
 		int i = indice;
 		while (i < frase.length()) {
-			if (i <= limiteLinha + indice)
-				this.linha.get(indiceLinha).append(frase.charAt(i));
+			System.out.println("limite linha: " + limiteLinha);
+			System.out.println("i: " + i);
+			System.out.println("frase length: " + frase.length());
+			if (i <= limiteLinha + indice) {
+				this.linha.get(indiceLinha).append(frase.charAt(i)); // Problema de serialização
+			}
 			else {
 				for (int j = this.linha.get(indiceLinha).length() - 1; j > 0; j--) {
 					if (this.linha.get(indiceLinha).charAt(j) == ' ') {
