@@ -1,7 +1,7 @@
 package com.brunomarcos.typinggame;
 
 import java.util.ArrayList;
-import java.util.Random;
+//import java.util.Random;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -9,29 +9,26 @@ public class Frase {
 	public String fraseCompleta;
 	public StringBuffer frase;
 	public Vector2 frasePos;
-	private Vector2 treme;
+	private float offsetX;
+	private float[][] offsetY;
 	public boolean errou;
-	Sequencia seqErro;
 	public int limiteLinha;
 	public int indiceLinha;
 	public ArrayList<StringBuffer> linha;
-	private int[][] letrasY;
 	private final int tamanhoChar = 70;
-	private Random random;
 	public boolean acertou = false;
+	private Animado tremendo;
 	
 	public Frase(String frase) {
 		this.fraseCompleta = frase;
 		this.frase = new StringBuffer();
 		this.frase.append(this.fraseCompleta);
 		this.frasePos = new Vector2();
-		this.treme = new Vector2();
 		this.errou = false;
-		this.seqErro = new Sequencia(4);
+		tremendo = new Animado(offsetX, false, 4);
 		this.linha = new ArrayList<StringBuffer>();
 		limiteLinha = (GameManager.width - (3*63)) / 63;
 		criandoLinhas();
-		random = new Random();
 	}
 	
 	public void criandoLinhas() {
@@ -39,9 +36,9 @@ public class Frase {
 		indiceLinha = 0;
 		criarLinha(indiceChar);
 		
-		letrasY = new int[linha.size()][];
-		for (int i = 0; i < letrasY.length; i++)
-			letrasY[i] = new int[linha.get(i).length()];
+		offsetY = new float[linha.size()][];
+		for (int i = 0; i < offsetY.length; i++)
+			offsetY[i] = new float[linha.get(i).length()];
 	}
 	
 	public void criarLinha(int indice) {
@@ -84,31 +81,15 @@ public class Frase {
 	
 	public void treme(float velocidade) {
 		if (errou) {
-			if (seqErro.ir(0)) {
-				treme.x += velocidade;
-				if (treme.x >= 60)
-					seqErro.next();
-			}
-			if (seqErro.ir(1)) {
-				treme.x -= velocidade/2;
-				if (treme.x <= -30)
-					seqErro.next();
-			}
-			if (seqErro.ir(2)) {
-				treme.x += velocidade/3;
-				if (treme.x >= 15)
-					seqErro.next();
-			}
-			if (seqErro.ir(3)) {
-				treme.x -= velocidade/4;
-				if (treme.x <= 0) {
-					treme.x = 0;
-					treme.y = 0;
-					errou = false;
-					seqErro.reset();
-				}
-			}
+			tremendo.reset();
+			tremendo.play();
+			errou = false;
 		}
+
+		offsetX = tremendo.intervalo(0, 60, velocidade, 0);
+		offsetX = tremendo.intervalo(60, -30, -velocidade/2, 1);
+		offsetX = tremendo.intervalo(-30, 15, velocidade/3, 2);
+		offsetX = tremendo.intervalo(15, 0, -velocidade/4, 3);
 	}
 	
 	public void animaLinha() {
@@ -123,9 +104,10 @@ public class Frase {
 		
 		for (int i = 0; i < linha.size(); i++) {
 			for (int j = 0; j < linha.get(i).length();j++) {		
-				float x = frasePos.x + tamanhoChar * indiceChar + treme.x;
-				float y;
+				float x = frasePos.x + tamanhoChar * indiceChar + offsetX;
+				float y = frasePos.y + offsetY[i][j];
 				
+				/*
 				// Fazer as letras tremerem :
 				try {	
 					letrasY[i][j] = random.nextInt(4);
@@ -134,6 +116,7 @@ public class Frase {
 				} catch (Exception e) {
 					y = frasePos.y + treme.y;
 				}
+				*/
 				
 				game.batch.setColor(0,0,0,0.5f);
 				game.batch.draw(game.rect, x - 7, y + 7, tamanhoChar - 10, -50);
