@@ -49,9 +49,6 @@ public class Level implements Screen {
 		cantoOffsetYR = 0;
 		velocidadeAnimacaoBG = 1;
 		placar = new StringBuilder();
-		
-		bgm.setLooping(true);
-		//bgm.play();
 	}
 	
 	private void animarBG() {
@@ -93,6 +90,9 @@ public class Level implements Screen {
 	public void render(float delta) {
 		int w = GameManager.width;
 		int h = GameManager.height;
+		
+		bgm.setLooping(true);
+		bgm.play();
 		
 		// Aqui vai o game loop
 		game.batch.begin();

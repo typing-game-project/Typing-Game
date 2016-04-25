@@ -31,7 +31,8 @@ public class GameManager extends Game {
 	public Sound[] acertoSnd;
 	private Json json;
 	private LevelJSONData levelJD;
-	private ArrayList<Level> levels;
+	public MainMenu mainMenu;
+	public ArrayList<Level> levels;
 	
 	@Override
 	public void create () {
@@ -84,8 +85,9 @@ public class GameManager extends Game {
 		for (int i = 0; i < levelJD.frase.size(); i++)
 			levels.add(i, new Level(this,levelJD,i));
 		
-		// Indo para a primeira tela:
-		this.setScreen(levels.get(0));
+		// Indo para o main menu:
+		this.mainMenu = new MainMenu(this);
+		this.setScreen(mainMenu);
 	}
 	
 	public float porCentoW(float w) {
