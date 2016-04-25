@@ -51,7 +51,7 @@ public class Level implements Screen {
 		placar = new StringBuilder();
 		
 		bgm.setLooping(true);
-		bgm.play();
+		//bgm.play();
 	}
 	
 	private void animarBG() {
@@ -167,8 +167,10 @@ public class Level implements Screen {
 		else {
 			try {
 				game.player.confereAcerto(game, this.frase);
-				if(this.frase.linha.get(0).length() == 0)
+				if(this.frase.linha.get(0).length() == 0) {
 					this.frase.linha.remove(0);
+					this.frase.linhaAtual++;
+				}
 			}
 			
 			catch(Exception e) {

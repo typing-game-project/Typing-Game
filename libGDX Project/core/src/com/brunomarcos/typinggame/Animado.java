@@ -36,7 +36,7 @@ public class Animado {
 						if (loop) {
 							sequencia[indiceSequencia] = false;
 							sequencia[0] = true;
-							varF = start;
+							varF = varFinit;
 						}
 						else
 							sequencia[indiceSequencia] = false;
@@ -44,7 +44,7 @@ public class Animado {
 				}
 				else {
 					if (loop)
-						varF = start;
+						varF = varFinit;
 					else
 						sequencia[indiceSequencia] = false;
 				}
