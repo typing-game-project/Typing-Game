@@ -58,6 +58,10 @@ public class Spritesheet {
 			flag = false;
 	}
 	
+	public void getFrame(SpriteBatch batch, int n, float x, float y, float w, float h) {
+		batch.draw(this.animacao.getKeyFrame(n, false), x, y, w, h);
+	}
+	
 	public void reset() {
 		this.stateTime = 0f;
 	}

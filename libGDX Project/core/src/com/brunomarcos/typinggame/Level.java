@@ -179,6 +179,8 @@ public class Level implements Screen {
 			}
 		}
 		
+		game.trocaCursor();
+		
 		game.batch.end();
 		dispose();
 	}

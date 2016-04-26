@@ -8,6 +8,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Json;
 
 public class GameManager extends Game {
@@ -24,6 +25,12 @@ public class GameManager extends Game {
 	public Texture div;
 	public Texture heart;
 	private Texture texAnimAcerto;
+	private Texture cursor;
+	public Texture bgLetras;
+	public Texture boxPq;
+	public Texture boxGd;
+	public Texture logo;
+	public Spritesheet cursorState;
 	public Spritesheet animAcerto;
 	public static int width;
 	public static int height;
@@ -33,6 +40,7 @@ public class GameManager extends Game {
 	private LevelJSONData levelJD;
 	public MainMenu mainMenu;
 	public ArrayList<Level> levels;
+	private Vector2 mousePos;
 	
 	@Override
 	public void create () {
@@ -51,6 +59,7 @@ public class GameManager extends Game {
 		player = new Player();
 		erroSnd = new Sound[3];
 		acertoSnd = new Sound[4];
+		mousePos = new Vector2(0,0);
 		
 		// Redimensionando as fontes
 		fontSize(fontP2white);
@@ -64,9 +73,15 @@ public class GameManager extends Game {
 		div = new Texture(Gdx.files.internal("img/div.png"));
 		texAnimAcerto = new Texture(Gdx.files.internal("img/anim_acerto.png"));
 		heart = new Texture(Gdx.files.internal("img/Heart.png"));
+		cursor = new Texture(Gdx.files.internal("img/cursor.png"));
+		bgLetras = new Texture(Gdx.files.internal("img/bg-letras.png"));
+		boxPq = new Texture(Gdx.files.internal("img/box-pq.png"));
+		boxGd = new Texture(Gdx.files.internal("img/box-gd.png"));
+		logo = new Texture(Gdx.files.internal("img/logo.png"));
 		
 		// Animações
 		animAcerto = new Spritesheet(texAnimAcerto, 6, 336, 352, 2, 3);
+		cursorState = new Spritesheet(cursor, 2, 56, 80, 1, 2);
 		animAcerto.velocidade = 0.025f;
 		
 		// Sons
@@ -103,8 +118,26 @@ public class GameManager extends Game {
 		f.getData().setScale(porCento, porCento);
 	}
 	
+	public void trocaCursor() {
+		//Gdx.input.setCursorCatched(true);
+		
+		float w = porCentoW(56);
+		float h = porCentoH(80);
+		
+		if(Gdx.input.isTouched())
+			cursorState.getFrame(batch, 1, mousePos.x, mousePos.y, w, h);
+		else
+			cursorState.getFrame(batch, 0, mousePos.x, mousePos.y, w, h);
+		
+		float x = mousePos.x + Gdx.input.getDeltaX();
+		float y = mousePos.y - Gdx.input.getDeltaY();
+		
+		if (x <= (width - w) && x >= 0 && y <= (height - h) && y >= 0)
+			mousePos.set(x, y);
+	}
+	
     public void render() {
-        super.render(); // Esse método tem que existir, não sei direito o porquê
+        super.render(); // Todos os render() dependem desse
     }
 
     public void dispose() {
@@ -118,5 +151,10 @@ public class GameManager extends Game {
 		btnOpcoes.dispose();
 		div.dispose();
 		texAnimAcerto.dispose();
+		cursor.dispose();
+		bgLetras.dispose();
+		boxPq.dispose();
+		boxGd.dispose();
+		logo.dispose();
     }
 }
