@@ -26,8 +26,10 @@ public class Level implements Screen {
 	private int velocidadeAnimacaoBG;
 	public static boolean pausado;
 	private int pausaTimer;
+	private boolean started;
 	
 	public Level(final GameManager game, LevelJSONData LJD, int i) {
+		//TODO Jogar algumas dessas coisas no onStart()
 		this.game = game;
 		this.frase = new Frase(LJD.frase.get(i));
 		this.password = LJD.password.get(i);
@@ -53,6 +55,7 @@ public class Level implements Screen {
 		velocidadeAnimacaoBG = 1;
 		placar = new StringBuilder();
 		pausado = false;
+		started = false;
 		bgm.setLooping(true);
 	}
 	
@@ -93,18 +96,25 @@ public class Level implements Screen {
 		game.batch.draw(arteCantos, w, cantoOffsetYR - h, -game.porCentoW(144), h);
 	}
 	
+	private void onStart() {
+		if (!started) {
+			game.resetMouse();
+			bgm.play();
+			started = true;
+		}
+	}
+	
 	@Override
 	public void render(float delta) {
 		int w = GameManager.width;
 		int h = GameManager.height;
-		
-		bgm.play();
 		
 		// Aqui vai o game loop
 		game.batch.begin();
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
+		onStart();
 		animarBG();
 		
 		game.batch.draw(game.hud, 0, h - hudHeight, w, hudHeight);
@@ -177,6 +187,7 @@ public class Level implements Screen {
 		
 		if (game.player.vida == 0) {
 			//TODO Chamar a tela de DERROTA
+			//TODO REPOPULAR AS LINHAS PARA JOGAR A MESMA TELA NOVAMENTE
 			this.frase.criandoLinhas();
 		}
 		
@@ -191,6 +202,19 @@ public class Level implements Screen {
 			
 			catch(Exception e) {
 				//TODO Chamar a tela de SUCESSO
+				//TODO REPOPULAR AS LINHAS PARA JOGAR A MESMA TELA NOVAMENTE
+				
+				if (GameManager.levelAtual < game.levels.size() - 1) {
+					GameManager.levelAtual++;
+					bgm.stop();
+					this.started = false;
+					game.setScreen(game.levels.get(GameManager.levelAtual));
+				}
+				else {
+					bgm.stop();
+					this.started = false;
+					game.setScreen(game.mainMenu);
+				}
 				this.frase.criandoLinhas();
 			}
 		}
@@ -212,7 +236,6 @@ public class Level implements Screen {
 		game.trocaCursor();
 		
 		game.batch.end();
-		dispose();
 	}
 	
 	// Esses métodos são obrigatórios, gerados pelo 'implements Screen'

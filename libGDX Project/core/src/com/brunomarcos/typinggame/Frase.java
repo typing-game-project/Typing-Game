@@ -115,7 +115,6 @@ public class Frase {
 	public void animaLinha() {
 		float y = 4f;
 		float vel = 1f;
-		//TODO: Animado não funciona do jeito certo
 	    for (int i = 0; i < offsetY.length; i++) {
 	        for (int j = 0; j < offsetY[i].length; j++) {
 	            if (j%2==0) {

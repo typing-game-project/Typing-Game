@@ -3,6 +3,7 @@ package com.brunomarcos.typinggame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -23,6 +24,8 @@ public class MainMenu implements Screen {
 	private boolean[] buttonHover;
 	private boolean animandoPassword;
 	private StringBuffer passwordDigitado;
+	private Music bgm;
+	private boolean started;
 	
 	public MainMenu(final GameManager game) {
 		this.game = game;
@@ -40,6 +43,9 @@ public class MainMenu implements Screen {
 		buttonHover = new boolean[5];
 		animandoPassword = false;
 		passwordDigitado = new StringBuffer();
+		bgm = Gdx.audio.newMusic(Gdx.files.internal("bgm/LOOP6.wav"));
+		bgm.setLooping(true);
+		bgm.play();
 		for (int i = 0; i < 5; i++) {
 			if (i == 4)
 				button[i] = new Rectangle(boxX[i],boxY,game.porCentoW(1144),boxSize.y);
@@ -85,23 +91,33 @@ public class MainMenu implements Screen {
 		game.fontFippsBlack.draw(game.batch, passwordDigitado.toString(), textX[5], textY);
 	}
 	
+	private void onStart() {
+		if (!started) {
+			game.resetMouse();
+			bgm.play();
+			started = true;
+		}
+	}
+	
 	@Override public void render(float delta) {
 		game.batch.begin();
 		Gdx.gl.glClearColor(0.9f, 0.9f, 0.9f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
+		onStart();
+		
 		// Animação letras do fundo
 		bgLetrasPosX += 0.5;
 		
 		// Animação de escala do logo
-		if (escalaLogo < 1.07f && !escalaLogoIndoVindo)
-			escalaLogo += 0.001f;
+		if (escalaLogo < 1.04f && !escalaLogoIndoVindo)
+			escalaLogo += 0.003f;
 		
-		else if (escalaLogo >= 1.07f)
+		else if (escalaLogo >= 1.04f)
 			escalaLogoIndoVindo = true;
 		
 		if (escalaLogo > 1 && escalaLogoIndoVindo)
-			escalaLogo -= 0.002f;
+			escalaLogo -= 0.006f;
 		
 		else if (escalaLogo <= 1)
 			escalaLogoIndoVindo = false;
@@ -123,12 +139,12 @@ public class MainMenu implements Screen {
 		game.batch.draw(game.logo, x/2 - (w/2), y - game.porCentoH(600), w, h);
 		
 		if (animandoPassword && originX > -GameManager.width) {
-			originX -= 20;
+			originX -= 40;
 			recalcularBoxPos();
 		}
 		
 		else if (!animandoPassword && originX < 0) {
-			originX += 20;
+			originX += 40;
 			recalcularBoxPos();
 		}
 			
@@ -143,8 +159,10 @@ public class MainMenu implements Screen {
 					
 						// Jogar 
 						case 0:
+							bgm.stop();
+							this.started = false;
+							GameManager.levelAtual = 0;
 							game.setScreen(game.levels.get(0));
-				            dispose();
 				            break;
 				        
 				        // Ir para password   
@@ -154,9 +172,10 @@ public class MainMenu implements Screen {
 				        
 				        // Sair 
 						case 2:
-							if (originX <= -GameManager.width || originX >= 0)
-								Gdx.app.exit();
-				            dispose();
+							if (originX <= -GameManager.width || originX >= 0) {
+								bgm.stop();
+					            Gdx.app.exit();
+							}
 				            break;
 				            
 				        // Voltar
@@ -201,14 +220,22 @@ public class MainMenu implements Screen {
 			if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
 				for (int i = 0; i < game.levels.size(); i++) {
 					if (passwordDigitado.toString().equals(game.levels.get(i).password)) {
+						game.acertoSnd[game.random.nextInt(3)].play();
+						bgm.stop();
+						this.started = false;
+						game.hideCursor = false;
+						GameManager.levelAtual = i;
 						game.setScreen(game.levels.get(i));
-						dispose();
+					}
+					else {
+						game.erroSnd[game.random.nextInt(2)].play();
+						game.batch.setColor(1,0,0,1);
+						game.batch.draw(game.rect, 0,0,GameManager.width,GameManager.height);
 					}
 				}
 		}
 			
 		game.batch.end();
-		dispose();
 	}
 	
 	public void checarTecla(int libgdxChar, int asciiCharDiferenca) {
@@ -218,10 +245,14 @@ public class MainMenu implements Screen {
 		}
 	}
 	
+	@Override
+	public void dispose() {
+		bgm.dispose();
+	}
+	
 	@Override public void show() {}
 	@Override public void resize(int width, int height) {}
 	@Override public void pause() {}
 	@Override public void resume() {}
 	@Override public void hide() {}
-	@Override public void dispose() {}
 }

@@ -1,6 +1,7 @@
 package com.brunomarcos.typinggame;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -44,6 +45,8 @@ public class GameManager extends Game {
 	public ArrayList<Level> levels;
 	private Vector2 mousePos;
 	public boolean hideCursor;
+	public Random random;
+	public static int levelAtual;
 	
 	@Override
 	public void create () {
@@ -65,6 +68,7 @@ public class GameManager extends Game {
 		acertoSnd = new Sound[4];
 		mousePos = new Vector2(width/2,height/2);
 		hideCursor = false;
+		random = new Random();
 		
 		// Redimensionando as fontes
 		fontSize(fontP2white);
@@ -155,6 +159,10 @@ public class GameManager extends Game {
 			return false;
 	}
 	
+	public void resetMouse() {
+		this.mousePos.set(width/2,height/2);
+	}
+	
     public void render() {
         super.render(); // Todos os render() dependem desse
     }
@@ -176,5 +184,6 @@ public class GameManager extends Game {
 		boxPq.dispose();
 		boxGd.dispose();
 		logo.dispose();
+		mainMenu.dispose();
     }
 }
