@@ -8,6 +8,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Json;
 
@@ -16,6 +17,7 @@ public class GameManager extends Game {
 	public BitmapFont fontP2white;
 	public BitmapFont fontP2black;
 	public BitmapFont fontP2grey;
+	public BitmapFont fontFippsBlack;
 	public boolean sfxOn;
 	public boolean bgmOn;
 	public Player player;
@@ -41,6 +43,7 @@ public class GameManager extends Game {
 	public MainMenu mainMenu;
 	public ArrayList<Level> levels;
 	private Vector2 mousePos;
+	public boolean hideCursor;
 	
 	@Override
 	public void create () {
@@ -54,17 +57,20 @@ public class GameManager extends Game {
 		fontP2white = new BitmapFont(Gdx.files.internal("fonts/PressStart2P_white.fnt"));
 		fontP2black = new BitmapFont(Gdx.files.internal("fonts/PressStart2P_black.fnt"));
 		fontP2grey = new BitmapFont(Gdx.files.internal("fonts/PressStart2P_grey.fnt"));
+		fontFippsBlack = new BitmapFont(Gdx.files.internal("fonts/fippsBlack.fnt"));
 		sfxOn = true; // Para usar nas opções
 		bgmOn = true; // Para usar nas opções
 		player = new Player();
 		erroSnd = new Sound[3];
 		acertoSnd = new Sound[4];
-		mousePos = new Vector2(0,0);
+		mousePos = new Vector2(width/2,height/2);
+		hideCursor = false;
 		
 		// Redimensionando as fontes
 		fontSize(fontP2white);
 		fontSize(fontP2black);
 		fontSize(fontP2grey);
+		fontSize(fontFippsBlack);
 		
 		// Instânciando as imagens
 		hud = new Texture(Gdx.files.internal("img/hud_border.png"));
@@ -119,21 +125,34 @@ public class GameManager extends Game {
 	}
 	
 	public void trocaCursor() {
-		//Gdx.input.setCursorCatched(true);
+		Gdx.input.setCursorCatched(true);
 		
 		float w = porCentoW(56);
 		float h = porCentoH(80);
 		
-		if(Gdx.input.isTouched())
-			cursorState.getFrame(batch, 1, mousePos.x, mousePos.y, w, h);
-		else
-			cursorState.getFrame(batch, 0, mousePos.x, mousePos.y, w, h);
+		if (!hideCursor)
+			if(Gdx.input.isTouched())
+				cursorState.getFrame(batch, 1, mousePos.x, mousePos.y, w, h);
+			else
+				cursorState.getFrame(batch, 0, mousePos.x, mousePos.y, w, h);
 		
 		float x = mousePos.x + Gdx.input.getDeltaX();
 		float y = mousePos.y - Gdx.input.getDeltaY();
 		
 		if (x <= (width - w) && x >= 0 && y <= (height - h) && y >= 0)
 			mousePos.set(x, y);
+	}
+	
+	public boolean mouseColide(Rectangle rect) {
+		float x = mousePos.x + Gdx.input.getDeltaX();
+		float y = mousePos.y - Gdx.input.getDeltaY();
+		
+		if (x > rect.x && x < (rect.x + rect.width) &&
+				y > rect.y && y < (rect.y + rect.height) && !hideCursor)
+			return true;
+		
+		else
+			return false;
 	}
 	
     public void render() {
@@ -145,6 +164,7 @@ public class GameManager extends Game {
         fontP2white.dispose();
         fontP2black.dispose();
         fontP2grey.dispose();
+        fontFippsBlack.dispose();
         levelJD.dispose();
 		hud.dispose();
 		rect.dispose();

@@ -52,7 +52,7 @@ public class LevelJSONData implements Json.Serializable {
 				if (jv.name.equals("frase"))
 					frase.add(i, jv.asString());
 				else if (jv.name.equals("password"))
-					password.add(i, jv.asString());
+					password.add(i, jv.asString().toUpperCase());
 				else if (jv.name.equals("timer"))
 					timer.add(i, jv.asInt());
 				else if (jv.name.equals("maxVida"))

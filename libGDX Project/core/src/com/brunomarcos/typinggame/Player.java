@@ -82,18 +82,19 @@ public class Player implements InputProcessor {
 
 	@Override
 	public boolean keyTyped(char character) {
-		
-		for (int i = 0; i < aceitaveis.length; i++) {
-			if (character == aceitaveis[i]) {	
-				if (i < 50)
-					maiscula = aceitaveis[i + 50];
-				
-				else if (i < 100)
-					minuscula = aceitaveis[i - 50];
-				
-				letraDigitada = character;
-				digitou = true;
-				break;
+		if (!Level.pausado) {
+			for (int i = 0; i < aceitaveis.length; i++) {
+				if (character == aceitaveis[i]) {	
+					if (i < 50)
+						maiscula = aceitaveis[i + 50];
+					
+					else if (i < 100)
+						minuscula = aceitaveis[i - 50];
+					
+					letraDigitada = character;
+					digitou = true;
+					break;
+				}
 			}
 		}
 		

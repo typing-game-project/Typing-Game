@@ -5,9 +5,10 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 
 public class Level implements Screen {
-	public final GameManager game; // referência necessária para a classe GameManager
+	public final GameManager game;
 	public String password;
 	public int timer;
 	public Frase frase;
@@ -15,8 +16,7 @@ public class Level implements Screen {
 	public int maxVida;
 	private boolean piscaVida;
 	private StringBuilder placar;
-	
-	// BG
+	private Rectangle btnOpcoesRect;
 	private Texture bg;
 	private Texture arteCantos;
 	private float hudHeight;
@@ -24,6 +24,8 @@ public class Level implements Screen {
 	private int cantoOffsetYL;
 	private int cantoOffsetYR;
 	private int velocidadeAnimacaoBG;
+	public static boolean pausado;
+	private int pausaTimer;
 	
 	public Level(final GameManager game, LevelJSONData LJD, int i) {
 		this.game = game;
@@ -37,8 +39,9 @@ public class Level implements Screen {
 		this.maxVida = maxVida;
 		game.player.vida = this.maxVida;
 		this.piscaVida = false;
-		
-		// BG
+		float x = GameManager.width - game.porCentoW(155);
+		float y = GameManager.height - game.porCentoH(150);
+		btnOpcoesRect = new Rectangle(x, y, game.porCentoW(120), game.porCentoH(100));
 		this.bg = LJD.bgTex.get(LJD.bg.get(i));
 		this.arteCantos = LJD.arteCantosTex.get(LJD.arteCantos.get(i));
 		hudHeight = game.porCentoH(200);
@@ -49,6 +52,8 @@ public class Level implements Screen {
 		cantoOffsetYR = 0;
 		velocidadeAnimacaoBG = 1;
 		placar = new StringBuilder();
+		pausado = false;
+		bgm.setLooping(true);
 	}
 	
 	private void animarBG() {
@@ -70,11 +75,13 @@ public class Level implements Screen {
 		if (cantoOffsetYR >= h)
 			cantoOffsetYR = 0;
 		
-		bgOffset[0] -= v * 2;
-		bgOffset[1] -= v * 2;
-		cantoOffsetYL -= v;
-		cantoOffsetYR += v;
-			
+		if (!pausado) {
+			bgOffset[0] -= v * 2;
+			bgOffset[1] -= v * 2;
+			cantoOffsetYL -= v;
+			cantoOffsetYR += v;
+		}
+		
 		game.batch.draw(this.bg, x, y + h, w, h);
 		game.batch.draw(this.bg, x + w, y + h, w, h);
 		game.batch.draw(this.bg, x, y, w, h);
@@ -91,7 +98,6 @@ public class Level implements Screen {
 		int w = GameManager.width;
 		int h = GameManager.height;
 		
-		bgm.setLooping(true);
 		bgm.play();
 		
 		// Aqui vai o game loop
@@ -108,8 +114,7 @@ public class Level implements Screen {
 		
 		float topoTexto = h - game.porCentoH(80);
 		
-		// Números para Debug
-		
+		// Opções aqui
 		game.batch.draw(game.btnOpcoes, w - game.porCentoW(155), h - game.porCentoH(150), game.porCentoW(120), game.porCentoH(100));
 		game.batch.draw(game.div, w - game.porCentoW(200), h - game.porCentoH(176), game.porCentoW(35), game.porCentoH(152));
 		
@@ -158,13 +163,24 @@ public class Level implements Screen {
 		
 		game.batch.setColor(1,1,1,1);
 		game.batch.draw(game.div, game.porCentoW(848), h - game.porCentoH(176), game.porCentoW(35), game.porCentoH(152));
-			
+		
+		if (game.mouseColide(btnOpcoesRect) && Gdx.input.isTouched()) {
+			if (!pausado && this.pausaTimer == 0) {
+				pausado = true;
+				pausaTimer = 30;
+			}
+			else if (this.pausaTimer == 0) {
+				pausado = false;
+				pausaTimer = 30;
+			}
+		}
+		
 		if (game.player.vida == 0) {
 			//TODO Chamar a tela de DERROTA
 			this.frase.criandoLinhas();
 		}
 		
-		else {
+		else if (!Level.pausado) {
 			try {
 				game.player.confereAcerto(game, this.frase);
 				if(this.frase.linha.get(0).length() == 0) {
@@ -179,6 +195,20 @@ public class Level implements Screen {
 			}
 		}
 		
+		if (pausado) {
+			game.batch.setColor(0,0,0,0.5f);
+			game.batch.draw(game.rect,0,0,w,h);
+			game.batch.setColor(1,1,1,1);
+			bgm.setVolume(0.5f);
+		}
+		
+		else {
+			bgm.setVolume(1.0f);
+		}
+		
+		if (pausaTimer > 0)
+			pausaTimer--;
+		
 		game.trocaCursor();
 		
 		game.batch.end();
@@ -186,10 +216,10 @@ public class Level implements Screen {
 	}
 	
 	// Esses métodos são obrigatórios, gerados pelo 'implements Screen'
+	@Override public void pause() {}
 	@Override public void dispose() {}
 	@Override public void show() {}
 	@Override public void resize(int width, int height) {}
-	@Override public void pause() {}
 	@Override public void resume() {}
 	@Override public void hide() {}
 }

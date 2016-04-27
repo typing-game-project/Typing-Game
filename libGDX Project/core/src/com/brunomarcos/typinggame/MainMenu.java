@@ -1,20 +1,88 @@
 package com.brunomarcos.typinggame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 
 public class MainMenu implements Screen {
 	public final GameManager game;
 	private float bgLetrasPosX;
 	private float escalaLogo;
 	private boolean escalaLogoIndoVindo;
+	private Vector2 boxSize;
+	private float originX;
+	private float boxY;
+	private float[] boxX;
+	private float margemBox;
+	private float textY;
+	private float[] textX;
+	private Rectangle[] button;
+	private boolean[] buttonHover;
+	private boolean animandoPassword;
+	private StringBuffer passwordDigitado;
 	
 	public MainMenu(final GameManager game) {
 		this.game = game;
 		bgLetrasPosX = 0;
 		escalaLogo = 1f;
 		escalaLogoIndoVindo = false;
+		boxSize = new Vector2(game.porCentoW(584),game.porCentoW(280));
+		originX = 0;
+		boxY = game.porCentoH(100);
+		margemBox = game.porCentoW(100);
+		textY = game.porCentoH(250);
+		boxX = new float[5];
+		textX = new float[6];
+		button = new Rectangle[5];
+		buttonHover = new boolean[5];
+		animandoPassword = false;
+		passwordDigitado = new StringBuffer();
+		for (int i = 0; i < 5; i++) {
+			if (i == 4)
+				button[i] = new Rectangle(boxX[i],boxY,game.porCentoW(1144),boxSize.y);
+			else
+				button[i] = new Rectangle(boxX[i],boxY,boxSize.x,boxSize.y);
+			buttonHover[i] = false;
+		}
+		recalcularBoxPos();
+	}
+	
+	public void recalcularBoxPos() {
+		boxX[0] = originX + margemBox;
+		boxX[1] = originX + ((GameManager.width/2) - (boxSize.x/2));
+		boxX[2] = originX + (GameManager.width - boxSize.x - margemBox);
+		boxX[3] = originX + GameManager.width + margemBox;
+		boxX[4] = originX + GameManager.width + ((GameManager.width/2) - (boxSize.x/2));
+		
+		for (int i = 0; i < 5; i++) {
+			textX[i] = boxX[i] + game.porCentoW(90);
+			button[i].x = boxX[i];
+		}
+		textX[5] = textX[4] + game.porCentoW(420);
+	}
+	
+	public void renderBoxes() {
+		for (int i = 0; i < 5; i++) {
+			if (buttonHover[i])
+				game.batch.setColor(1,1,1,0.5f);
+			else
+				game.batch.setColor(1,1,1,1);
+			if (i == 4)
+				game.batch.draw(game.boxGd,boxX[i],boxY,game.porCentoW(1144),boxSize.y);
+			else
+				game.batch.draw(game.boxPq,boxX[i],boxY,boxSize.x,boxSize.y);
+			game.batch.setColor(1,1,1,1);
+		}
+		
+		game.fontFippsBlack.draw(game.batch, "Jogar", textX[0], textY);
+		game.fontFippsBlack.draw(game.batch, "Password", textX[1], textY);
+		game.fontFippsBlack.draw(game.batch, "Sair", textX[2], textY);
+		game.fontFippsBlack.draw(game.batch, "Voltar", textX[3], textY);
+		game.fontFippsBlack.draw(game.batch, "Password: ", textX[4], textY);
+		game.fontFippsBlack.draw(game.batch, passwordDigitado.toString(), textX[5], textY);
 	}
 	
 	@Override public void render(float delta) {
@@ -54,10 +122,100 @@ public class MainMenu implements Screen {
 		
 		game.batch.draw(game.logo, x/2 - (w/2), y - game.porCentoH(600), w, h);
 		
+		if (animandoPassword && originX > -GameManager.width) {
+			originX -= 20;
+			recalcularBoxPos();
+		}
+		
+		else if (!animandoPassword && originX < 0) {
+			originX += 20;
+			recalcularBoxPos();
+		}
+			
+		renderBoxes();
 		game.trocaCursor();
+		
+		for (int i = 0; i < 5; i++) {
+			if (game.mouseColide(button[i])) {
+				buttonHover[i] = true;
+				if(Gdx.input.isTouched()) {
+					switch(i) {
+					
+						// Jogar 
+						case 0:
+							game.setScreen(game.levels.get(0));
+				            dispose();
+				            break;
+				        
+				        // Ir para password   
+						case 1:
+				            animandoPassword = true;
+				            break;
+				        
+				        // Sair 
+						case 2:
+							if (originX <= -GameManager.width || originX >= 0)
+								Gdx.app.exit();
+				            dispose();
+				            break;
+				            
+				        // Voltar
+						case 3:
+				            animandoPassword = false;
+				            break;
+				        
+				        // Digitar password
+						case 4:
+				            game.hideCursor = true;
+				            break;
+				        
+				        default:
+				        	continue;
+					}
+				}
+			}
+			else
+				buttonHover[i] = false;
+		}
+		
+		if (game.hideCursor) {
+			buttonHover[4] = true;
+			
+			if (passwordDigitado.length() < 10) {
+				for (int i = 7; i <= 16; i++) {
+					checarTecla(i,41);
+				}
+				
+				for (int i = 29; i <= 54; i++) {
+					checarTecla(i,36);
+				}
+			}
+			
+			if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE))
+				if (passwordDigitado.length() > 0)
+					passwordDigitado.deleteCharAt(passwordDigitado.length() - 1);
+			
+			if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
+				game.hideCursor = false;
+			
+			if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
+				for (int i = 0; i < game.levels.size(); i++) {
+					if (passwordDigitado.toString().equals(game.levels.get(i).password)) {
+						game.setScreen(game.levels.get(i));
+						dispose();
+					}
+				}
+		}
 			
 		game.batch.end();
 		dispose();
+	}
+	
+	public void checarTecla(int libgdxChar, int asciiCharDiferenca) {
+		if (Gdx.input.isKeyJustPressed(libgdxChar)) {
+			int i = libgdxChar + asciiCharDiferenca;
+			passwordDigitado.append((char)i);
+		}
 	}
 	
 	@Override public void show() {}

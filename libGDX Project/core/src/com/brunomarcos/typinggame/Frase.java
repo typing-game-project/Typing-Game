@@ -105,7 +105,7 @@ public class Frase {
 			animadoX.play();
 			errou = false;
 		}
-
+		
 		offsetX = animadoX.intervalo(0, 60, velocidade, 0);
 		offsetX = animadoX.intervalo(60, -30, -velocidade/2, 1);
 		offsetX = animadoX.intervalo(-30, 15, velocidade/3, 2);
@@ -140,7 +140,8 @@ public class Frase {
 		frasePos.x = game.porCentoW(60);
 		frasePos.y = GameManager.height - game.porCentoH(260);
 		
-		animaLinha();
+		if (!Level.pausado)
+			animaLinha();
 		
 		for (int i = 0; i < linha.size(); i++) {
 			for (int j = 0; j < linha.get(i).length();j++) {		
