@@ -36,7 +36,7 @@ public class MainMenu implements Screen {
 		originX = 0;
 		boxY = game.porCentoH(100);
 		margemBox = game.porCentoW(100);
-		textY = game.porCentoH(250);
+		textY = game.porCentoH(240);
 		boxX = new float[5];
 		textX = new float[6];
 		button = new Rectangle[5];
@@ -64,10 +64,10 @@ public class MainMenu implements Screen {
 		boxX[4] = originX + GameManager.width + ((GameManager.width/2) - (boxSize.x/2));
 		
 		for (int i = 0; i < 5; i++) {
-			textX[i] = boxX[i] + game.porCentoW(90);
+			textX[i] = boxX[i] + game.porCentoW(80);
 			button[i].x = boxX[i];
 		}
-		textX[5] = textX[4] + game.porCentoW(420);
+		textX[5] = textX[4] + game.porCentoW(380);
 	}
 	
 	public void renderBoxes() {
@@ -83,12 +83,12 @@ public class MainMenu implements Screen {
 			game.batch.setColor(1,1,1,1);
 		}
 		
-		game.fontFippsBlack.draw(game.batch, "Jogar", textX[0], textY);
-		game.fontFippsBlack.draw(game.batch, "Password", textX[1], textY);
-		game.fontFippsBlack.draw(game.batch, "Sair", textX[2], textY);
-		game.fontFippsBlack.draw(game.batch, "Voltar", textX[3], textY);
-		game.fontFippsBlack.draw(game.batch, "Password: ", textX[4], textY);
-		game.fontFippsBlack.draw(game.batch, passwordDigitado.toString(), textX[5], textY);
+		game.fontP2black.draw(game.batch, "Jogar", textX[0], textY);
+		game.fontP2black.draw(game.batch, "Password", textX[1], textY);
+		game.fontP2black.draw(game.batch, "Sair", textX[2], textY);
+		game.fontP2black.draw(game.batch, "Voltar", textX[3], textY);
+		game.fontP2black.draw(game.batch, "Password: ", textX[4], textY);
+		game.fontP2black.draw(game.batch, passwordDigitado.toString(), textX[5], textY);
 	}
 	
 	private void onStart() {

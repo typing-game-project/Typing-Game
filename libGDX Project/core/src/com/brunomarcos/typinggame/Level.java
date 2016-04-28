@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 public class Level implements Screen {
 	public final GameManager game;
 	public String password;
-	public int timer;
+	private int[] timer;
 	public Frase frase;
 	public Music bgm;
 	public int maxVida;
@@ -29,17 +29,16 @@ public class Level implements Screen {
 	private boolean started;
 	
 	public Level(final GameManager game, LevelJSONData LJD, int i) {
-		//TODO Jogar algumas dessas coisas no onStart()
 		this.game = game;
 		this.frase = new Frase(LJD.frase.get(i));
 		this.password = LJD.password.get(i);
-		this.timer = LJD.timer.get(i);
+		this.timer = new int[2]; 
+		this.timer[1] = LJD.timer.get(i);
 		this.bgm = LJD.bgmFile.get(LJD.bgm.get(i));
 		int maxVida = LJD.maxVida.get(i);
 		if (maxVida > 34)
 			maxVida = 34;
 		this.maxVida = maxVida;
-		game.player.vida = this.maxVida;
 		this.piscaVida = false;
 		float x = GameManager.width - game.porCentoW(155);
 		float y = GameManager.height - game.porCentoH(150);
@@ -59,47 +58,14 @@ public class Level implements Screen {
 		bgm.setLooping(true);
 	}
 	
-	private void animarBG() {
-		int x = bgOffset[0];
-		int y = bgOffset[1];
-		int w = GameManager.width;
-		int h = GameManager.height;
-		int v = velocidadeAnimacaoBG;
-		
-		if (bgOffset[0] <= -w)
-			bgOffset[0] = 0;
-
-		if (bgOffset[1] <= -h)
-			bgOffset[1] = 0;
-		
-		if (cantoOffsetYL <= -h)
-			cantoOffsetYL = 0;
-
-		if (cantoOffsetYR >= h)
-			cantoOffsetYR = 0;
-		
-		if (!pausado) {
-			bgOffset[0] -= v * 2;
-			bgOffset[1] -= v * 2;
-			cantoOffsetYL -= v;
-			cantoOffsetYR += v;
-		}
-		
-		game.batch.draw(this.bg, x, y + h, w, h);
-		game.batch.draw(this.bg, x + w, y + h, w, h);
-		game.batch.draw(this.bg, x, y, w, h);
-		game.batch.draw(this.bg, x + w, y, w, h);
-		
-		game.batch.draw(arteCantos, 0, cantoOffsetYL, game.porCentoW(144), h);
-		game.batch.draw(arteCantos, 0, cantoOffsetYL + h, game.porCentoW(144), h);
-		game.batch.draw(arteCantos, w, cantoOffsetYR, -game.porCentoW(144), h);
-		game.batch.draw(arteCantos, w, cantoOffsetYR - h, -game.porCentoW(144), h);
-	}
-	
 	private void onStart() {
 		if (!started) {
 			game.resetMouse();
 			bgm.play();
+			game.player.vida = this.maxVida;
+			game.player.pontos = 0;
+			game.player.multiplicador = 1;
+			timer[0] = timer[1];
 			started = true;
 		}
 	}
@@ -187,8 +153,12 @@ public class Level implements Screen {
 		
 		if (game.player.vida == 0) {
 			//TODO Chamar a tela de DERROTA
-			//TODO REPOPULAR AS LINHAS PARA JOGAR A MESMA TELA NOVAMENTE
+			bgm.stop();
+			this.started = false;
+			this.frase.linhaAtual = 0;
+			this.frase.apagarLinhas();
 			this.frase.criandoLinhas();
+			game.setScreen(game.mainMenu);
 		}
 		
 		else if (!Level.pausado) {
@@ -202,20 +172,23 @@ public class Level implements Screen {
 			
 			catch(Exception e) {
 				//TODO Chamar a tela de SUCESSO
-				//TODO REPOPULAR AS LINHAS PARA JOGAR A MESMA TELA NOVAMENTE
-				
+				// Próxima tela:
 				if (GameManager.levelAtual < game.levels.size() - 1) {
 					GameManager.levelAtual++;
 					bgm.stop();
 					this.started = false;
+					this.frase.linhaAtual = 0;
+					this.frase.criandoLinhas();
 					game.setScreen(game.levels.get(GameManager.levelAtual));
 				}
-				else {
+				// Fim do jogo:
+				else { 
 					bgm.stop();
 					this.started = false;
+					this.frase.linhaAtual = 0;
+					this.frase.criandoLinhas();
 					game.setScreen(game.mainMenu);
 				}
-				this.frase.criandoLinhas();
 			}
 		}
 		
@@ -236,6 +209,43 @@ public class Level implements Screen {
 		game.trocaCursor();
 		
 		game.batch.end();
+	}
+	
+	private void animarBG() {
+		int x = bgOffset[0];
+		int y = bgOffset[1];
+		int w = GameManager.width;
+		int h = GameManager.height;
+		int v = velocidadeAnimacaoBG;
+		
+		if (bgOffset[0] <= -w)
+			bgOffset[0] = 0;
+
+		if (bgOffset[1] <= -h)
+			bgOffset[1] = 0;
+		
+		if (cantoOffsetYL <= -h)
+			cantoOffsetYL = 0;
+
+		if (cantoOffsetYR >= h)
+			cantoOffsetYR = 0;
+		
+		if (!pausado) {
+			bgOffset[0] -= v * 2;
+			bgOffset[1] -= v * 2;
+			cantoOffsetYL -= v;
+			cantoOffsetYR += v;
+		}
+		
+		game.batch.draw(this.bg, x, y + h, w, h);
+		game.batch.draw(this.bg, x + w, y + h, w, h);
+		game.batch.draw(this.bg, x, y, w, h);
+		game.batch.draw(this.bg, x + w, y, w, h);
+		
+		game.batch.draw(arteCantos, 0, cantoOffsetYL, game.porCentoW(144), h);
+		game.batch.draw(arteCantos, 0, cantoOffsetYL + h, game.porCentoW(144), h);
+		game.batch.draw(arteCantos, w, cantoOffsetYR, -game.porCentoW(144), h);
+		game.batch.draw(arteCantos, w, cantoOffsetYR - h, -game.porCentoW(144), h);
 	}
 	
 	// Esses métodos são obrigatórios, gerados pelo 'implements Screen'

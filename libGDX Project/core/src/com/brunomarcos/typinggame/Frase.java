@@ -168,4 +168,9 @@ public class Frase {
 		}
 		treme(30);
 	}
+	
+	public void apagarLinhas() {
+		for (int i = this.linha.size() - 1; i >= 0; i--)
+			this.linha.remove(i);
+	}
 }

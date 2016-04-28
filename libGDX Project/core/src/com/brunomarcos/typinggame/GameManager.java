@@ -18,7 +18,8 @@ public class GameManager extends Game {
 	public BitmapFont fontP2white;
 	public BitmapFont fontP2black;
 	public BitmapFont fontP2grey;
-	public BitmapFont fontFippsBlack;
+	public BitmapFont fontArmaFiveBlack;
+	public BitmapFont fontArmaFiveWhite;
 	public boolean sfxOn;
 	public boolean bgmOn;
 	public Player player;
@@ -60,7 +61,8 @@ public class GameManager extends Game {
 		fontP2white = new BitmapFont(Gdx.files.internal("fonts/PressStart2P_white.fnt"));
 		fontP2black = new BitmapFont(Gdx.files.internal("fonts/PressStart2P_black.fnt"));
 		fontP2grey = new BitmapFont(Gdx.files.internal("fonts/PressStart2P_grey.fnt"));
-		fontFippsBlack = new BitmapFont(Gdx.files.internal("fonts/fippsBlack.fnt"));
+		fontArmaFiveBlack = new BitmapFont(Gdx.files.internal("fonts/armaFiveBlack.fnt"));
+		fontArmaFiveWhite = new BitmapFont(Gdx.files.internal("fonts/armaFiveWhite.fnt"));
 		sfxOn = true; // Para usar nas opções
 		bgmOn = true; // Para usar nas opções
 		player = new Player();
@@ -74,7 +76,8 @@ public class GameManager extends Game {
 		fontSize(fontP2white);
 		fontSize(fontP2black);
 		fontSize(fontP2grey);
-		fontSize(fontFippsBlack);
+		fontSize(fontArmaFiveBlack);
+		fontSize(fontArmaFiveWhite);
 		
 		// Instânciando as imagens
 		hud = new Texture(Gdx.files.internal("img/hud_border.png"));
@@ -172,7 +175,8 @@ public class GameManager extends Game {
         fontP2white.dispose();
         fontP2black.dispose();
         fontP2grey.dispose();
-        fontFippsBlack.dispose();
+        fontArmaFiveBlack.dispose();
+        fontArmaFiveWhite.dispose();
         levelJD.dispose();
 		hud.dispose();
 		rect.dispose();
