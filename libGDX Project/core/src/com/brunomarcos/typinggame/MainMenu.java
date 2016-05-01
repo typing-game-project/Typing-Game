@@ -96,6 +96,9 @@ public class MainMenu implements Screen {
 			game.resetMouse();
 			bgm.play();
 			started = true;
+			originX = 0;
+			if (passwordDigitado.length() > 0)
+				passwordDigitado.delete(0, passwordDigitado.length());
 		}
 	}
 	
@@ -214,8 +217,11 @@ public class MainMenu implements Screen {
 				if (passwordDigitado.length() > 0)
 					passwordDigitado.deleteCharAt(passwordDigitado.length() - 1);
 			
-			if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
+			if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
 				game.hideCursor = false;
+				if (passwordDigitado.length() > 0)
+					passwordDigitado.delete(0, passwordDigitado.length());
+			}
 			
 			if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
 				for (int i = 0; i < game.levels.size(); i++) {
