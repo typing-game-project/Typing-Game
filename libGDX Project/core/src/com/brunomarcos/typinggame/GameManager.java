@@ -18,6 +18,7 @@ public class GameManager extends Game {
 	public BitmapFont fontP2white;
 	public BitmapFont fontP2black;
 	public BitmapFont fontP2grey;
+	public BitmapFont fontP2yellow;
 	public BitmapFont fontArmaFiveBlack;
 	public BitmapFont fontArmaFiveWhite;
 	public boolean sfxOn;
@@ -33,7 +34,9 @@ public class GameManager extends Game {
 	public Texture bgLetras;
 	public Texture boxPq;
 	public Texture boxGd;
+	public Texture boxPausa;
 	public Texture logo;
+	public Texture timerBG;
 	public Spritesheet cursorState;
 	public Spritesheet animAcerto;
 	public static int width;
@@ -48,6 +51,7 @@ public class GameManager extends Game {
 	public boolean hideCursor;
 	public Random random;
 	public static int levelAtual;
+	public nineSlice btn;
 	
 	@Override
 	public void create () {
@@ -61,6 +65,7 @@ public class GameManager extends Game {
 		fontP2white = new BitmapFont(Gdx.files.internal("fonts/PressStart2P_white.fnt"));
 		fontP2black = new BitmapFont(Gdx.files.internal("fonts/PressStart2P_black.fnt"));
 		fontP2grey = new BitmapFont(Gdx.files.internal("fonts/PressStart2P_grey.fnt"));
+		fontP2yellow = new BitmapFont(Gdx.files.internal("fonts/PressStart2P_yellow.fnt"));
 		fontArmaFiveBlack = new BitmapFont(Gdx.files.internal("fonts/armaFiveBlack.fnt"));
 		fontArmaFiveWhite = new BitmapFont(Gdx.files.internal("fonts/armaFiveWhite.fnt"));
 		sfxOn = true; // Para usar nas opções
@@ -76,6 +81,7 @@ public class GameManager extends Game {
 		fontSize(fontP2white);
 		fontSize(fontP2black);
 		fontSize(fontP2grey);
+		fontSize(fontP2yellow);
 		fontSize(fontArmaFiveBlack);
 		fontSize(fontArmaFiveWhite);
 		
@@ -90,7 +96,10 @@ public class GameManager extends Game {
 		bgLetras = new Texture(Gdx.files.internal("img/bg-letras.png"));
 		boxPq = new Texture(Gdx.files.internal("img/box-pq.png"));
 		boxGd = new Texture(Gdx.files.internal("img/box-gd.png"));
+		boxPausa = new Texture(Gdx.files.internal("img/box-pause.png"));
 		logo = new Texture(Gdx.files.internal("img/logo.png"));
+		timerBG = new Texture(Gdx.files.internal("img/timerBG.png"));
+		btn = new nineSlice(boxPq, 66, 74);
 		
 		// Animações
 		animAcerto = new Spritesheet(texAnimAcerto, 6, 336, 352, 2, 3);
@@ -139,14 +148,14 @@ public class GameManager extends Game {
 		
 		if (!hideCursor)
 			if(Gdx.input.isTouched())
-				cursorState.getFrame(batch, 1, mousePos.x, mousePos.y, w, h);
+				cursorState.getFrame(batch, 1, mousePos.x, mousePos.y - h, w, h);
 			else
-				cursorState.getFrame(batch, 0, mousePos.x, mousePos.y, w, h);
+				cursorState.getFrame(batch, 0, mousePos.x, mousePos.y - h, w, h);
 		
 		float x = mousePos.x + Gdx.input.getDeltaX();
 		float y = mousePos.y - Gdx.input.getDeltaY();
-		
-		if (x <= (width - w) && x >= 0 && y <= (height - h) && y >= 0)
+
+		if (x <= (width + w) && x >= 0 && y <= (height + h) && y >= 0)
 			mousePos.set(x, y);
 	}
 	
@@ -154,8 +163,8 @@ public class GameManager extends Game {
 		float x = mousePos.x + Gdx.input.getDeltaX();
 		float y = mousePos.y - Gdx.input.getDeltaY();
 		
-		if (x > rect.x && x < (rect.x + rect.width) &&
-				y > rect.y && y < (rect.y + rect.height) && !hideCursor)
+		if (x >= rect.x && x <= (rect.x + rect.width) &&
+				y >= rect.y && y <= (rect.y + rect.height) && !hideCursor)
 			return true;
 		
 		else
@@ -175,6 +184,7 @@ public class GameManager extends Game {
         fontP2white.dispose();
         fontP2black.dispose();
         fontP2grey.dispose();
+        fontP2yellow.dispose();
         fontArmaFiveBlack.dispose();
         fontArmaFiveWhite.dispose();
         levelJD.dispose();
@@ -187,7 +197,9 @@ public class GameManager extends Game {
 		bgLetras.dispose();
 		boxPq.dispose();
 		boxGd.dispose();
+		boxPausa.dispose();
 		logo.dispose();
+		timerBG.dispose();
 		mainMenu.dispose();
     }
 }

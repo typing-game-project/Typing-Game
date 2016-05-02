@@ -26,7 +26,18 @@ public class Level implements Screen {
 	private int velocidadeAnimacaoBG;
 	public static boolean pausado;
 	private int pausaTimer;
+	private int btnCooldown;
 	private boolean started;
+	private float[] boxX;
+	private float[] boxY;
+	private float[] boxW;
+	private float[] boxH;
+	private Rectangle[] boxBtn;
+	private boolean gameOverScreen;
+	private boolean sucessoScreen;
+	private long milisegundos;
+	private long segundos;
+	private long segundoAnterior;
 	
 	public Level(final GameManager game, LevelJSONData LJD, int i) {
 		this.game = game;
@@ -56,17 +67,34 @@ public class Level implements Screen {
 		pausado = false;
 		started = false;
 		bgm.setLooping(true);
+		boxX = new float[7];
+		boxY = new float[7];
+		boxW = new float[7];
+		boxH = new float[7];
+		boxBtn = new Rectangle[5];
+		setBoxes();
+		boxBtn[0] = new Rectangle(boxX[3], boxY[3] - boxH[3], boxW[3], boxH[3]);
+		boxBtn[1] = new Rectangle(boxX[4], boxY[4] - boxH[4], boxW[4], boxH[4]);
+		boxBtn[2] = new Rectangle(boxX[5], boxY[5] - boxH[5], boxW[5], boxH[5]);
+		boxBtn[3] = new Rectangle(boxX[6], boxY[6] - boxH[6], boxW[6], boxH[6]);
+		boxBtn[4] = new Rectangle(boxX[0], boxY[0], boxW[0], boxH[0]);
 	}
 	
 	private void onStart() {
 		if (!started) {
 			game.resetMouse();
-			bgm.play();
+			if (game.bgmOn)
+				bgm.play();
 			game.player.vida = this.maxVida;
 			game.player.pontos = 0;
 			game.player.multiplicador = 1;
 			timer[0] = timer[1];
 			started = true;
+			gameOverScreen = false;
+			sucessoScreen = false;
+			segundos = 0;
+			milisegundos = 0;
+			segundoAnterior = System.currentTimeMillis();
 		}
 	}
 	
@@ -117,7 +145,6 @@ public class Level implements Screen {
 		game.fontP2white.draw(game.batch, "x" + Integer.toString(game.player.multiplicador), w/2 - game.porCentoW(90), topoTexto);
 		
 		// Vida piscando
-		// TODO: Deixar animação suave
 		if (game.player.vida < 7){
 			if (piscaVida) {
 				game.batch.setColor(1,0,0,1);
@@ -145,21 +172,13 @@ public class Level implements Screen {
 				pausado = true;
 				pausaTimer = 30;
 			}
-			else if (this.pausaTimer == 0) {
-				pausado = false;
-				pausaTimer = 30;
-			}
 		}
 		
-		if (game.player.vida == 0) {
-			//TODO Chamar a tela de DERROTA
-			bgm.stop();
-			this.started = false;
-			this.frase.linhaAtual = 0;
-			this.frase.apagarLinhas();
-			this.frase.criandoLinhas();
-			game.setScreen(game.mainMenu);
-		}
+		if (game.player.vida == 0)
+			gameOverScreen = true;
+		
+		else if (timer[1] > 0 && this.timer[0] == 0)
+			gameOverScreen = true;
 		
 		else if (!Level.pausado) {
 			try {
@@ -171,32 +190,24 @@ public class Level implements Screen {
 			}
 			
 			catch(Exception e) {
-				//TODO Chamar a tela de SUCESSO
-				// Próxima tela:
-				if (GameManager.levelAtual < game.levels.size() - 1) {
-					GameManager.levelAtual++;
-					bgm.stop();
-					this.started = false;
-					this.frase.linhaAtual = 0;
-					this.frase.criandoLinhas();
-					game.setScreen(game.levels.get(GameManager.levelAtual));
-				}
-				// Fim do jogo:
-				else { 
-					bgm.stop();
-					this.started = false;
-					this.frase.linhaAtual = 0;
-					this.frase.criandoLinhas();
-					game.setScreen(game.mainMenu);
-				}
+				sucessoScreen = true;
 			}
 		}
 		
+		if (timer[1] > 0) {
+			game.batch.draw(game.timerBG, w - game.porCentoW(148 + 150), game.porCentoH(50), 148, 152);
+			game.fontP2black.draw(game.batch, Long.toString(timer[0]),
+					w - game.porCentoW(148 + 90), game.porCentoH(165));
+		}
+		
+		if (gameOverScreen)
+			gameOver();
+		
+		if (sucessoScreen)
+			fimDaTela();
+		
 		if (pausado) {
-			game.batch.setColor(0,0,0,0.5f);
-			game.batch.draw(game.rect,0,0,w,h);
-			game.batch.setColor(1,1,1,1);
-			bgm.setVolume(0.5f);
+			menuDePausa();
 		}
 		
 		else {
@@ -206,7 +217,19 @@ public class Level implements Screen {
 		if (pausaTimer > 0)
 			pausaTimer--;
 		
+		if (btnCooldown > 0)
+			btnCooldown--;
+		
 		game.trocaCursor();
+		
+		if (!sucessoScreen && !pausado && !gameOverScreen) {
+			milisegundos += System.currentTimeMillis() - segundoAnterior;
+			if (milisegundos / 1000 > segundos) {
+				timer[0]--;
+			}
+			segundos = milisegundos / 1000;
+			segundoAnterior = System.currentTimeMillis();
+		}
 		
 		game.batch.end();
 	}
@@ -246,6 +269,238 @@ public class Level implements Screen {
 		game.batch.draw(arteCantos, 0, cantoOffsetYL + h, game.porCentoW(144), h);
 		game.batch.draw(arteCantos, w, cantoOffsetYR, -game.porCentoW(144), h);
 		game.batch.draw(arteCantos, w, cantoOffsetYR - h, -game.porCentoW(144), h);
+	}
+	
+	public void setBoxes() {
+		float w = GameManager.width;
+		float h = GameManager.height;
+
+		boxX[0] = w/2 - game.porCentoW(510);
+		boxY[0] = h - game.porCentoH(883);
+		boxW[0] = game.porCentoW(1020);
+		boxH[0] = game.porCentoH(490);
+		
+		boxX[1] = w/2 - game.porCentoW(510);
+		boxY[1] = h - game.porCentoH(199);
+		boxW[1] = 0;
+		boxH[1] = 0;
+		
+		boxX[2] = w/2 - game.porCentoW(510);
+		boxY[2] = h - game.porCentoH(293);
+		boxW[2] = 0;
+		boxH[2] = 0;
+		
+		boxX[3] = boxX[0] + game.porCentoW(70);
+		boxY[3] = boxY[0] + game.porCentoH(400);
+		boxW[3] = game.porCentoW(750);
+		boxH[3] = game.porCentoH(30);
+		
+		boxX[4] = boxX[0] + game.porCentoW(70);
+		boxY[4] = boxY[0] + game.porCentoH(320);
+		boxW[4] = game.porCentoW(850);
+		boxH[4] = game.porCentoH(30);
+		
+		boxX[5] = boxX[0] + game.porCentoW(70);
+		boxY[5] = boxY[0] + game.porCentoH(220);
+		boxW[5] = game.porCentoW(700);
+		boxH[5] = game.porCentoH(30);
+		
+		boxX[6] = boxX[0] + game.porCentoW(70);
+		boxY[6] = boxY[0] + game.porCentoH(120);
+		boxW[6] = game.porCentoW(700);
+		boxH[6] = game.porCentoH(30);
+	}
+	
+	private void menuDePausa() {
+		game.batch.setColor(0,0,0,0.8f);
+		game.batch.draw(game.rect,0,0,GameManager.width,GameManager.height);
+		game.batch.setColor(1,1,1,1);
+		bgm.setVolume(0.5f);
+		String on;
+		
+		game.batch.draw(game.boxPausa, boxX[0], boxY[0], boxW[0], boxH[0]);
+		game.fontP2white.draw(game.batch,"PAUSA", boxX[1], boxY[1]);
+		game.fontP2white.draw(game.batch,"Password: " + this.password, boxX[2], boxY[2]);
+		
+		if (game.sfxOn)
+			on = "Ligado";
+		else
+			on = "Desligado";
+		
+		if (game.mouseColide(this.boxBtn[0]))
+			game.fontP2yellow.draw(game.batch,"Sons: " +  on, boxX[3], boxY[3]);
+		else
+			game.fontP2white.draw(game.batch,"Sons: " +  on, boxX[3], boxY[3]);
+		
+		if (game.bgmOn)
+			on = "Ligado";
+		else
+			on = "Desligado";
+		
+		if (game.mouseColide(this.boxBtn[1]))
+			game.fontP2yellow.draw(game.batch,"Música: " +  on, boxX[4], boxY[4]);
+		else
+			game.fontP2white.draw(game.batch,"Música: " +  on, boxX[4], boxY[4]);
+		
+		if (game.mouseColide(this.boxBtn[2]))
+			game.fontP2yellow.draw(game.batch,"Menu Principal", boxX[5], boxY[5]);
+		else
+			game.fontP2white.draw(game.batch,"Menu Principal", boxX[5], boxY[5]);
+		
+		if (game.mouseColide(this.boxBtn[3]))
+			game.fontP2yellow.draw(game.batch,"Voltar ao Jogo", boxX[6], boxY[6]);
+		else
+			game.fontP2white.draw(game.batch,"Voltar ao Jogo", boxX[6], boxY[6]);
+		
+		if (Gdx.input.isTouched() && pausaTimer == 0) {
+			if (game.mouseColide(this.boxBtn[0])) {
+				if (btnCooldown == 0) {
+					if (game.sfxOn)
+						game.sfxOn = false;
+					else
+						game.sfxOn = true;
+					btnCooldown = 30;
+				}
+			}
+			
+			else if (game.mouseColide(this.boxBtn[1])) {
+				if (btnCooldown == 0) {
+					if (game.bgmOn) {
+						game.bgmOn = false;
+						bgm.pause();
+					}
+					else {
+						game.bgmOn = true;
+						bgm.play();
+					}
+					btnCooldown = 30;
+				}
+			}
+			
+			else if (game.mouseColide(this.boxBtn[2])) {
+				bgm.stop();
+				this.started = false;
+				pausado = false;
+				pausaTimer = 30;
+				this.frase.linhaAtual = 0;
+				this.frase.apagarLinhas();
+				this.frase.criandoLinhas();
+				game.mainMenu.passwordDigitado.append(this.password);
+				game.setScreen(game.mainMenu);
+			}
+			
+			else if (game.mouseColide(this.boxBtn[3])) {
+				pausado = false;
+				pausaTimer = 30;
+			}
+			
+			else if (!game.mouseColide(this.boxBtn[4])) {
+				pausado = false;
+				pausaTimer = 30;
+			}
+		}
+	}
+	
+	private void gameOver() {
+		game.batch.setColor(1,0,0,0.8f);
+		game.batch.draw(game.rect,0,0,GameManager.width,GameManager.height);
+		game.batch.setColor(1,1,1,1);
+		
+		game.batch.draw(game.boxPausa, boxX[0], boxY[0], boxW[0], boxH[0]);
+		game.fontP2white.draw(game.batch,"GAME OVER", boxX[1], boxY[1]);
+		game.fontP2white.draw(game.batch,"Password: " + this.password, boxX[2], boxY[2]);
+		
+		if (game.mouseColide(this.boxBtn[1]))
+			game.fontP2yellow.draw(game.batch,"Tentar Novamente", boxX[4], boxY[4]);
+		else
+			game.fontP2white.draw(game.batch,"Tentar Novamente", boxX[4], boxY[4]);
+		
+		if (game.mouseColide(this.boxBtn[2]))
+			game.fontP2yellow.draw(game.batch,"Menu Principal", boxX[5], boxY[5]);
+		else
+			game.fontP2white.draw(game.batch,"Menu Principal", boxX[5], boxY[5]);
+		
+		if (Gdx.input.isTouched()) {		
+			if (game.mouseColide(this.boxBtn[1])) {
+				bgm.stop();
+				this.started = false;
+				this.frase.linhaAtual = 0;
+				this.frase.apagarLinhas();
+				this.frase.criandoLinhas();
+				gameOverScreen = false;
+			}
+			
+			else if (game.mouseColide(this.boxBtn[2])) {
+				bgm.stop();
+				this.started = false;
+				this.frase.linhaAtual = 0;
+				gameOverScreen = false;
+				this.frase.apagarLinhas();
+				this.frase.criandoLinhas();
+				game.mainMenu.passwordDigitado.append(this.password);
+				game.setScreen(game.mainMenu);
+			}
+		}
+	}
+	
+	private void fimDaTela() {
+		game.batch.setColor(0,0.3f,0,0.8f);
+		game.batch.draw(game.rect,0,0,GameManager.width,GameManager.height);
+		game.batch.setColor(1,1,1,1);
+		
+		game.batch.draw(game.boxPausa, boxX[0], boxY[0], boxW[0], boxH[0]);
+		game.fontP2white.draw(game.batch,"Level concluído!", boxX[1], boxY[1]);
+		if (GameManager.levelAtual < game.levels.size() - 1)
+			game.fontP2white.draw(game.batch,
+					"Password: " + game.levels.get(GameManager.levelAtual + 1).password, boxX[2], boxY[2]);
+		game.fontP2white.draw(game.batch,"Tempo: " +  segundos + " seg.", boxX[3], boxY[3]);
+		game.fontP2white.draw(game.batch,"Pontos: " +  game.player.pontos, boxX[4], boxY[4]);
+		
+		if (game.mouseColide(this.boxBtn[2]))
+			game.fontP2yellow.draw(game.batch,"Menu Principal", boxX[5], boxY[5]);
+		else
+			game.fontP2white.draw(game.batch,"Menu Principal", boxX[5], boxY[5]);
+		
+		if (game.mouseColide(this.boxBtn[3]))
+			game.fontP2yellow.draw(game.batch,"Continuar", boxX[6], boxY[6]);
+		else
+			game.fontP2white.draw(game.batch,"Continuar", boxX[6], boxY[6]);
+		
+		if (Gdx.input.isTouched()) {	
+			if (game.mouseColide(this.boxBtn[2])) {
+				bgm.stop();
+				this.started = false;
+				this.frase.linhaAtual = 0;
+				this.frase.apagarLinhas();
+				this.frase.criandoLinhas();
+				if (GameManager.levelAtual < game.levels.size() - 1)
+					game.mainMenu.passwordDigitado.append(game.levels.get(GameManager.levelAtual + 1).password);
+				else
+					game.mainMenu.passwordDigitado.append(this.password);
+				game.setScreen(game.mainMenu);
+			}
+			
+			else if (game.mouseColide(this.boxBtn[3])) {
+				// Próximo level:
+				if (GameManager.levelAtual < game.levels.size() - 1) {
+					GameManager.levelAtual++;
+					bgm.stop();
+					this.started = false;
+					this.frase.linhaAtual = 0;
+					this.frase.criandoLinhas();
+					game.setScreen(game.levels.get(GameManager.levelAtual));
+				}
+				
+				// Fim do jogo:
+				else { 
+					bgm.stop();
+					this.started = false;
+					this.frase.linhaAtual = 0;
+					this.frase.criandoLinhas();
+					game.setScreen(game.mainMenu);
+				}
+			}
+		}
 	}
 	
 	// Esses métodos são obrigatórios, gerados pelo 'implements Screen'

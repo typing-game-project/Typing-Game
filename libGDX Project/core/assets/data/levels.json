@@ -1,8 +1,8 @@
 {
 	"DEBUG1": {
-		"frase":"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt",
-		"password":"teste",
-		"timer":0,
+		"frase":"Lorem ipsum dolor sit amet, consectetur",
+		"password":"1234567890",
+		"timer":30,
 		"maxVida":40,
 		"bgm":"bgm/LOOP4.wav",
 		"background":"img/bg_green.jpg",
@@ -12,7 +12,7 @@
 	"DEBUG2": {
 		"frase":"Vou escrever uma frase bem longa para ver se está cortando certinho o código de quebrar linhas",
 		"password":"Debug2",
-		"timer":60,
+		"timer":0,
 		"maxVida":40,
 		"bgm":"bgm/LOOP4.wav",
 		"background":"img/bg_red.jpg",

@@ -23,7 +23,7 @@ public class MainMenu implements Screen {
 	private Rectangle[] button;
 	private boolean[] buttonHover;
 	private boolean animandoPassword;
-	private StringBuffer passwordDigitado;
+	public StringBuffer passwordDigitado;
 	private Music bgm;
 	private boolean started;
 	
@@ -41,11 +41,11 @@ public class MainMenu implements Screen {
 		textX = new float[6];
 		button = new Rectangle[5];
 		buttonHover = new boolean[5];
-		animandoPassword = false;
 		passwordDigitado = new StringBuffer();
 		bgm = Gdx.audio.newMusic(Gdx.files.internal("bgm/LOOP6.wav"));
 		bgm.setLooping(true);
-		bgm.play();
+		if (game.bgmOn)
+			bgm.play();
 		for (int i = 0; i < 5; i++) {
 			if (i == 4)
 				button[i] = new Rectangle(boxX[i],boxY,game.porCentoW(1144),boxSize.y);
@@ -67,7 +67,7 @@ public class MainMenu implements Screen {
 			textX[i] = boxX[i] + game.porCentoW(80);
 			button[i].x = boxX[i];
 		}
-		textX[5] = textX[4] + game.porCentoW(380);
+		textX[5] = textX[4] + game.porCentoW(450);
 	}
 	
 	public void renderBoxes() {
@@ -94,11 +94,12 @@ public class MainMenu implements Screen {
 	private void onStart() {
 		if (!started) {
 			game.resetMouse();
-			bgm.play();
+			if (game.bgmOn)
+				bgm.play();
 			started = true;
 			originX = 0;
-			if (passwordDigitado.length() > 0)
-				passwordDigitado.delete(0, passwordDigitado.length());
+			animandoPassword = false;
+			recalcularBoxPos();
 		}
 	}
 	
@@ -150,7 +151,7 @@ public class MainMenu implements Screen {
 			originX += 40;
 			recalcularBoxPos();
 		}
-			
+		
 		renderBoxes();
 		game.trocaCursor();
 		
@@ -164,6 +165,8 @@ public class MainMenu implements Screen {
 						case 0:
 							bgm.stop();
 							this.started = false;
+							if (passwordDigitado.length() > 0)
+								passwordDigitado.delete(0, passwordDigitado.length());
 							GameManager.levelAtual = 0;
 							game.setScreen(game.levels.get(0));
 				            break;
@@ -226,15 +229,19 @@ public class MainMenu implements Screen {
 			if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
 				for (int i = 0; i < game.levels.size(); i++) {
 					if (passwordDigitado.toString().equals(game.levels.get(i).password)) {
-						game.acertoSnd[game.random.nextInt(3)].play();
+						if (game.sfxOn)
+							game.acertoSnd[game.random.nextInt(3)].play();
 						bgm.stop();
 						this.started = false;
 						game.hideCursor = false;
+						if (passwordDigitado.length() > 0)
+							passwordDigitado.delete(0, passwordDigitado.length());
 						GameManager.levelAtual = i;
 						game.setScreen(game.levels.get(i));
 					}
 					else {
-						game.erroSnd[game.random.nextInt(2)].play();
+						if (game.sfxOn)
+							game.erroSnd[game.random.nextInt(2)].play();
 						game.batch.setColor(1,0,0,1);
 						game.batch.draw(game.rect, 0,0,GameManager.width,GameManager.height);
 					}
