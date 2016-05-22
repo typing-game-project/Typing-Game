@@ -51,7 +51,7 @@ public class GameManager extends Game {
 	public boolean hideCursor;
 	public Random random;
 	public static int levelAtual;
-	public nineSlice btn;
+	public NineSlice btn;
 	
 	@Override
 	public void create () {
@@ -99,7 +99,7 @@ public class GameManager extends Game {
 		boxPausa = new Texture(Gdx.files.internal("img/box-pause.png"));
 		logo = new Texture(Gdx.files.internal("img/logo.png"));
 		timerBG = new Texture(Gdx.files.internal("img/timerBG.png"));
-		btn = new nineSlice(boxPq, 66, 74);
+		btn = new NineSlice(boxPq, 66, 74);
 		
 		// Animações
 		animAcerto = new Spritesheet(texAnimAcerto, 6, 336, 352, 2, 3);

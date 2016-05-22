@@ -1,26 +1,25 @@
 package com.brunomarcos.typinggame;
 
 import java.util.ArrayList;
-//import java.util.Random;
 
 import com.badlogic.gdx.math.Vector2;
 
-public class Frase {	
-	public String fraseCompleta;
-	public StringBuffer frase;
-	public Vector2 frasePos;
+public class Frase {
+	private final int tamanhoChar = 70;
+	private String fraseCompleta;
+	private StringBuffer frase;
+	private Vector2 frasePos;
 	private float offsetX;
 	private float[][] offsetY;
 	private Animado animadoX;
 	private ArrayList<ArrayList<Animado>> animadoY;
-	public ArrayList<StringBuffer> linha;
-	public boolean errou;
-	public int limiteLinha;
-	public int indiceLinha;
-	private final int tamanhoChar = 70;
-	public boolean acertou = false;
+	private int limiteLinha;
+	private int indiceLinha;
 	private StringBuffer linhaSemEspaco;
 	public int linhaAtual;
+	public boolean acertou = false;
+	public ArrayList<StringBuffer> linha;
+	public boolean errou;
 	
 	public Frase(String frase) {
 		this.fraseCompleta = frase;
@@ -73,14 +72,6 @@ public class Frase {
 					}
 					else
 						this.linha.get(indiceLinha).deleteCharAt(j);
-					//TODO: Criar linha para caso a palavra seja tão grande que não dê para cortá-la
-					/*
-					if(linha.get(indiceLinha).length() == 1) {
-						this.linha.get(indiceLinha).deleteCharAt(0);
-						this.linha.get(indiceLinha).append(linhaSemEspaco.toString());
-						
-					}
-					*/
 				}
 			}
 			if (terminou) {
@@ -94,7 +85,6 @@ public class Frase {
 			this.linha.get(indiceLinha).deleteCharAt(0);
 		indiceLinha += 1;
 		if (i < frase.length()) {
-			//linhaSemEspaco.delete(0, linhaSemEspaco.length());
 			criarLinha(indice);
 		}
 	}

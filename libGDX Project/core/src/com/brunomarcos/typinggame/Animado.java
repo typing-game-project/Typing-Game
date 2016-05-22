@@ -20,7 +20,6 @@ public class Animado {
 	}
 	
 	public float intervalo(float start, float end, float step, int indiceSequencia) {
-		//TODO Sequências em loop não está funcionando
 		if (sequencia[indiceSequencia] && play) {
 			if (varF >= start && varF < end)
 				varF += step;

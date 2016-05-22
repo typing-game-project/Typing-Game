@@ -481,6 +481,7 @@ public class Level implements Screen {
 			}
 			
 			else if (game.mouseColide(this.boxBtn[3])) {
+				
 				// Próximo level:
 				if (GameManager.levelAtual < game.levels.size() - 1) {
 					GameManager.levelAtual++;
