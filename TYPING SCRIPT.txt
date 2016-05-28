@@ -10,19 +10,21 @@ ANIMAÇÃO: [UMA ASSISTENTE APARECE NA TELA]
 
 ASS - Olá! Prazer em te conhecer. 
 - Bem vindo ao nosso mundo digital!
-- Meu nome é [A DECIDIR], mas gosto que me chamem de [A DECIDIR].
+- Meu nome é Laura Cruz, mas gosto que me chamem de Tiazinha do Ban.
 - Este mundo... É acessado também por outros usuários com o propósito de entretenimento.
-- Já eu... Minha função é estudar o comportamento destes usuários.
+- Já eu... Bem, devo manter o controle disso tudo.
+- Ultimamente não estou conseguindo dar conta de todas as URLs, e preciso que você as revise e me mande relatórios do que encontrou.
 - Agora, conte-me um pouco sobre você. Você é um garoto? Ou uma garota? BRINCADEIRA!
-- Enfim, chega de blá blá blá blá. Você vai ganhar acesso ao nosso mundo neste momento, e deverá se aventurar nele para que eu te ajude e mantenha meu emprego.
-- Você receberá uma aventura e deverá seguir seu próprio caminho. Obrigada, de nada.
+- Enfim, chega de blá blá blá blá. Você vai ganhar acesso ao nosso mundo neste momento.
+- Nem preciso dizer que se você não se empenhar, perderá seu emprego, certo?
+- Você irá para uma URL e deverá escolher seu próprio caminho a partir dela. Obrigada, de nada.
 
-ANIMAÇÃO: [EMAIL RECEBIDO E ABERTO, BOOT NO PROGRAMA DROGADEAVENTURA.EXE]
+ANIMAÇÃO: [EMAIL RECEBIDO E ABERTO, BOOT NO PROGRAMA BOSTADEEMPREGO.EXE]
 
 INICIO DO LOOP DO JOGO.
 
 ANIMAÇÃO EM CASO DE FALHA: [ASSISTENTE]
-- Olha, pra continuar a aventura você terá que tentar esta passagem novamente. 
+- Mas que droga é essa? Vou te dar mais uma chance para manter seu emprego. Quer tentar novamente? 
 - Mas dessa vez tente não errar, pois não tenho paciência com quem está começando.
 
 ANIMAÇÃO EM CASO DE SUCESSO: [TEMOS QUE DECIDIR SE COLOCAREMOS ANIMAÇÃO A CADA FASE, OU A CADA X FASES, POIS É TRAMPO A MAIS QUE PODE FICAR BACANA, MAS PODE CUSTAR MUITO TEMPO]
@@ -30,4 +32,84 @@ ANIMAÇÃO EM CASO DE SUCESSO: [TEMOS QUE DECIDIR SE COLOCAREMOS ANIMAÇÃO A CADA F
 
 FASES:
 
-1- 
+1- URL DE INTRODUÇÃO
+Olá. Esta página é um pequeno teste de suas capacidades.
+Temos uma lista de páginas que podem conter erros causados por bazingueiros.
+Ao digitar o conteúdo que você lê, um relatório é preenchido e enviado ao time do Life Sim OS.
+Agora você deve escolher qual página deseja averiguar.
+Tudo o que você fizer será registrado e lido por um de seus gestores. Boa sorte.
+
+2 - URL Egito Antigo
+Os egípcios se desenvolveram de 3200 aC até 32 aC nas margens do rio Nilo, que os favorecia com facilidade de transporte em barcas e com fertilização na agricultura.
+Assim como uma cebola, a civilização possuía diversas camadas. Faraós, que eram considerados quase Deuses, pois encarnavam nas esfinges e gritavam Sou Faraó, Sou Faraó!
+Havia também os sacerdotes, militares, escribas (estes eram os que desenhavam aquele monte de coisa nas paredes e pergaminhos), escravos, etc.
+
+3 - URL Terrine de Chocolate
+E hoje ensinaremos a fazer a receita do Terrine de Chocolate e o Segredo da Calda Brilhante.
+Numa batedeira coloque manteiga gelada, o quanto quiser. Peneire açucar de confeiteiro, e coloque também. Aí você pega gemas de ovo e joga lá também.
+Fique batendo isso durante uns dez minutos, e vai colocando chocolate meio amargo derretido enquanto bate. Depois coloque pedaços de chocolate ao leite e claras batidas em neve, misturando com um batedor de arame, seja lá o que isso for.
+
+4 - URL Rhythm of the Night
+The Rhythm of the Night is a song by a italian band, named Corona. Corona isn't from Brazil, but the only singer, Olga, is. This hit was released in 1993 and it's considered the Friday's song, because everybody in Italia listen to it on friday nights. Because of that, it is until now a great success, and it's on the highest positions in various singles charts. The song is about a woman that loves friday nights and likes to give love and joy on that nights.
+
+5 - URL Civilização Maia
+Os Maias foram uma cultura mesoamericana pré-colombiana, e não são os criadores do programa de modelagem 3D. Eles utilizavam uma língua escrita que podia representar o idioma falado no mesmo grau de eficiência do que o idioma escrito do velho mundo, termo dado ao mundo conhecido pelos europeus até ao século XV. São notáveis pela sua arte estranha, arquitetura louca, matemática bizarra e sistemas astronômicos, não os culpem pelo horóscopo errado pois eles não inventaram isso. Se desenvolveram durante o período pré clássico, entre 1000 aC e 250 dC, e atingiram o estado mais elevado de desenvolvimento durante o período clássico, entre 250 dC e 900 dC.
+
+6 - URL A Internet
+A rede mundial de computadores, ou internet, surgiu em plena Guerra Fria. Criada com objetivos militares, seria uma das formas das forças armadas americanas de manter as comunicações em caso das inimigas acabassem com os meios convencionais de telecomunicações, o twitter. Nas décadas de 70 e 80, além de ser utilizada para fins militares, a internet também era usada pra baixar muitas músicas piratas da Madonna, fato que influenciou até hoje a decisão das operadoras em colocar limite de dados nos planos móveis.
+
+7 - URL HISTÓRICA 3
+Jack é um jovem pobre que na mesa de jogo ganha uma passagem para a primeira viagem do transatlântico Titanic. É um barco gigante de luxo, que nem Deus conseguiria afundar. Jack conhece no navio a Rose, não a velha do começo do filme, ela estava mais nova naquela época. Ela era noiva de um riquinho pois sua mãe queria que ela desse o golpe do baú. Ela é tão louca, que tentou se jogar do Titanic pois não aguentava a vida que vivia, foi onde Jack a impediu de se jogar para eles começarem um romance. O filme é baseado em fatos reais, menos a cena onde a velha joga a jóia Coração do Oceano na água.
+
+8 - URL Xuxa Hits - Don't Wanna
+What in the world is fucking thing? Do you need some fucking tweezers to put that little thing away? That has got to be the smallest dick I have ever seen in my whole life. Get the fuck outta here, hahaha! Innie weeny, teeny weeny, shriveled little short dick man. Don't, don't, don't, don't, don't, don't wanna, don't wanna, don't wanna, don't wanna no short dick man.
+
+9 - URL Terrine de Chocolate 2
+Agora continuaremos nossa receita. Joga tudo que você misturou antes numa forma de bolo forrada com plástico, e coloca no freezer por uma hora junto com o santinho.
+Depois tira da forma e coloque uma parte da calda, que ensinaremos depois. Coloca lá no freezer por 5 minutos e tire. Jogue o resto da calda e bote na geladeira por uma hora.
+
+10 - URL Calda Brilhante
+Finalmente a calda brilhante! Numa panela em fogo médio, aqueça água com açucar refinado e deixe formar uma caldinha bem simples. Tire do fogo, adicione creme de leite, cacau em pó peneirado e mexa com o treco de arame lá, de novo. Acrescente gelatina hidratada e misture tudo. Deixe esfriar e jogue no bolo! Recomendamos a calda SOMENTE com o terrine, pois ele abate o gosto horrível da calda.
+
+12 - URL Secreta dos Admins
+LifeCorp: Empresa: Acontece o seguinte, ovjetivamente falando, com o negócio que o Telefônecas fez, vai todo mundo deletar.
+Juquinha do Ban: Exatamente, e não vai sobrar muito conteúdo. O Marcinho e a Obebeth vão fazer a limpeza. Seletiva, mas vão fazer.
+LifeCorp: Eu estou muito preocupado porque eu acho que... O Jorginho da 12 está a fim de pegar vocês, e acha que eu sou o caminho.
+
+13 - URL Secreta dos Admins 2
+Juquinha do Ban: Mas como é que está a situação?
+
+LifeCorp: Não tem nada, não pegaram nada, mas o Jorginho da 12 quer jogar tudo pra Microsoft. Como não tem nada nós estamos desligados.
+
+Juquinha do Ban: É, não tem conexão né... Literalmente, porque a Telefônecas...
+
+LifeCorp: Não tem conexão. Aí ele joga pra Microsoft. Aí ferrou, ferrou pra todo mundo. Como montar uma estrutura pra evitar que sejamos pegos? Se eu for pego...
+
+14 - URL Secreta dos Admins 3
+Juquinha do Ban: O que vocês acham? Como é que...
+
+LifeCorp: Nós queríamos discutir com você. Chegamos a essa conclusão essa semana. O Jorginho da 12 já acha que somos o caixa 2. Ele concluiu que nós roubamos todo o dinheiro dos usuários. E ele está visando também o Ronan e você.
+
+Juquinha do Ban: Mas ele não vai nos encontrar, né?
+
+LifeCorp: Não encontrou ainda, e não vai encontrar, pois não tem nada. Como tem aquela limpeza da Paulete dos 500Tbs, e tem a limpeza do Rozivaldo, que é toda tosca, ele vai ter muito o que procurar.
+
+15 - URL Secreta dos Admins 4
+Juquinha do Ban: Vocês conversaram com o Rozivaldo?
+
+LifeCorp: Não, queríamos conversar com você primeiro, pois é o unico que sabe do local, tenho maior intimidade. Depois vou conversar com a Samantão e o Rozivaldo. Estou convencido, com essa sinalização que o Jorginho da 12 deu...
+
+Juquinha do Ban: Temos que vazar pois ele vai atacar.
+
+LifeCorp: Não temos dúvidas. Ele é um cara raivoso, rancoroso e etc. Então como é que ele age? Nunca vai encontrar nada nosso. A Torre de Londres vai ser o local mais seguro pra gente.
+
+Juquinha do Ban: Torre de Londres.
+
+
+ANIMAÇÃO: [LAURA CRUZ APARECE NA TELA]
+
+ASS - Olá!!!! Voltei!!! 
+- Recebi cada babado nos teus relatórios...
+- Não se preocupe, eu já fiz a denúncia desse caixa 2 dos administradores corruptos, te enviei o B.O. por e-mail.
+- Parabéns! Você se deu bem na sua tarefa, e vai continuar a fazer isso por bastante tempo.
+- Agora chega de papo, vá trabalhar que eu tenho mais o que fazer e não tenho paciência pra quem tá começando.
