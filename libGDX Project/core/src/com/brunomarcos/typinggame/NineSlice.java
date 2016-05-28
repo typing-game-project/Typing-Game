@@ -5,13 +5,13 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class nineSlice {
+public class NineSlice {
 	private float[] x;
 	private float[] y;
 	private TextureRegion[] texArray;
 	private Animation animacao;
 
-	public nineSlice(Texture textura, float cantoWidth, float cantoHeight) {
+	public NineSlice(Texture textura, float cantoWidth, float cantoHeight) {
 		this.texArray = new TextureRegion[9];
 		this.x = new float[4];
 		this.y = new float[4];

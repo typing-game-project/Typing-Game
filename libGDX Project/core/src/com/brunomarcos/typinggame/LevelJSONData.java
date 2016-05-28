@@ -21,14 +21,6 @@ public class LevelJSONData implements Json.Serializable {
 	public Map<String,Music> bgmFile;
 	public ArrayList<String> arteCantos;
 	public Map<String,Texture> arteCantosTex;
-	
-	// TODO: Variáveis a implementar:
-	public ArrayList<String> personagens;
-	public ArrayList<Integer> personagensID;
-	public Map<String,Texture> personagensTex;
-	public Map<Integer,Spritesheet> personagensSpritesheet;
-	public ArrayList<ArrayList<String>> falas;
-	//
 
 	@Override
 	public void write(Json json) {}

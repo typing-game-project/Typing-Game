@@ -8,12 +8,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Spritesheet {
 	private TextureRegion[] texArray;
-	public float width;
-	public float height;
 	private Animation animacao;
 	private int frames;
-	public float velocidade;
 	private float stateTime;
+	public float width;
+	public float height;
+	public float velocidade;
 
 	public Spritesheet(Texture textura, int frames, int width, int height, int linhas, int colunas){
 		this.frames = frames;
