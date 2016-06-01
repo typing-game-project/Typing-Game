@@ -11,6 +11,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 
 public class LevelJSONData implements Json.Serializable {
+	public ArrayList<String> titulo;
 	public ArrayList<String> frase;
 	public ArrayList<String> password;
 	public ArrayList<Integer> timer;
@@ -27,6 +28,7 @@ public class LevelJSONData implements Json.Serializable {
 
 	@Override
 	public void read(Json json, JsonValue jsonData) {
+		titulo = new ArrayList<String>();
 		frase = new ArrayList<String>();
 		password = new ArrayList<String>();
 		timer = new ArrayList<Integer>();
@@ -39,6 +41,7 @@ public class LevelJSONData implements Json.Serializable {
 		arteCantosTex = new HashMap<String,Texture>();
 		
 		for (int i = 0; i < jsonData.size; i++) {
+			titulo.add(i, jsonData.get(i).name);
 			for (int j = 0; j < jsonData.get(i).size; j++) {
 				JsonValue jv = jsonData.get(i).get(j);
 				if (jv.name.equals("frase"))

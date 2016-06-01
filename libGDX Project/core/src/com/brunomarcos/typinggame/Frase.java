@@ -15,16 +15,15 @@ public class Frase {
 	private ArrayList<ArrayList<Animado>> animadoY;
 	private int limiteLinha;
 	private int indiceLinha;
-	private StringBuffer linhaSemEspaco;
 	public int linhaAtual;
 	public boolean acertou = false;
 	public ArrayList<StringBuffer> linha;
+	private StringBuffer linhaSemEspaco;
 	public boolean errou;
 	
 	public Frase(String frase) {
 		this.fraseCompleta = frase;
 		this.frase = new StringBuffer();
-		this.linhaSemEspaco = new StringBuffer();
 		this.frase.append(this.fraseCompleta);
 		this.frasePos = new Vector2();
 		this.errou = false;
@@ -32,6 +31,7 @@ public class Frase {
 		this.linha = new ArrayList<StringBuffer>();
 		this.animadoY = new ArrayList<ArrayList<Animado>>();
 		limiteLinha = (GameManager.width - (3*63)) / 63;
+		linhaSemEspaco = new StringBuffer();
 		linhaAtual = 0;
 		criandoLinhas();
 	}
@@ -56,10 +56,13 @@ public class Frase {
 		this.linha.add(new StringBuffer());
 		this.animadoY.add(new ArrayList<Animado>());
 		
+		boolean quebraDeLinha = false;
 		boolean terminou = false;
 		int i = indice;
 		while (i < frase.length()) {
-			if (i <= limiteLinha + indice) {
+			if (i <= limiteLinha + indice && !quebraDeLinha) {
+				if (frase.charAt(i) == '¬')
+					quebraDeLinha = true;
 				this.linha.get(indiceLinha).append(frase.charAt(i));
 				this.linhaSemEspaco.append(frase.charAt(i));
 			}
@@ -70,11 +73,21 @@ public class Frase {
 						terminou = true;
 						break;
 					}
+					else if (j == 1) {
+						this.linha.get(indiceLinha).deleteCharAt(j);
+						this.linha.get(indiceLinha).append(this.linhaSemEspaco);
+						indice += this.linhaSemEspaco.length();
+						terminou = true;
+						break;
+					}
 					else
 						this.linha.get(indiceLinha).deleteCharAt(j);
 				}
 			}
 			if (terminou) {
+				int ultimo = this.linha.get(indiceLinha).length() - 1;
+				if (this.linha.get(indiceLinha).charAt(ultimo) == '¬')
+					this.linha.get(indiceLinha).deleteCharAt(ultimo);
 				if (this.linha.get(indiceLinha).charAt(0) == ' ')
 					this.linha.get(indiceLinha).deleteCharAt(0);
 				break;
@@ -84,6 +97,7 @@ public class Frase {
 		if (this.linha.get(indiceLinha).charAt(0) == ' ')
 			this.linha.get(indiceLinha).deleteCharAt(0);
 		indiceLinha += 1;
+		this.linhaSemEspaco.delete(0, this.linhaSemEspaco.length());
 		if (i < frase.length()) {
 			criarLinha(indice);
 		}

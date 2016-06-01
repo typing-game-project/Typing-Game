@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Level implements Screen {
 	public final GameManager game;
+	private String titulo;
 	public String password;
 	private int[] timer;
 	public Frase frase;
@@ -38,9 +39,12 @@ public class Level implements Screen {
 	private long milisegundos;
 	private long segundos;
 	private long segundoAnterior;
+	private int introTimer;
+	private boolean acabouIntro;
 	
 	public Level(final GameManager game, LevelJSONData LJD, int i) {
 		this.game = game;
+		this.titulo = LJD.titulo.get(i);
 		this.frase = new Frase(LJD.frase.get(i));
 		this.password = LJD.password.get(i);
 		this.timer = new int[2]; 
@@ -95,6 +99,8 @@ public class Level implements Screen {
 			segundos = 0;
 			milisegundos = 0;
 			segundoAnterior = System.currentTimeMillis();
+			introTimer = 200;
+			acabouIntro = false;
 		}
 	}
 	
@@ -111,125 +117,137 @@ public class Level implements Screen {
 		onStart();
 		animarBG();
 		
-		game.batch.draw(game.hud, 0, h - hudHeight, w, hudHeight);
-		
-		// Loop para imprimir as letras presentes na frase
-		frase.imprimeFrase(game);
-		
-		float topoTexto = h - game.porCentoH(80);
-		
-		// Opções aqui
-		game.batch.draw(game.btnOpcoes, w - game.porCentoW(155), h - game.porCentoH(150), game.porCentoW(120), game.porCentoH(100));
-		game.batch.draw(game.div, w - game.porCentoW(200), h - game.porCentoH(176), game.porCentoW(35), game.porCentoH(152));
-		
-		// Colocando os zeros do placar
-		int digitos = Integer.toString(game.player.pontos).length();
-		for (int i = 12; i > digitos; i--)
-			placar.append("0");
-		
-		// Imprimindo o placar
-		game.fontP2white.draw(game.batch, placar + Integer.toString(game.player.pontos), w/2 + game.porCentoW(100), topoTexto);
-		
-		// Limpando o placar
-		for (int i = 0; i < 12; i++) {
-			try {
-				placar.deleteCharAt(0);
-			}
-			catch (Exception e) {
-				break;
-			}
-		}
-		
-		// Imprime o Multiplicador
-		game.batch.draw(game.div, w/2 + game.porCentoW(35), h - game.porCentoH(176), game.porCentoW(35), game.porCentoH(152));
-		game.fontP2white.draw(game.batch, "x" + Integer.toString(game.player.multiplicador), w/2 - game.porCentoW(90), topoTexto);
-		
-		// Vida piscando
-		if (game.player.vida < 7){
-			if (piscaVida) {
-				game.batch.setColor(1,0,0,1);
-				piscaVida = false;
-			}
-			else {
-				game.batch.setColor(1,1,1,1);
-				piscaVida = true;
-			}
-		}
-		
-		// Imprime a vida
-		for (int i = 0; i < game.player.vida; i++) {
-			if (i < 17)
-				game.batch.draw(game.heart, game.porCentoW(34 + (47 * i)), h - game.porCentoH(96),game.porCentoW(40), game.porCentoH(56));
-			else
-				game.batch.draw(game.heart, game.porCentoW(34 + (47 * (i - 17))), h - game.porCentoH(160),game.porCentoW(40), game.porCentoH(56));	
-		}
-		
-		game.batch.setColor(1,1,1,1);
-		game.batch.draw(game.div, game.porCentoW(848), h - game.porCentoH(176), game.porCentoW(35), game.porCentoH(152));
-		
-		if (game.mouseColide(btnOpcoesRect) && Gdx.input.isTouched()) {
-			if (!pausado && this.pausaTimer == 0) {
-				pausado = true;
-				pausaTimer = 30;
-			}
-		}
-		
-		if (game.player.vida == 0)
-			gameOverScreen = true;
-		
-		else if (timer[1] > 0 && this.timer[0] == 0)
-			gameOverScreen = true;
-		
-		else if (!Level.pausado) {
-			try {
-				game.player.confereAcerto(game, this.frase);
-				if(this.frase.linha.get(0).length() == 0) {
-					this.frase.linha.remove(0);
-					this.frase.linhaAtual++;
-				}
-			}
-			
-			catch(Exception e) {
-				sucessoScreen = true;
-			}
-		}
-		
-		if (timer[1] > 0) {
-			game.batch.draw(game.timerBG, w - game.porCentoW(148 + 150), game.porCentoH(50), 148, 152);
-			game.fontP2black.draw(game.batch, Long.toString(timer[0]),
-					w - game.porCentoW(148 + 90), game.porCentoH(165));
-		}
-		
-		if (gameOverScreen)
-			gameOver();
-		
-		if (sucessoScreen)
-			fimDaTela();
-		
-		if (pausado) {
-			menuDePausa();
+		if (!acabouIntro) {
+			String line1 = "Level: " + Integer.toString(GameManager.levelAtual + 1);
+			game.fontP2white.draw(game.batch, line1, w/2 - game.porCentoW(148), h/2);
+			game.fontP2white.draw(game.batch, this.titulo, w/2 - game.porCentoW(407), h/2 - game.porCentoH(50));
+					
+			introTimer--;
+			if (introTimer <= 0)
+				acabouIntro = true;
 		}
 		
 		else {
-			bgm.setVolume(1.0f);
-		}
-		
-		if (pausaTimer > 0)
-			pausaTimer--;
-		
-		if (btnCooldown > 0)
-			btnCooldown--;
-		
-		game.trocaCursor();
-		
-		if (!sucessoScreen && !pausado && !gameOverScreen) {
-			milisegundos += System.currentTimeMillis() - segundoAnterior;
-			if (milisegundos / 1000 > segundos) {
-				timer[0]--;
+			game.batch.draw(game.hud, 0, h - hudHeight, w, hudHeight);
+			
+			// Loop para imprimir as letras presentes na frase
+			frase.imprimeFrase(game);
+			
+			float topoTexto = h - game.porCentoH(80);
+			
+			// Opções aqui
+			game.batch.draw(game.btnOpcoes, w - game.porCentoW(155), h - game.porCentoH(150), game.porCentoW(120), game.porCentoH(100));
+			game.batch.draw(game.div, w - game.porCentoW(200), h - game.porCentoH(176), game.porCentoW(35), game.porCentoH(152));
+			
+			// Colocando os zeros do placar
+			int digitos = Integer.toString(game.player.pontos).length();
+			for (int i = 12; i > digitos; i--)
+				placar.append("0");
+			
+			// Imprimindo o placar
+			game.fontP2white.draw(game.batch, placar + Integer.toString(game.player.pontos), w/2 + game.porCentoW(100), topoTexto);
+			
+			// Limpando o placar
+			for (int i = 0; i < 12; i++) {
+				try {
+					placar.deleteCharAt(0);
+				}
+				catch (Exception e) {
+					break;
+				}
 			}
-			segundos = milisegundos / 1000;
-			segundoAnterior = System.currentTimeMillis();
-		}
+			
+			// Imprime o Multiplicador
+			game.batch.draw(game.div, w/2 + game.porCentoW(35), h - game.porCentoH(176), game.porCentoW(35), game.porCentoH(152));
+			game.fontP2white.draw(game.batch, "x" + Integer.toString(game.player.multiplicador), w/2 - game.porCentoW(90), topoTexto);
+			
+			// Vida piscando
+			if (game.player.vida < 7){
+				if (piscaVida) {
+					game.batch.setColor(1,0,0,1);
+					piscaVida = false;
+				}
+				else {
+					game.batch.setColor(1,1,1,1);
+					piscaVida = true;
+				}
+			}
+			
+			// Imprime a vida
+			for (int i = 0; i < game.player.vida; i++) {
+				if (i < 17)
+					game.batch.draw(game.heart, game.porCentoW(34 + (47 * i)), h - game.porCentoH(96),game.porCentoW(40), game.porCentoH(56));
+				else
+					game.batch.draw(game.heart, game.porCentoW(34 + (47 * (i - 17))), h - game.porCentoH(160),game.porCentoW(40), game.porCentoH(56));	
+			}
+			
+			game.batch.setColor(1,1,1,1);
+			game.batch.draw(game.div, game.porCentoW(848), h - game.porCentoH(176), game.porCentoW(35), game.porCentoH(152));
+			
+			if (game.mouseColide(btnOpcoesRect) && Gdx.input.isTouched()) {
+				if (!pausado && this.pausaTimer == 0) {
+					pausado = true;
+					pausaTimer = 30;
+				}
+			}
+			
+			if (game.player.vida == 0)
+				gameOverScreen = true;
+			
+			else if (timer[1] > 0 && this.timer[0] == 0)
+				gameOverScreen = true;
+			
+			else if (!Level.pausado) {
+				try {
+					game.player.confereAcerto(game, this.frase);
+					if(this.frase.linha.get(0).length() == 0) {
+						this.frase.linha.remove(0);
+						this.frase.linhaAtual++;
+					}
+				}
+				
+				catch(Exception e) {
+					sucessoScreen = true;
+				}
+			}
+			
+			if (timer[1] > 0) {
+				game.batch.draw(game.timerBG, w - game.porCentoW(148 + 150), game.porCentoH(50), 148, 152);
+				game.fontP2black.draw(game.batch, Long.toString(timer[0]),
+						w - game.porCentoW(148 + 90), game.porCentoH(165));
+			}
+			
+			if (gameOverScreen)
+				gameOver();
+			
+			if (sucessoScreen)
+				fimDaTela();
+			
+			if (pausado) {
+				menuDePausa();
+			}
+			
+			else {
+				bgm.setVolume(1.0f);
+			}
+			
+			if (pausaTimer > 0)
+				pausaTimer--;
+			
+			if (btnCooldown > 0)
+				btnCooldown--;
+			
+			game.trocaCursor();
+			
+			if (!sucessoScreen && !pausado && !gameOverScreen) {
+				milisegundos += System.currentTimeMillis() - segundoAnterior;
+				if (milisegundos / 1000 > segundos) {
+					timer[0]--;
+				}
+				segundos = milisegundos / 1000;
+				segundoAnterior = System.currentTimeMillis();
+			}
+		}			
 		
 		game.batch.end();
 	}

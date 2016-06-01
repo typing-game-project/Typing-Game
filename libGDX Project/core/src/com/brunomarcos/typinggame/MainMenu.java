@@ -36,13 +36,13 @@ public class MainMenu implements Screen {
 		originX = 0;
 		boxY = game.porCentoH(100);
 		margemBox = game.porCentoW(100);
-		textY = game.porCentoH(240);
+		textY = (boxY + boxSize.y) - game.porCentoH(100);
 		boxX = new float[5];
 		textX = new float[6];
 		button = new Rectangle[5];
 		buttonHover = new boolean[5];
 		passwordDigitado = new StringBuffer();
-		bgm = Gdx.audio.newMusic(Gdx.files.internal("bgm/LOOP6.wav"));
+		bgm = Gdx.audio.newMusic(Gdx.files.internal("bgm/LOOP6.mp3"));
 		bgm.setLooping(true);
 		if (game.bgmOn)
 			bgm.play();
