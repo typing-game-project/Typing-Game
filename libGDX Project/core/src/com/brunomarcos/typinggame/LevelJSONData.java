@@ -17,12 +17,12 @@ public class LevelJSONData implements Json.Serializable {
 	public ArrayList<Integer> timer;
 	public ArrayList<Integer> maxVida;
 	public ArrayList<String> bg;
-	public Map<String,Texture> bgTex;
 	public ArrayList<String> bgm;
-	public Map<String,Music> bgmFile;
 	public ArrayList<String> arteCantos;
+	public Map<String,Texture> bgTex;
 	public Map<String,Texture> arteCantosTex;
-
+	public Map<String,Music> bgmFile;
+	
 	@Override
 	public void write(Json json) {}
 

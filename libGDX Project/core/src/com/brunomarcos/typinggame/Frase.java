@@ -15,10 +15,10 @@ public class Frase {
 	private ArrayList<ArrayList<Animado>> animadoY;
 	private int limiteLinha;
 	private int indiceLinha;
+	private StringBuffer linhaSemEspaco;
 	public int linhaAtual;
 	public boolean acertou = false;
 	public ArrayList<StringBuffer> linha;
-	private StringBuffer linhaSemEspaco;
 	public boolean errou;
 	
 	public Frase(String frase) {

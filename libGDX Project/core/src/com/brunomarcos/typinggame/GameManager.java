@@ -14,6 +14,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Json;
 
 public class GameManager extends Game {
+	private Texture texAnimAcerto;
+	private Texture cursor;
+	private Json json;
+	private LevelJSONData levelJD;
+	private Vector2 mousePos;
 	public SpriteBatch batch;
 	public BitmapFont fontP2white;
 	public BitmapFont fontP2black;
@@ -29,8 +34,6 @@ public class GameManager extends Game {
 	public Texture btnOpcoes;
 	public Texture div;
 	public Texture heart;
-	private Texture texAnimAcerto;
-	private Texture cursor;
 	public Texture bgLetras;
 	public Texture boxPq;
 	public Texture boxGd;
@@ -43,11 +46,8 @@ public class GameManager extends Game {
 	public static int height;
 	public Sound[] erroSnd;
 	public Sound[] acertoSnd;
-	private Json json;
-	private LevelJSONData levelJD;
 	public MainMenu mainMenu;
 	public ArrayList<Level> levels;
-	private Vector2 mousePos;
 	public boolean hideCursor;
 	public Random random;
 	public static int levelAtual;
