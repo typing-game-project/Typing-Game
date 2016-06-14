@@ -119,8 +119,8 @@ public class Level implements Screen {
 		
 		if (!acabouIntro) {
 			String line1 = "Level: " + Integer.toString(GameManager.levelAtual + 1);
-			game.fontP2white.draw(game.batch, line1, w/2 - game.porCentoW(148), h/2);
-			game.fontP2white.draw(game.batch, this.titulo, w/2 - game.porCentoW(407), h/2 - game.porCentoH(50));
+			game.fontP2white.draw(game.batch, line1, game.porCentoW(200), h/2);
+			game.fontP2white.draw(game.batch, this.titulo, game.porCentoW(200), h/2 - game.porCentoH(50));
 					
 			introTimer--;
 			if (introTimer <= 0)
@@ -214,7 +214,7 @@ public class Level implements Screen {
 			if (timer[1] > 0) {
 				game.batch.draw(game.timerBG, w - game.porCentoW(148 + 150), game.porCentoH(50), 148, 152);
 				game.fontP2black.draw(game.batch, Long.toString(timer[0]),
-						w - game.porCentoW(148 + 90), game.porCentoH(165));
+						w - game.porCentoW(148 + 120), game.porCentoH(140));
 			}
 			
 			if (gameOverScreen)

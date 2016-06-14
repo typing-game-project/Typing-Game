@@ -52,6 +52,8 @@ public class GameManager extends Game {
 	public Random random;
 	public static int levelAtual;
 	public NineSlice btn;
+	public static boolean creditos;
+	public static int creditosTimer;
 	
 	@Override
 	public void create () {
@@ -76,6 +78,8 @@ public class GameManager extends Game {
 		mousePos = new Vector2(width/2,height/2);
 		hideCursor = false;
 		random = new Random();
+		creditos = true;
+		creditosTimer = 300;
 		
 		// Redimensionando as fontes
 		fontSize(fontP2white);

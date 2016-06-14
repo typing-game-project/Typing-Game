@@ -105,147 +105,162 @@ public class MainMenu implements Screen {
 	
 	@Override public void render(float delta) {
 		game.batch.begin();
-		Gdx.gl.glClearColor(0.9f, 0.9f, 0.9f, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		onStart();
-		
-		// Animação letras do fundo
-		bgLetrasPosX += 0.5;
-		
-		// Animação de escala do logo
-		if (escalaLogo < 1.04f && !escalaLogoIndoVindo)
-			escalaLogo += 0.003f;
-		
-		else if (escalaLogo >= 1.04f)
-			escalaLogoIndoVindo = true;
-		
-		if (escalaLogo > 1 && escalaLogoIndoVindo)
-			escalaLogo -= 0.006f;
-		
-		else if (escalaLogo <= 1)
-			escalaLogoIndoVindo = false;
-		
-		float w = game.porCentoW(2512);
-		float h = game.porCentoH(1088);
-		
-		if (bgLetrasPosX >= w + game.porCentoW(100))
-			bgLetrasPosX = 0;
-		
-		game.batch.draw(game.bgLetras,bgLetrasPosX,0, w, h);
-		game.batch.draw(game.bgLetras,bgLetrasPosX - w - game.porCentoW(100),0, w, h);
-		
-		w = game.porCentoW(1104/escalaLogo);
-		h = game.porCentoH(472 * escalaLogo);
-		float x = GameManager.width;
-		float y = GameManager.height;
-		
-		game.batch.draw(game.logo, x/2 - (w/2), y - game.porCentoH(600), w, h);
-		
-		if (animandoPassword && originX > -GameManager.width) {
-			originX -= 40;
-			recalcularBoxPos();
+		if (GameManager.creditos) {
+			Gdx.gl.glClearColor(0, 0, 0, 1);
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+			
+			Gdx.input.setCursorCatched(true);
+			game.fontP2white.draw(game.batch, "Um jogo de Bruno Araujo e Marcos Antonio", game.porCentoW(150), GameManager.height / 2);
+			
+			GameManager.creditosTimer--;
+			if (GameManager.creditosTimer == 0)
+				GameManager.creditos = false;
 		}
 		
-		else if (!animandoPassword && originX < 0) {
-			originX += 40;
-			recalcularBoxPos();
-		}
-		
-		renderBoxes();
-		game.trocaCursor();
-		
-		for (int i = 0; i < 5; i++) {
-			if (game.mouseColide(button[i])) {
-				buttonHover[i] = true;
-				if(Gdx.input.isTouched()) {
-					switch(i) {
-					
-						// Jogar 
-						case 0:
-							bgm.stop();
-							this.started = false;
-							if (passwordDigitado.length() > 0)
-								passwordDigitado.delete(0, passwordDigitado.length());
-							GameManager.levelAtual = 0;
-							game.setScreen(game.levels.get(0));
-				            break;
-				        
-				        // Ir para password   
-						case 1:
-				            animandoPassword = true;
-				            break;
-				        
-				        // Sair 
-						case 2:
-							if (originX <= -GameManager.width || originX >= 0) {
+		else {
+			Gdx.gl.glClearColor(0.9f, 0.9f, 0.9f, 1);
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+			
+			onStart();
+			
+			// Animação letras do fundo
+			bgLetrasPosX += 0.5;
+			
+			// Animação de escala do logo
+			if (escalaLogo < 1.04f && !escalaLogoIndoVindo)
+				escalaLogo += 0.003f;
+			
+			else if (escalaLogo >= 1.04f)
+				escalaLogoIndoVindo = true;
+			
+			if (escalaLogo > 1 && escalaLogoIndoVindo)
+				escalaLogo -= 0.006f;
+			
+			else if (escalaLogo <= 1)
+				escalaLogoIndoVindo = false;
+			
+			float w = game.porCentoW(2512);
+			float h = game.porCentoH(1088);
+			
+			if (bgLetrasPosX >= w + game.porCentoW(100))
+				bgLetrasPosX = 0;
+			
+			game.batch.draw(game.bgLetras,bgLetrasPosX,0, w, h);
+			game.batch.draw(game.bgLetras,bgLetrasPosX - w - game.porCentoW(100),0, w, h);
+			
+			w = game.porCentoW(1104/escalaLogo);
+			h = game.porCentoH(472 * escalaLogo);
+			float x = GameManager.width;
+			float y = GameManager.height;
+			
+			game.batch.draw(game.logo, x/2 - (w/2), y - game.porCentoH(600), w, h);
+			
+			if (animandoPassword && originX > -GameManager.width) {
+				originX -= 40;
+				recalcularBoxPos();
+			}
+			
+			else if (!animandoPassword && originX < 0) {
+				originX += 40;
+				recalcularBoxPos();
+			}
+			
+			renderBoxes();
+			game.trocaCursor();
+			
+			for (int i = 0; i < 5; i++) {
+				if (game.mouseColide(button[i])) {
+					buttonHover[i] = true;
+					if(Gdx.input.isTouched()) {
+						switch(i) {
+						
+							// Jogar 
+							case 0:
 								bgm.stop();
-					            Gdx.app.exit();
-							}
-				            break;
-				            
-				        // Voltar
-						case 3:
-				            animandoPassword = false;
-				            break;
-				        
-				        // Digitar password
-						case 4:
-				            game.hideCursor = true;
-				            break;
-				        
-				        default:
-				        	continue;
+								this.started = false;
+								if (passwordDigitado.length() > 0)
+									passwordDigitado.delete(0, passwordDigitado.length());
+								GameManager.levelAtual = 0;
+								game.setScreen(game.levels.get(0));
+					            break;
+					        
+					        // Ir para password   
+							case 1:
+					            animandoPassword = true;
+					            break;
+					        
+					        // Sair 
+							case 2:
+								if (originX <= -GameManager.width || originX >= 0) {
+									bgm.stop();
+						            Gdx.app.exit();
+								}
+					            break;
+					            
+					        // Voltar
+							case 3:
+					            animandoPassword = false;
+					            break;
+					        
+					        // Digitar password
+							case 4:
+					            game.hideCursor = true;
+					            break;
+					        
+					        default:
+					        	continue;
+						}
 					}
 				}
+				else
+					buttonHover[i] = false;
 			}
-			else
-				buttonHover[i] = false;
-		}
-		
-		if (game.hideCursor) {
-			buttonHover[4] = true;
 			
-			if (passwordDigitado.length() < 10) {
-				for (int i = 7; i <= 16; i++) {
-					checarTecla(i,41);
+			if (game.hideCursor) {
+				buttonHover[4] = true;
+				
+				if (passwordDigitado.length() < 10) {
+					for (int i = 7; i <= 16; i++) {
+						checarTecla(i,41);
+					}
+					
+					for (int i = 29; i <= 54; i++) {
+						checarTecla(i,36);
+					}
 				}
 				
-				for (int i = 29; i <= 54; i++) {
-					checarTecla(i,36);
+				if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE))
+					if (passwordDigitado.length() > 0)
+						passwordDigitado.deleteCharAt(passwordDigitado.length() - 1);
+				
+				if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+					game.hideCursor = false;
+					if (passwordDigitado.length() > 0)
+						passwordDigitado.delete(0, passwordDigitado.length());
 				}
-			}
-			
-			if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE))
-				if (passwordDigitado.length() > 0)
-					passwordDigitado.deleteCharAt(passwordDigitado.length() - 1);
-			
-			if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-				game.hideCursor = false;
-				if (passwordDigitado.length() > 0)
-					passwordDigitado.delete(0, passwordDigitado.length());
-			}
-			
-			if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
-				for (int i = 0; i < game.levels.size(); i++) {
-					if (passwordDigitado.toString().equals(game.levels.get(i).password)) {
-						if (game.sfxOn)
-							game.acertoSnd[game.random.nextInt(3)].play();
-						bgm.stop();
-						this.started = false;
-						game.hideCursor = false;
-						if (passwordDigitado.length() > 0)
-							passwordDigitado.delete(0, passwordDigitado.length());
-						GameManager.levelAtual = i;
-						game.setScreen(game.levels.get(i));
+				
+				if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER))
+					for (int i = 0; i < game.levels.size(); i++) {
+						if (passwordDigitado.toString().equals(game.levels.get(i).password)) {
+							if (game.sfxOn)
+								game.acertoSnd[game.random.nextInt(3)].play();
+							bgm.stop();
+							this.started = false;
+							game.hideCursor = false;
+							if (passwordDigitado.length() > 0)
+								passwordDigitado.delete(0, passwordDigitado.length());
+							GameManager.levelAtual = i;
+							game.setScreen(game.levels.get(i));
+						}
+						else {
+							if (game.sfxOn)
+								game.erroSnd[game.random.nextInt(2)].play();
+							game.batch.setColor(1,0,0,1);
+							game.batch.draw(game.rect, 0,0,GameManager.width,GameManager.height);
+						}
 					}
-					else {
-						if (game.sfxOn)
-							game.erroSnd[game.random.nextInt(2)].play();
-						game.batch.setColor(1,0,0,1);
-						game.batch.draw(game.rect, 0,0,GameManager.width,GameManager.height);
-					}
-				}
+			}
 		}
 			
 		game.batch.end();
